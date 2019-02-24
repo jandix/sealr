@@ -1,11 +1,12 @@
 Package: passport
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Authenction strategies for plumber
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(person("Dix", "Jan", email = "jan.dix@uni-konstanz.de", role = c("aut", "cre")),
+  person("Preu", "Frie", email = "fr1e@pm.me", role = c("aut")))
+Maintainer: Jan Dix <jan.dix@uni-konstanz.de>
+Description: The goal of passport is to provide multiple authentication and authorization strategies for plumber.
+License: MIT
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
