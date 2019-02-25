@@ -26,6 +26,18 @@
 
 jwt <- function (req, res, secret) {
 
+  # ensure that the user passed the request object
+  if (missing(req) == TRUE)
+    stop("Please pass the request object.")
+
+  # ensure that the user passed a secret
+  if (missing(secret) == TRUE)
+    stop("Please define a secret.")
+
+  # ensure that the secret is not an empty string
+  if (nchar(secret) < 1)
+    warning("Your secret is empty. This is a possible security risk.")
+
   # convert secret to bytes
   secret <- charToRaw(secret)
 
