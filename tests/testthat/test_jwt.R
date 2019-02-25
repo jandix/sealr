@@ -13,11 +13,12 @@ testthat::test_that("test that the function requires secret", {
 
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
-  test_res <- passport::jwt(res = list(),
-                                req = list(),
-                                secret = "YAMYAMYAM")
-  testthat::expect_equal(test_res$code, 401)
-  testthat::expect_equal(test_res$message, "Authentication required.")
+  res <- passport::jwt(req = list(),
+                            res = list(),
+                            secret = "YAMYAMYAM")
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
 })
 
 # TEST WARNINGS ------------------------------------------------------------------------------------------
@@ -36,5 +37,22 @@ testthat::test_that("test that a valid JWT goes through the function.", {
   test_res <- list()
 
   # plumber::forward at end of jwt() invisibly returns TRUE
-  testthat::expect_equal(jwt(test_req, test_res, test_secret), TRUE)
+  testthat::expect_equal(passport::jwt(req = test_req,
+                             res = test_res,
+                             secret = test_secret), TRUE)
+})
+
+testthat::test_that("test that an invalid value for JWT generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_req <- list(HTTP_AUTHORIZATION = "somethingnotjwttokenlike")
+  test_res <- list()
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  res <- passport::jwt(req = test_req,
+                             res = test_res,
+                             secret = test_secret)
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
 })
