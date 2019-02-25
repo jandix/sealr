@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-jwt(req, res, secret)
+passport::jwt()
 }
 \arguments{
 \item{req}{Request object.}
@@ -14,10 +14,15 @@ jwt(req, res, secret)
 \item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
 to raw bytes in the function.}
 }
-\value{
-
-}
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front
 of the routes. The strategy uses extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+}
+\examples{
+\dontrun{
+pr$filter("passport-jwt", function (req, res) {
+  passport::jwt(req = req, res = res, secret = secret)
+})
+}
+
 }
