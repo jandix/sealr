@@ -19,7 +19,8 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/jandix/sealer/branch/master/graph/badge.svg)](https://codecov.io/gh/jandix/sealer)
 
 
-The goal of sealer is to provide multiple authentication and authorization strategies for [plumber](https://www.rplumber.io/) by using [filters](https://www.rplumber.io/docs/routing-and-input.html#filters). The package is inspired by the amazing [passport.js](http://www.passportjs.org/) library for Node.js.
+The goal of sealer is to provide multiple authentication and authorization strategies for [plumber](https://www.rplumber.io/) by using [filters](https://www.rplumber.io/docs/routing-and-input.html#filters). In doing so, we hope to make best practices in authentication easy to implement for the R community.
+The package is inspired by the amazing [passport.js](http://www.passportjs.org/) library for Node.js.
 
 ## Installation
 
