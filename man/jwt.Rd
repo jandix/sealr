@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-sealer::jwt()
+jwt(req, res, secret)
 }
 \arguments{
 \item{req}{Request object.}

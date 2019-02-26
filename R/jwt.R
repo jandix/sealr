@@ -8,8 +8,6 @@
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
 #'
-#' @usage sealer::jwt()
-#'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
 #' @importFrom plumber forward

@@ -6,7 +6,13 @@ Authors@R: c(person("Dix", "Jan", email = "jan.dix@uni-konstanz.de", role = c("a
   person("Preu", "Frie", email = "fr1e@pm.me", role = c("aut")))
 Maintainer: Jan Dix <jan.dix@uni-konstanz.de>
 Description: The goal of sealer is to provide multiple authentication and authorization strategies for plumber.
-License: MIT
+Imports:
+    jose,
+    plumber,
+    stringr
+Suggests:
+    testthat
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
