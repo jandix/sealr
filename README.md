@@ -3,6 +3,8 @@
 sealer
 ======
 
+[![Build Status](https://travis-ci.org/jandix/sealer.svg?branch=master)](https://travis-ci.org/jandix/sealer) [![codecov](https://codecov.io/gh/jandix/sealer/branch/master/graph/badge.svg)](https://codecov.io/gh/jandix/sealer)
+
 The goal of sealer is to provide multiple authentication and authorization strategies for [plumber](https://www.rplumber.io/) by using [filters](https://www.rplumber.io/docs/routing-and-input.html#filters). The package is inspired by the amazing [passport.js](http://www.passportjs.org/) library for Node.js.
 
 Installation
@@ -11,8 +13,21 @@ Installation
 Currently, the package is under development. Please feel free to contribute to the package. You can install and use the package using `devtools`.
 
 ``` r
-devtools::install_github("jandix/passport")
+devtools::install_github("jandix/sealer")
 ```
+
+Contribute
+----------
+
+We are still at the very beginning of the package and we welcome any support and contribution. Below you find a list with possible authentication strategies that you could implement. The list is not complete and can be expanded with your suggestions.
+
+#### Possible Strategies
+
+-   \[ \] Bearer Token
+-   \[ \] Sessions
+-   \[ \] Twitter OAuth
+-   \[ \] Facbook OAuth
+-   \[ \] Google OAuth
 
 Testing
 -------
