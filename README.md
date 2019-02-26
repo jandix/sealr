@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sealer
+# sealr
 
 [![Build
-Status](https://travis-ci.org/jandix/sealer.svg?branch=master)](https://travis-ci.org/jandix/sealer)
-[![codecov](https://codecov.io/gh/jandix/sealer/branch/master/graph/badge.svg)](https://codecov.io/gh/jandix/sealer)
+Status](https://travis-ci.org/jandix/sealr.svg?branch=master)](https://travis-ci.org/jandix/sealr)
+[![codecov](https://codecov.io/gh/jandix/sealr/branch/master/graph/badge.svg)](https://codecov.io/gh/jandix/sealr)
 
-The goal of sealer is to provide multiple authentication and
+The goal of sealr is to provide multiple authentication and
 authorization strategies for [plumber](https://www.rplumber.io/) by
 using
 [filters](https://www.rplumber.io/docs/routing-and-input.html#filters).
@@ -22,7 +22,7 @@ contribute to the package. You can install and use the package using
 `devtools`.
 
 ``` r
-devtools::install_github("jandix/sealer")
+devtools::install_github("jandix/sealr")
 ```
 
 ## Contribute
@@ -70,7 +70,7 @@ You can use the curl statement below to test your application:
     curl -H "Authorization: Bearer <JWT_TOKEN>" localhost:9090/secret
 
 :warning: Please change the secret to a super secure secret of your
-choice. Please notice that you have to `preempt = c("sealer-jwt")` to
+choice. Please notice that you have to `preempt = c("sealr-jwt")` to
 routes that should **not** be protected.
 
 ``` r
@@ -82,12 +82,12 @@ pr <- plumber::plumber$new()
 secret <- "3ec9aaf4a744f833e98c954365892583"
 
 # integrate the jwt strategy in a filter
-pr$filter("sealer-jwt", function (req, res) {
+pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealer::jwt(req = req, res = res, secret = secret)
+  sealr::jwt(req = req, res = res, secret = secret)
 })
 
-# define authentication route to issue web tokens (exclude "sealer-jwt" filter using preempt)
+# define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
 pr$handle("POST", "/authentication", function (req, user = NULL, password = NULL) {
   
   # check if user provided credentials
@@ -113,12 +113,12 @@ pr$handle("POST", "/authentication", function (req, user = NULL, password = NULL
   
   # return jwt as response
   return(jwt = jwt)
-}, preempt = c("sealer-jwt"))
+}, preempt = c("sealr-jwt"))
 
-# define test route without authentication  (exclude "sealer-jwt" filter using preempt)
+# define test route without authentication  (exclude "sealr-jwt" filter using preempt)
 pr$handle("GET", "/", function (req, res) {
   return(iris[1:100, ])
-}, preempt = c("sealer-jwt"))
+}, preempt = c("sealr-jwt"))
 
 
 
