@@ -14,8 +14,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' pr$filter("sealer-jwt", function (req, res) {
-#'   sealer::jwt(req = req, res = res, secret = secret)
+#' pr$filter("sealr-jwt", function (req, res) {
+#'   sealr::jwt(req = req, res = res, secret = secret)
 #' })
 #' }
 #'

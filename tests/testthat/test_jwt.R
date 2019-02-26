@@ -2,17 +2,17 @@ testthat::context("Test JWT Strategy")
 
 # TEST MISSING INPUTS ------------------------------------------------------------------------------------
 testthat::test_that("test that the function requires request object", {
-  testthat::expect_error(sealer::jwt(secret = "YAMYAMYAM"),
+  testthat::expect_error(sealr::jwt(secret = "YAMYAMYAM"),
                          regexp = "Please pass the request object.")
 })
 
 testthat::test_that("test that the function requires secret", {
-  testthat::expect_error(sealer::jwt(req = list()),
+  testthat::expect_error(sealr::jwt(req = list()),
                          regexp = "Please define a secret.")
 })
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
-  res <- sealer::jwt(req = list(),
+  res <- sealr::jwt(req = list(),
                             res = list(),
                             secret = "YAMYAMYAM")
   testthat::expect_equal(res$status, "Failed.")
@@ -22,7 +22,7 @@ testthat::test_that("test that the function requires HTTP Authorization header",
 
 # TEST WARNINGS ------------------------------------------------------------------------------------------
 testthat::test_that("test the function warns if the secret is empty", {
-  testthat::expect_warning(sealer::jwt(req = list(), res = list(), secret = ""),
+  testthat::expect_warning(sealr::jwt(req = list(), res = list(), secret = ""),
                            regexp = "Your secret is empty. This is a possible security risk.")
 })
 
@@ -36,7 +36,7 @@ testthat::test_that("test that a valid JWT goes through the function.", {
   test_res <- list()
 
   # plumber::forward at end of jwt() invisibly returns TRUE
-  testthat::expect_equal(sealer::jwt(req = test_req,
+  testthat::expect_equal(sealr::jwt(req = test_req,
                              res = test_res,
                              secret = test_secret), TRUE)
 })
@@ -48,7 +48,7 @@ testthat::test_that("test that an invalid value for JWT generates 401.", {
   test_res <- list()
 
   # plumber::forward at end of jwt() invisibly returns TRUE
-  res <- sealer::jwt(req = test_req,
+  res <- sealr::jwt(req = test_req,
                              res = test_res,
                              secret = test_secret)
   testthat::expect_equal(res$status, "Failed.")

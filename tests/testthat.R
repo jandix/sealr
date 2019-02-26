@@ -1,4 +1,4 @@
 library(testthat)
-library(sealer)
+library(sealr)
 
-testthat::test_check("sealer")
+testthat::test_check("sealr")
