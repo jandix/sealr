@@ -1,4 +1,4 @@
 library(testthat)
-library(passport)
+library(sealer)
 
-testthat::test_check("passport")
+testthat::test_check("sealer")

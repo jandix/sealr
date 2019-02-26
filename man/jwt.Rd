@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-passport::jwt()
+sealer::jwt()
 }
 \arguments{
 \item{req}{Request object.}
@@ -20,8 +20,8 @@ of the routes. The strategy uses extracts the token from the HTTP Authorization 
 }
 \examples{
 \dontrun{
-pr$filter("passport-jwt", function (req, res) {
-  passport::jwt(req = req, res = res, secret = secret)
+pr$filter("sealer-jwt", function (req, res) {
+  sealer::jwt(req = req, res = res, secret = secret)
 })
 }
 

@@ -8,7 +8,7 @@
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
 #'
-#' @usage passport::jwt()
+#' @usage sealer::jwt()
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
@@ -16,8 +16,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' pr$filter("passport-jwt", function (req, res) {
-#'   passport::jwt(req = req, res = res, secret = secret)
+#' pr$filter("sealer-jwt", function (req, res) {
+#'   sealer::jwt(req = req, res = res, secret = secret)
 #' })
 #' }
 #'
