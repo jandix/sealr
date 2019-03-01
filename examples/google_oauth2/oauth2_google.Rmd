@@ -1,0 +1,31 @@
+---
+title: "Using Google's OAuth2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Open Questions
+- https://developers.google.com/identity/protocols/OAuth2
+- who is the client here? Plumber? or the "frontend" / service that speaks to plumber?
+  - i guess it's plumber and the developer would need to make the clientID and clientSecret available to the plumber script via env variables. 
+- clientID and clientSecret:
+"Visit the Google API Console to obtain OAuth 2.0 credentials such as a client ID and client secret that are known to both Google and your application. The set of values varies based on what type of application you are building. For example, a JavaScript application does not require a secret, but a web server application does. "
+
+## authentication route
+- obtain client credentials from Google API console
+- with clientID and clientSecreat make a
+- do we need an additional callback endpoint??
+- how can we implement a callback uri?
+```{r}
+scope_list <- c("https://spreadsheets.google.com/feeds",
+                    "https://www.googleapis.com/auth/drive")
+    googlesheets_app <- httr::oauth_app("google", key = key, secret = secret)
+    google_token <-
+      httr::oauth2.0_token(httr::oauth_endpoints("google"), googlesheets_app,
+                           scope = scope_list, cache = cache)
+    stopifnot(is_legit_token(google_token, verbose = TRUE))
+.state$token <- google_token
+```
