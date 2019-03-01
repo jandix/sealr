@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-jwt(req, res, secret)
+jwt(req, res, secret, audience = NULL)
 }
 \arguments{
 \item{req}{Request object.}
@@ -13,6 +13,8 @@ jwt(req, res, secret)
 
 \item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
 to raw bytes in the function.}
+
+\item{audience}{character. Check if user belongs to a certain audience.}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front

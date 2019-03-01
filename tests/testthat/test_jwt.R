@@ -13,8 +13,8 @@ testthat::test_that("test that the function requires secret", {
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
   res <- sealr::jwt(req = list(),
-                            res = list(),
-                            secret = "YAMYAMYAM")
+                    res = list(),
+                    secret = "YAMYAMYAM")
   testthat::expect_equal(res$status, "Failed.")
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
@@ -37,8 +37,61 @@ testthat::test_that("test that a valid JWT goes through the function.", {
 
   # plumber::forward at end of jwt() invisibly returns TRUE
   testthat::expect_equal(sealr::jwt(req = test_req,
-                             res = test_res,
-                             secret = test_secret), TRUE)
+                                    res = test_res,
+                                    secret = test_secret), TRUE)
+})
+
+testthat::test_that("test that a valid JWT with audience goes through the function.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID= "Alice",
+                                                            audience = "user"),
+                                    secret = test_secret)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  testthat::expect_equal(sealr::jwt(req = test_req,
+                                    res = test_res,
+                                    secret = test_secret,
+                                    audience = "user"), TRUE)
+})
+
+testthat::test_that("test that a valid JWT with wrong audience generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID= "Alice",
+                                                            audience = "admin"),
+                                    secret = test_secret)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  res <- sealr::jwt(req = test_req,
+                    res = test_res,
+                    secret = test_secret,
+                    audience = "user")
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
+})
+
+testthat::test_that("test that an invalid JWT generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+  test_secret <- "BRUMMBRUMM"
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  res <- sealr::jwt(req = test_req,
+                    res = test_res,
+                    secret = test_secret)
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
 })
 
 testthat::test_that("test that an invalid value for JWT generates 401.", {
@@ -49,8 +102,8 @@ testthat::test_that("test that an invalid value for JWT generates 401.", {
 
   # plumber::forward at end of jwt() invisibly returns TRUE
   res <- sealr::jwt(req = test_req,
-                             res = test_res,
-                             secret = test_secret)
+                    res = test_res,
+                    secret = test_secret)
   testthat::expect_equal(res$status, "Failed.")
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
