@@ -7,6 +7,7 @@
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
+#' @param audience character. Check if user belongs to a certain audience.
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
@@ -22,7 +23,7 @@
 #' @export
 #'
 
-jwt <- function (req, res, secret) {
+jwt <- function (req, res, secret, audience = NULL) {
 
   # ensure that the user passed the request object
   if (missing(req) == TRUE)
@@ -52,15 +53,25 @@ jwt <- function (req, res, secret) {
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
   # check if token is valid
-  auth <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
+  token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
                    error = function (e) NULL)
 
   # if token not valid send error
-  if (is.null(auth)) {
+  if (is.null(token)) {
     res$status <- 401
     return(list(status="Failed.",
                 code=401,
                 message="Authentication required."))
+  }
+
+  # check if audience correct
+  if (!is.null(audience)) {
+    if (audience != token$aud) {
+      res$status <- 401
+      return(list(status="Failed.",
+                  code=401,
+                  message="Authentication required."))
+    }
   }
 
   # redirect to routes
