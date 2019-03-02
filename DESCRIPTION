@@ -9,7 +9,8 @@ Description: The goal of sealr is to provide multiple authentication and authori
 Imports:
     jose,
     plumber,
-    stringr
+    stringr,
+    purrr
 Suggests:
     testthat
 License: MIT + file LICENSE
