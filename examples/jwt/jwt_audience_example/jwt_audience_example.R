@@ -78,11 +78,10 @@ pr$handle("GET", "/", function (req, res) {
 }, preempt = c("sealr-jwt"))
 
 
-
 # define test route with authentication
 pr$handle("GET", "/secret", function (req, res) {
   return(iris[101:150, ])
 })
 
 # start API server
-pr$run(host="0.0.0.0", port=9090)
+pr$run(host = "0.0.0.0", port = 9090)

@@ -7,11 +7,12 @@
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
-#' @param audience character. Check if user belongs to a certain audience.
+#' @param claims_to_check names list of claims to check.
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
 #' @importFrom plumber forward
+#' @importFrom purrr map2
 #'
 #' @examples
 #' \dontrun{
@@ -23,7 +24,7 @@
 #' @export
 #'
 
-jwt <- function (req, res, secret, audience = NULL) {
+jwt <- function (req, res, secret, audience = NULL, claims_to_check = NULL) {
 
   # ensure that the user passed the request object
   if (missing(req) == TRUE)
@@ -37,6 +38,9 @@ jwt <- function (req, res, secret, audience = NULL) {
   if (nchar(secret) < 1)
     warning("Your secret is empty. This is a possible security risk.")
 
+  if (!is.null(claims_to_check) && !is.list(claims_to_check)) {
+    stop("claims_to_check needs to be a named list of claims to check.")
+  }
   # convert secret to bytes
   secret <- charToRaw(secret)
 
@@ -64,7 +68,11 @@ jwt <- function (req, res, secret, audience = NULL) {
                 message="Authentication required."))
   }
 
-  # check if audience correct
+  # check if custom claims correct
+  if (!is.null(claims_to_check)) {
+    purrr::map2(names(claims_to_check), claims_to_check, check_claim, token = token)
+  }
+
   if (!is.null(audience)) {
     if (audience != token$aud) {
       res$status <- 401
@@ -76,4 +84,9 @@ jwt <- function (req, res, secret, audience = NULL) {
 
   # redirect to routes
   plumber::forward()
+}
+
+check_claim <- function(claim_name, claim_value, token){
+  token_claim_value <- tryCatch(token[[claim_name]], error = function (e) NULL)
+  return(identical(token[[claim_name]], claim_value))
 }
