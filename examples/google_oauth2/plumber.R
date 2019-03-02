@@ -1,55 +1,43 @@
-# create new plumber router
+# define a new plumber router
 pr <- plumber::plumber$new()
 
-# define secret
-secret <- charToRaw("3ec9aaf4a744f833e98c954365892583")
-
-# define jwt filter
-pr$filter("sealr-google-oauth2", function (req, res) {
-  # try if access token is still working
-
-  # try to refresh token using refresh token
-
-
-  if (is.null(req$HTTP_AUTHORIZATION)) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
-  req$HTTP_AUTHORIZATION <- stringr::str_remove(req$HTTP_AUTHORIZATION, "Bearer\\s")
-  auth <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
-                   error = function (e) NULL)
-  if (is.null(auth)) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
-  plumber::forward()
+# integrate the jwt strategy in a filter
+pr$filter("sealr-jwt", function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::jwt(req = req, res = res, secret = secret)
 })
 
-# define test route without auth
-pr$handle("GET", "/", function (req, res) {
-  return(list(message = "Welcome."))
-}, preempt = c("passport-jwt"))
 
-# define auth route
-pr$handle("POST", "/authentication", function (req, user = NULL, password = NULL) {
-  if (is.null(user) || is.null(password)) {
-    return(list(status="Failed.",
-                code=404,
-                message="Please return password or username."))
-  }
-  # define jwt payload
-  payload <- jose::jwt_claim(userID = "192831")
-  jwt <- jose::jwt_encode_hmac(payload, secret = secret)
-  return(jwt = jwt)
-}, preempt = c("passport-jwt"))
+# define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
+pr$handle("GET", "/authentication", function (req, res) {
+  url <- "https://accounts.google.com/o/oauth2/v2/auth"
 
-# define test route with auth
-pr$handle("GET", "/secret", function (req, res) {
-  return(list(message = "Welcome to the secret path."))
+  query <- list(client_id = "62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com",
+                redirect_uri = "http://localhost:9090/authentication/redirect",
+                scope = "https://www.googleapis.com/auth/userinfo.profile",
+                response_type = "code")
+  auth_url <- httr::parse_url(url = url)
+  auth_url$query <- query
+  auth_url <- httr::build_url(auth_url)
+  res$status <- 301
+  res$setHeader("Location", auth_url)
+  return()
 })
 
+# define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
+pr$handle("GET", "/authentication/redirect", function (req, res, code = NULL, error = NULL) {
+  token_url <- "https://www.googleapis.com/oauth2/v4/token"
+  body <- list(
+    code = code,
+    client_id = "62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com",
+    client_secret = "0iE21iyz1htfHPtOw21zWcw6",
+    redirect_uri = "http://localhost:9090/authentication/redirect",
+    grant_type = "authorization_code"
+  )
+  response <- httr::POST(token_url, body = body)
+  parsed_response <- jsonlite::fromJSON(httr::content(response, type = "text"))
+  return(parsed_response)
+})
+
+# start API server
 pr$run(host="0.0.0.0", port=9090)
