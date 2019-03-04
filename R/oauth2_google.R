@@ -7,18 +7,19 @@
 #' @param res Response object.
 #' @param client_id character.
 #' @param hd character.
+#' @param jwks_uri character.
 #'
 #' @importFrom stringr str_remove str_trim
-#' @importFrom jose jwt_split
-#' @importFrom plumber forward
+#' @importFrom jose jwt_split jwt_decode_sig
 #' @importFrom anytime anytime
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
+#' @importFrom plumber forward
 #'
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret)
+#'   sealr::oauth2_google(req = req, res = res, secret = secret)
 #' })
 #' }
 #'
@@ -87,7 +88,7 @@ oauth2_google <- function (req,
 
   # check signature
   payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pub_key),
-                    error = function (e) NULL)
+                      error = function (e) NULL)
 
   # if token not valid send error
   if (is.null(payload)) {

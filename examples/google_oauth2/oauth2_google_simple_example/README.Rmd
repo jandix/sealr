@@ -1,0 +1,18 @@
+---
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Google OAuth2 Simple Example
+
+## Install the packages
+Install the following packages if you haven't already:
+
+- sealr
+- httr
+- jose
+- jsonlite
+
