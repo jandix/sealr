@@ -54,25 +54,56 @@ oauth2_google <- function (req,
   # parse google's jwt
   jwt <- jose::jwt_split(req$HTTP_AUTHORIZATION)
 
-  # add token to request
-  req$jwt <- jwt$payload
-
   ## check signature -------------------------------------------------------------------------------------
 
   # download public key file
-  key_file <- httr::GET(jwks_uri)
-  parsed_key_file <- jsonlite::fromJSON(httr::content(key_file, type = "text"))$keys
+  response <- httr::GET(jwks_uri)
+  if (httr::http_error(response)) {
+    res$status <- 500
+    return(list(status="Failed.",
+                code=500,
+                message="Authentication Error. Hint: jwks_uri"))
+  }
+  jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
+
+  # match kid
+  index <- FALSE
+  for (i in 1:nrow(jwks)) {
+    if (jwks$kid[i] == jwt$header$kid) {
+      index <- i
+      break
+    }
+  }
+
+  if (!index) {
+    res$status <- 500
+    return(list(status="Failed.",
+                code=500,
+                message="Authentication Error. Hint: jwks_uri"))
+  }
 
   # parse public key
-  pub_key <- jose::jwk_read(parsed_key_file[2, ])
+  pub_key <- jose::jwk_read(jwks[index, ])
 
   # check signature
-  jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pub_key)
+  payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pub_key),
+                    error = function (e) NULL)
+
+  # if token not valid send error
+  if (is.null(payload)) {
+    res$status <- 401
+    return(list(status="Failed.",
+                code=401,
+                message="Authentication required."))
+  }
+
+  # append jwt payload to request
+  req$jwt_payload <- payload
 
   ## check jwt payload------------------------------------------------------------------------------------
 
   # check if iis is correct
-  if (!stringr::str_detect(jwt$payload$iss, "https://accounts.google.com||accounts.google.com")) {
+  if (!stringr::str_detect(payload$iss, "https://accounts.google.com||accounts.google.com")) {
     res$status <- 401
     return(list(status="Failed.",
                 code=401,
@@ -80,7 +111,7 @@ oauth2_google <- function (req,
   }
 
   # check if client id matches
-  if (jwt$payload$aud != client_id) {
+  if (payload$aud != client_id) {
     res$status <- 401
     return(list(status="Failed.",
                 code=401,
@@ -88,7 +119,7 @@ oauth2_google <- function (req,
   }
 
   # check if token expired
-  if (as.numeric(as.POSIXct(Sys.time())) > jwt$payload$exp) {
+  if (as.numeric(as.POSIXct(Sys.time())) > payload$exp) {
     res$status <- 401
     return(list(status="Failed.",
                 code=401,
@@ -97,7 +128,7 @@ oauth2_google <- function (req,
 
   # check if hd is valid
   if (!is.null(hd)) {
-    if (jwt$payload$hd != hd) {
+    if (payload$hd != hd) {
       res$status <- 401
       return(list(status="Failed.",
                   code=401,
