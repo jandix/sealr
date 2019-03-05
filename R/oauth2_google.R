@@ -46,6 +46,14 @@ oauth2_google <- function (req,
   if (missing(client_id) == TRUE)
     stop("Please pass the Google client id.")
 
+  # ensure that the request includes HTTP_AUTHORIZATION header
+  if (!("HTTP_AUTHORIZATION" %in% names(req))) {
+    res$status <- 401
+    return(list(status="Failed.",
+                code=401,
+                message="Authentication required."))
+  }
+
   ## parse token -----------------------------------------------------------------------------------------
 
   # trim authorization token
@@ -53,9 +61,26 @@ oauth2_google <- function (req,
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
   # parse google's jwt
-  jwt <- jose::jwt_split(req$HTTP_AUTHORIZATION)
+  jwt <- tryCatch(jose::jwt_split(req$HTTP_AUTHORIZATION),
+                  error = function (e) NULL)
+
+  # if jwt not valid send error
+  if (is.null(jwt)) {
+    res$status <- 401
+    return(list(status="Failed.",
+                code=401,
+                message="Authentication required."))
+  }
 
   ## check signature -------------------------------------------------------------------------------------
+
+  # ensure that the jwt header includes kid
+  if (!("kid" %in% names(jwt$header$kid))) {
+    res$status <- 401
+    return(list(status="Failed.",
+                code=401,
+                message="Authentication required."))
+  }
 
   # download public key file
   response <- httr::GET(jwks_uri)
