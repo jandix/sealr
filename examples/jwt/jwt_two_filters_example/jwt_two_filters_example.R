@@ -2,16 +2,19 @@
 # you should probably use a SQL database instead of data frames
 users <- data.frame(id       = integer(),
                     name     = character(),
+                    admin_access  = character(),
                     password = character(),
                     stringsAsFactors = FALSE)
 
 # create test user
 users <- rbind(users, data.frame(id       = 1,
                                  user     = "jane@example.com",
+                                 admin_access     = TRUE,
                                  password = bcrypt::hashpw("12345"),
                                  stringsAsFactors = FALSE))
 users <- rbind(users, data.frame(id       = 2,
                                  user     = "bob@example.com",
+                                 admin_access    = FALSE,
                                  password = bcrypt::hashpw("45678"),
                                  stringsAsFactors = FALSE))
 
@@ -26,6 +29,13 @@ pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
   sealr::jwt(req = req, res = res, secret = secret)
 })
+
+# filter to allow access to admins only
+pr$filter("sealr-jwt-admin-only", function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::jwt(req = req, res = res, secret = secret, admin_access = TRUE)
+})
+
 
 # define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
 pr$handle("POST", "/authentication", function (req, res, user = NULL, password = NULL) {
@@ -60,7 +70,8 @@ pr$handle("POST", "/authentication", function (req, res, user = NULL, password =
   # define jwt payload
   # information about the additional fields can be found at
   # https://tools.ietf.org/html/rfc7519#section-4.1
-  payload <- jose::jwt_claim(userID = users$id[index])
+  payload <- jose::jwt_claim(userID = users$id[index],
+                             admin_access = users$admin_access[index])
 
   # convert secret to bytes
   secret <- charToRaw(secret)
@@ -74,14 +85,18 @@ pr$handle("POST", "/authentication", function (req, res, user = NULL, password =
 
 # define test route without authentication  (exclude "sealr-jwt" filter using preempt)
 pr$handle("GET", "/", function (req, res) {
-  return(iris[1:100, ])
+  return("This route does not require authentication.")
 }, preempt = c("sealr-jwt"))
 
-
-# define test route with authentication
-pr$handle("GET", "/secret", function (req, res) {
-  return(iris[101:150, ])
+# define test route that only let's admins pass
+pr$handle("GET", "/admin", function (req, res) {
+  return("This route is only for admin users.")
 })
+
+# define test route with authentication for
+pr$handle("GET", "/secret", function (req, res) {
+  return("This route requires authentication.")
+}, preempt = c("sealr-jwt-admin-only"))
 
 # start API server
 pr$run(host = "0.0.0.0", port = 9090)
