@@ -7,24 +7,23 @@
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
-#' @param claims_to_check names list of claims to check.
+#' @param ... claims to check in the JWT
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
 #' @importFrom plumber forward
-#' @importFrom purrr map2
 #'
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret)
+#'   sealr::jwt(req = req, res = res, secret = secret, iss = "company A")
 #' })
 #' }
 #'
 #' @export
 #'
 
-jwt <- function (req, res, secret, audience = NULL, claims_to_check = NULL) {
+jwt <- function (req, res, secret, ...) {
 
   # ensure that the user passed the request object
   if (missing(req) == TRUE)
@@ -38,9 +37,6 @@ jwt <- function (req, res, secret, audience = NULL, claims_to_check = NULL) {
   if (nchar(secret) < 1)
     warning("Your secret is empty. This is a possible security risk.")
 
-  if (!is.null(claims_to_check) && !is.list(claims_to_check)) {
-    stop("claims_to_check needs to be a named list of claims to check.")
-  }
   # convert secret to bytes
   secret <- charToRaw(secret)
 
@@ -68,25 +64,62 @@ jwt <- function (req, res, secret, audience = NULL, claims_to_check = NULL) {
                 message="Authentication required."))
   }
 
-  # check if custom claims correct
-  if (!is.null(claims_to_check)) {
-    purrr::map2(names(claims_to_check), claims_to_check, check_claim, token = token)
-  }
-
-  if (!is.null(audience)) {
-    if (audience != token$aud) {
-      res$status <- 401
-      return(list(status="Failed.",
-                  code=401,
-                  message="Authentication required."))
-    }
+  # check that claims are correct
+  if (!check_all_claims(token, ...)){
+    res$status <- 401
+    return(list(status="Failed.",
+                code=401,
+                message="Authentication required."))
   }
 
   # redirect to routes
   plumber::forward()
 }
 
+
+#'
+#' This function checks that all claims passed by \code{...} to the jwt function
+#' are correct.
+#' @param token JWT extracted with jose::jwt_decode_hmac.
+#' @return TRUE if the all claims are present in the JWT, FALSE if not.
+#' @importFrom purrr map2_lgl
+
+check_all_claims <- function(token, ...){
+
+  claim_values <- list(...)
+  claim_names <- names(list(...))
+
+  results <- purrr::map2_lgl(claim_names, claim_values, check_claim, token = token)
+  return(all(results))
+}
+
+
+#'
+#' This function checks that a claim passed to the jwt function is correct.
+#' A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
+#' The function extracts the value for claim_name from the token and compares
+#' the retrieved value with the claimed value.
+#' Nested claims are supported up to one level, e.g. a claim value of
+#' \code{list(name = "Alice", role = "admin")} is valid.
+#' Nesting at a higher level is not implemented yet and will return FALSE.
+#' @param claim_name name of the claim in the JWT, e.g. "iss".
+#' @param claim_value value the claim should have to pass the test.
+#' @param token JWT extracted with jose::jwt_decode_hmac.
+#' @return TRUE if the claim is present in the JWT, FALSE if not. Returns FALSE
+#' for higher order nested claims.
+
 check_claim <- function(claim_name, claim_value, token){
-  token_claim_value <- tryCatch(token[[claim_name]], error = function (e) NULL)
-  return(identical(token[[claim_name]], claim_value))
+
+  token_claim_value <- tryCatch(token[[claim_name]], error = function (e) return(FALSE))
+
+  if (is.list(token_claim_value) && is.list(claim_value)){
+    # check that names of list are the same
+    if (!setequal(names(token_claim_value), names(claim_value))){
+      return(FALSE)
+    }
+
+    return(identical(token_claim_value[names(claim_value)], claim_value))
+  }
+
+  return(identical(token_claim_value, claim_value))
 }
