@@ -43,9 +43,7 @@ jwt <- function (req, res, secret, claims = NULL) {
   # check if request includes authorization header
   if (is.null(req$HTTP_AUTHORIZATION)) {
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # trim authorization token
@@ -59,17 +57,13 @@ jwt <- function (req, res, secret, claims = NULL) {
   # if token not valid send error
   if (is.null(token)) {
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # check that claims are correct
   if (!check_all_claims(token, claims)){
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # redirect to routes
