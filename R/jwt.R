@@ -7,7 +7,7 @@
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
-#' @param ... claims to check in the JWT
+#' @param claims named list. Claims that should be checked in the JWT.
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
@@ -16,14 +16,14 @@
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret, iss = "company A")
+#'   sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "company A"))
 #' })
 #' }
 #'
 #' @export
 #'
 
-jwt <- function (req, res, secret, ...) {
+jwt <- function (req, res, secret, claims = NULL) {
 
   # ensure that the user passed the request object
   if (missing(req) == TRUE)
@@ -65,7 +65,7 @@ jwt <- function (req, res, secret, ...) {
   }
 
   # check that claims are correct
-  if (!check_all_claims(token, ...)){
+  if (!check_all_claims(token, claims)){
     res$status <- 401
     return(list(status="Failed.",
                 code=401,
@@ -81,13 +81,17 @@ jwt <- function (req, res, secret, ...) {
 #' This function checks that all claims passed by \code{...} to the jwt function
 #' are correct.
 #' @param token JWT extracted with jose::jwt_decode_hmac.
+#' @param claims named list of claims to check in the JWT
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
 #' @importFrom purrr map2_lgl
 
-check_all_claims <- function(token, ...){
+check_all_claims <- function(token, claims){
 
-  claim_values <- list(...)
-  claim_names <- names(list(...))
+  claim_values <- claims
+  claim_names <- names(claims)
+  if ("" %in% claim_names){
+    return(FALSE)
+  }
 
   results <- purrr::map2_lgl(claim_names, claim_values, check_claim, token = token)
   return(all(results))

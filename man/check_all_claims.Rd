@@ -5,10 +5,12 @@
 \title{This function checks that all claims passed by \code{...} to the jwt function
 are correct.}
 \usage{
-check_all_claims(token, ...)
+check_all_claims(token, claims)
 }
 \arguments{
 \item{token}{JWT extracted with jose::jwt_decode_hmac.}
+
+\item{claims}{named list of claims to check in the JWT}
 }
 \value{
 TRUE if the all claims are present in the JWT, FALSE if not.

@@ -48,15 +48,19 @@ testthat::test_that("test that check_claim returns true on NULL", {
 
 testthat::test_that("test that check_all_claims returns True with one correct claim", {
   token <- list(aud = "hello")
-  testthat::expect_true(sealr::check_all_claims(token, aud = "hello"))
+  claims <- list(aud = "hello")
+  testthat::expect_true(sealr::check_all_claims(token, claims))
 })
 
 testthat::test_that("test that check_all_claims returns True with two correct claims", {
   token <- list(aud = "hello", iss = "company")
-  testthat::expect_true(sealr::check_all_claims(token, aud = "hello", iss = "company"))
+  claims <- list(aud = "hello", iss = "company")
+
+  testthat::expect_true(sealr::check_all_claims(token, claims))
 })
 
 testthat::test_that("test that check_all_claims returns False with one false claim", {
   token <- list(aud = "hello", iss = "company")
-  testthat::expect_false(sealr::check_all_claims(token, aud = "hello", iss = "company 2"))
+  claims <- list(aud = "hello", iss = "company 2")
+  testthat::expect_false(sealr::check_all_claims(token, claims))
 })
