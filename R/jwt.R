@@ -10,7 +10,7 @@
 #' @param pubkey public key. Default NULL. Either specify pubkey or secret.
 #' @param claims named list. Claims that should be checked in the JWT. Default NULL.
 #' @importFrom stringr str_remove str_trim
-#' @importFrom jose jwt_decode_hmac
+#' @importFrom jose jwt_decode_hmac jwt_decode_sig
 #' @importFrom plumber forward
 #'
 #' @examples
