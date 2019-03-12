@@ -29,6 +29,10 @@ jwt <- function (req, res, secret, claims = NULL) {
   if (missing(req) == TRUE)
     stop("Please pass the request object.")
 
+  # ensure that the user passed the response object
+  if (missing(res) == TRUE)
+    stop("Please pass the response object.")
+
   # ensure that the user passed a secret
   if (missing(secret) == TRUE)
     stop("Please define a secret.")
