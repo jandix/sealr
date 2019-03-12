@@ -54,7 +54,7 @@ testthat::test_that("test that a valid JWT with audience goes through the functi
   testthat::expect_equal(sealr::jwt(req = test_req,
                                     res = test_res,
                                     secret = test_secret,
-                                    audience = "user"), TRUE)
+                                    claims = list(audience = "user")), TRUE)
 })
 
 testthat::test_that("test that a valid JWT with wrong audience generates 401.", {
@@ -70,7 +70,7 @@ testthat::test_that("test that a valid JWT with wrong audience generates 401.", 
   res <- sealr::jwt(req = test_req,
                     res = test_res,
                     secret = test_secret,
-                    audience = "user")
+                    claims = list(audience = "user"))
   testthat::expect_equal(res$status, "Failed.")
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
