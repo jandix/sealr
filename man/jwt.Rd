@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-jwt(req, res, secret, audience = NULL)
+jwt(req, res, secret, ...)
 }
 \arguments{
 \item{req}{Request object.}
@@ -14,7 +14,7 @@ jwt(req, res, secret, audience = NULL)
 \item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
 to raw bytes in the function.}
 
-\item{audience}{character. Check if user belongs to a certain audience.}
+\item{...}{claims to check in the JWT}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front
@@ -23,7 +23,7 @@ of the routes. The strategy uses extracts the token from the HTTP Authorization 
 \examples{
 \dontrun{
 pr$filter("sealr-jwt", function (req, res) {
-  sealr::jwt(req = req, res = res, secret = secret)
+  sealr::jwt(req = req, res = res, secret = secret, iss = "company A")
 })
 }
 
