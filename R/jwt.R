@@ -84,6 +84,7 @@ jwt <- function (req, res, secret, claims = NULL) {
 #' @param claims named list of claims to check in the JWT
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
 #' @importFrom purrr map2_lgl
+#' @export
 
 check_all_claims <- function(token, claims){
 
@@ -111,6 +112,7 @@ check_all_claims <- function(token, claims){
 #' @param token JWT extracted with jose::jwt_decode_hmac.
 #' @return TRUE if the claim is present in the JWT, FALSE if not. Returns FALSE
 #' for higher order nested claims.
+#' @export
 
 check_claim <- function(claim_name, claim_value, token){
 
