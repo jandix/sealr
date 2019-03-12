@@ -6,9 +6,14 @@ testthat::test_that("test that the function requires request object", {
                          regexp = "Please pass the request object.")
 })
 
-testthat::test_that("test that the function requires secret", {
+testthat::test_that("test that the function requires secret or public key", {
   testthat::expect_error(sealr::jwt(req = list()),
-                         regexp = "Please define a secret.")
+                         regexp = "either a secret or a public key.")
+})
+
+testthat::test_that("test that the function does not accept secret and public key", {
+  testthat::expect_error(sealr::jwt(req = list(), secret = "1223", pubkey = "key"),
+                         regexp = "either a secret or a public key, not both.")
 })
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
@@ -104,6 +109,57 @@ testthat::test_that("test that an invalid value for JWT generates 401.", {
   res <- sealr::jwt(req = test_req,
                     res = test_res,
                     secret = test_secret)
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
+})
+
+testthat::test_that("test that decoding with public key works.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_key <- openssl::rsa_keygen()
+  test_jwt <- jose::jwt_encode_sig(claim = jose::jwt_claim(userID = "Alice"),
+                                    key = test_key)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  testthat::expect_equal(sealr::jwt(req = test_req,
+                                    res = test_res,
+                                    pubkey = as.list(test_key)$pubkey), TRUE)
+})
+
+
+testthat::test_that("test that an invalid public key generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_key <- openssl::rsa_keygen()
+  test_jwt <- jose::jwt_encode_sig(claim = jose::jwt_claim(userID = "Alice"),
+                                   key = test_key)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  res <- sealr::jwt(req = test_req,
+                    res = test_res,
+                    pubkey = "thisisnotapublickey")
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
+})
+
+testthat::test_that("test that the wrong public key generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_key <- openssl::rsa_keygen()
+  test_wrong_key <- openssl::rsa_keygen()
+  test_jwt <- jose::jwt_encode_sig(claim = jose::jwt_claim(userID = "Alice"),
+                                   key = test_key)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  res <- sealr::jwt(req = test_req,
+                    res = test_res,
+                    pubkey = as.list(test_wrong_key)$pubkey)
   testthat::expect_equal(res$status, "Failed.")
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
