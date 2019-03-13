@@ -10,10 +10,10 @@ Imports:
     jose,
     plumber,
     stringr,
-    purrr
-Suggests:
-    testthat,
+    purrr, 
     openssl
+Suggests:
+    testthat
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
