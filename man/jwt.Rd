@@ -4,7 +4,7 @@
 \alias{jwt}
 \title{JWT Strategy}
 \usage{
-jwt(req, res, secret, claims = NULL)
+jwt(req, res, secret = NULL, pubkey = NULL, claims = NULL)
 }
 \arguments{
 \item{req}{Request object.}
@@ -12,9 +12,11 @@ jwt(req, res, secret, claims = NULL)
 \item{res}{Response object.}
 
 \item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
-to raw bytes in the function.}
+to raw bytes in the function. Default NULL. Either specify pubkey or secret.}
 
-\item{claims}{named list. Claims that should be checked in the JWT.}
+\item{pubkey}{public key. Default NULL. Either specify pubkey or secret.}
+
+\item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front
