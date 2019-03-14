@@ -90,9 +90,6 @@ check_all_claims <- function(token, claims){
 
   claim_values <- claims
   claim_names <- names(claims)
-  if ("" %in% claim_names){
-    return(FALSE)
-  }
 
   results <- purrr::map2_lgl(claim_names, claim_values, check_claim, token = token)
   return(all(results))
