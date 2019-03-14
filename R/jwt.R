@@ -7,7 +7,7 @@
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function.
-#' @param claims named list. Claims that should be checked in the JWT.
+#' @param claims named list. Claims that should be checked in the JWT. Claims can be nested lists themselves.
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac
@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "company A"))
+#'   sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "plumberapi", user = list(name = "Alice", id = "1234")))
 #' })
 #' }
 #'
@@ -78,10 +78,10 @@ jwt <- function (req, res, secret, claims = NULL) {
 
 
 #'
-#' This function checks that all claims passed by \code{...} to the jwt function
-#' are correct.
+#' This function checks that all claims passed in the \code{claims} argument of the jwt function are
+#' correct.
 #' @param token JWT extracted with jose::jwt_decode_hmac.
-#' @param claims named list of claims to check in the JWT
+#' @param claims named list of claims to check in the JWT. Claims can be nested.
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
 #' @importFrom purrr map2_lgl
 #' @export
