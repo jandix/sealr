@@ -14,13 +14,9 @@ jwt(req, res, secret = NULL, pubkey = NULL, claims = NULL)
 \item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
 to raw bytes in the function. Default NULL. Either specify pubkey or secret.}
 
-<<<<<<< HEAD
-\item{claims}{named list. Claims that should be checked in the JWT. Claims can be nested lists themselves.}
-=======
 \item{pubkey}{public key. Default NULL. Either specify pubkey or secret.}
 
-\item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
->>>>>>> master
+\item{claims}{named list. Claims that should be checked in the JWT. Claims can be nested. By default no claims are checked.}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front

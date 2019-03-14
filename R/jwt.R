@@ -8,7 +8,7 @@
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
 #' to raw bytes in the function. Default NULL. Either specify pubkey or secret.
 #' @param pubkey public key. Default NULL. Either specify pubkey or secret.
-#' @param claims named list. Claims that should be checked in the JWT. Default NULL.
+#' @param claims named list. Claims that should be checked in the JWT. Claims can be nested. By default no claims are checked.
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac jwt_decode_sig
 #' @importFrom plumber forward
