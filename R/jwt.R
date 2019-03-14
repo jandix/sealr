@@ -6,11 +6,11 @@
 #' @param req Request object.
 #' @param res Response object.
 #' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
-#' to raw bytes in the function.
-#' @param claims named list. Claims that should be checked in the JWT. Claims can be nested lists themselves.
-#'
+#' to raw bytes in the function. Default NULL. Either specify pubkey or secret.
+#' @param pubkey public key. Default NULL. Either specify pubkey or secret.
+#' @param claims named list. Claims that should be checked in the JWT. Default NULL.
 #' @importFrom stringr str_remove str_trim
-#' @importFrom jose jwt_decode_hmac
+#' @importFrom jose jwt_decode_hmac jwt_decode_sig
 #' @importFrom plumber forward
 #'
 #' @examples
@@ -23,29 +23,34 @@
 #' @export
 #'
 
-jwt <- function (req, res, secret, claims = NULL) {
+jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   # ensure that the user passed the request object
-  if (missing(req) == TRUE)
+  if (missing(req))
     stop("Please pass the request object.")
 
+  # ensure that the user passed the response object
+  if (missing(res) == TRUE)
+    stop("Please pass the response object.")
+
   # ensure that the user passed a secret
-  if (missing(secret) == TRUE)
-    stop("Please define a secret.")
+  if (is.null(secret) && is.null(pubkey))
+    stop("Please define either a secret or a public key.")
 
-  # ensure that the secret is not an empty string
-  if (nchar(secret) < 1)
-    warning("Your secret is empty. This is a possible security risk.")
+  if (!is.null(secret) && !is.null(pubkey))
+    stop("Please define either a secret or a public key, not both.")
 
-  # convert secret to bytes
-  secret <- charToRaw(secret)
+  if (!is.null(secret)){
+    if (nchar(secret) < 1)
+      warning("Your secret is empty. This is a possible security risk.")
+    # convert secret to bytes
+    secret <- charToRaw(secret)
+  }
 
   # check if request includes authorization header
   if (is.null(req$HTTP_AUTHORIZATION)) {
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # trim authorization token
@@ -53,23 +58,26 @@ jwt <- function (req, res, secret, claims = NULL) {
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
   # check if token is valid
-  token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
-                   error = function (e) NULL)
+  if (!is.null(pubkey)){
+    # public key is specified
+    token <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
+                      error = function (e) NULL)
+  } else {
+    # secret case
+    token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
+                      error = function (e) NULL)
+  }
 
   # if token not valid send error
   if (is.null(token)) {
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # check that claims are correct
   if (!check_all_claims(token, claims)){
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # redirect to routes
