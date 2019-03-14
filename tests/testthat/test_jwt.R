@@ -7,12 +7,12 @@ testthat::test_that("test that the function requires request object", {
 })
 
 testthat::test_that("test that the function requires secret or public key", {
-  testthat::expect_error(sealr::jwt(req = list()),
+  testthat::expect_error(sealr::jwt(res = list(), req = list()),
                          regexp = "either a secret or a public key.")
 })
 
 testthat::test_that("test that the function does not accept secret and public key", {
-  testthat::expect_error(sealr::jwt(req = list(), secret = "1223", pubkey = "key"),
+  testthat::expect_error(sealr::jwt(res = list(), req = list(), secret = "1223", pubkey = "key"),
                          regexp = "either a secret or a public key, not both.")
 })
 
