@@ -10,6 +10,10 @@ testthat::test_that("test that check_claim returns true on a simple atomic value
   testthat::expect_true(sealr::check_claim("aud", "hello", token))
 })
 
+testthat::test_that("test that check_claim returns true on a simple logical value", {
+  token <- list(admin = TRUE)
+  testthat::expect_true(sealr::check_claim("admin", TRUE, token))
+})
 
 testthat::test_that("test that check_claim returns false on a simple atomic value", {
   token <- list(aud = 12)
@@ -55,6 +59,13 @@ testthat::test_that("test that check_all_claims returns True with one correct cl
 testthat::test_that("test that check_all_claims returns True with two correct claims", {
   token <- list(aud = "hello", iss = "company")
   claims <- list(aud = "hello", iss = "company")
+
+  testthat::expect_true(sealr::check_all_claims(token, claims))
+})
+
+testthat::test_that("test that check_all_claims returns True with two correct claims incl. logical", {
+  token <- list(aud = "hello", admin = TRUE)
+  claims <- list(aud = "hello", admin = TRUE)
 
   testthat::expect_true(sealr::check_all_claims(token, claims))
 })
