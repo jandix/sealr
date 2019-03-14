@@ -2,13 +2,14 @@
 % Please edit documentation in R/jwt.R
 \name{check_claim}
 \alias{check_claim}
-\title{This function checks that a claim passed to the jwt function is correct.
+\title{This function checks that a claim passed to the jwt function is valid in the
+given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
-The function extracts the value for claim_name from the token and compares
-the retrieved value with the claimed value.
-Nested claims are supported up to one level, e.g. a claim value of
-\code{list(name = "Alice", role = "admin")} is valid.
-Nesting at a higher level is not implemented yet and will return FALSE.}
+Claim values can also be named lists themselves.
+The function recursively extracts the value for claim_name from the token.
+If the claim_value is atomic, it compares
+the retrieved value with the claimed value. Otherwise, it applies check_claim
+to claim_value recursively.}
 \usage{
 check_claim(claim_name, claim_value, token)
 }
@@ -20,15 +21,15 @@ check_claim(claim_name, claim_value, token)
 \item{token}{JWT extracted with jose::jwt_decode_hmac.}
 }
 \value{
-TRUE if the claim is present in the JWT, FALSE if not. Returns FALSE
-for higher order nested claims.
+TRUE if the claim is present in the JWT, FALSE if not.
 }
 \description{
-This function checks that a claim passed to the jwt function is correct.
+This function checks that a claim passed to the jwt function is valid in the
+given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
-The function extracts the value for claim_name from the token and compares
-the retrieved value with the claimed value.
-Nested claims are supported up to one level, e.g. a claim value of
-\code{list(name = "Alice", role = "admin")} is valid.
-Nesting at a higher level is not implemented yet and will return FALSE.
+Claim values can also be named lists themselves.
+The function recursively extracts the value for claim_name from the token.
+If the claim_value is atomic, it compares
+the retrieved value with the claimed value. Otherwise, it applies check_claim
+to claim_value recursively.
 }

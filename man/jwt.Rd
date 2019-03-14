@@ -16,7 +16,7 @@ to raw bytes in the function. Default NULL. Either specify pubkey or secret.}
 
 \item{pubkey}{public key. Default NULL. Either specify pubkey or secret.}
 
-\item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
+\item{claims}{named list. Claims that should be checked in the JWT. Claims can be nested. By default no claims are checked.}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front
@@ -25,7 +25,7 @@ of the routes. The strategy uses extracts the token from the HTTP Authorization 
 \examples{
 \dontrun{
 pr$filter("sealr-jwt", function (req, res) {
-  sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "company A"))
+  sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "plumberapi", user = list(name = "Alice", id = "1234")))
 })
 }
 

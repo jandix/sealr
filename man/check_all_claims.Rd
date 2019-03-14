@@ -2,20 +2,20 @@
 % Please edit documentation in R/jwt.R
 \name{check_all_claims}
 \alias{check_all_claims}
-\title{This function checks that all claims passed by \code{...} to the jwt function
-are correct.}
+\title{This function checks that all claims passed in the \code{claims} argument of the jwt function are
+correct.}
 \usage{
 check_all_claims(token, claims)
 }
 \arguments{
 \item{token}{JWT extracted with jose::jwt_decode_hmac.}
 
-\item{claims}{named list of claims to check in the JWT}
+\item{claims}{named list of claims to check in the JWT. Claims can be nested.}
 }
 \value{
 TRUE if the all claims are present in the JWT, FALSE if not.
 }
 \description{
-This function checks that all claims passed by \code{...} to the jwt function
-are correct.
+This function checks that all claims passed in the \code{claims} argument of the jwt function are
+correct.
 }
