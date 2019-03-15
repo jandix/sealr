@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "company A"))
+#'   sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "plumberapi", user = list(name = "Alice", id = "1234")))
 #' })
 #' }
 #'
@@ -86,10 +86,10 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
 
 #'
-#' This function checks that all claims passed by \code{...} to the jwt function
-#' are correct.
+#' This function checks that all claims passed in the \code{claims} argument of the jwt function are
+#' correct.
 #' @param token JWT extracted with jose::jwt_decode_hmac.
-#' @param claims named list of claims to check in the JWT
+#' @param claims named list of claims to check in the JWT. Claims can be nested.
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
 #' @importFrom purrr map2_lgl
 #' @export
@@ -98,9 +98,6 @@ check_all_claims <- function(token, claims){
 
   claim_values <- claims
   claim_names <- names(claims)
-  if ("" %in% claim_names){
-    return(FALSE)
-  }
 
   results <- purrr::map2_lgl(claim_names, claim_values, check_claim, token = token)
   return(all(results))
@@ -108,32 +105,45 @@ check_all_claims <- function(token, claims){
 
 
 #'
-#' This function checks that a claim passed to the jwt function is correct.
+#' This function checks that a claim passed to the jwt function is valid in the
+#' given JWT.
 #' A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
-#' The function extracts the value for claim_name from the token and compares
-#' the retrieved value with the claimed value.
-#' Nested claims are supported up to one level, e.g. a claim value of
-#' \code{list(name = "Alice", role = "admin")} is valid.
-#' Nesting at a higher level is not implemented yet and will return FALSE.
+#' Claim values can also be named lists themselves.
+#' The function recursively extracts the value for claim_name from the token.
+#' If the claim_value is atomic, it compares
+#' the retrieved value with the claimed value. Otherwise, it applies check_claim
+#' to claim_value recursively.
 #' @param claim_name name of the claim in the JWT, e.g. "iss".
 #' @param claim_value value the claim should have to pass the test.
 #' @param token JWT extracted with jose::jwt_decode_hmac.
-#' @return TRUE if the claim is present in the JWT, FALSE if not. Returns FALSE
-#' for higher order nested claims.
+#' @return TRUE if the claim is present in the JWT, FALSE if not.
+#' @importFrom purrr vec_depth map2_lgl
 #' @export
 
 check_claim <- function(claim_name, claim_value, token){
 
-  token_claim_value <- tryCatch(token[[claim_name]], error = function (e) return(FALSE))
+  # recursion at end, claim_value is just atomic (e.g. "Alice")
+  if(purrr::vec_depth(claim_value) == 1){
 
-  if (is.list(token_claim_value) && is.list(claim_value)){
-    # check that names of list are the same
-    if (!setequal(names(token_claim_value), names(claim_value))){
+    token_claim_value <- token[[claim_name]]
+    # claim does not exist in token
+    if (is.null(token_claim_value)) {
       return(FALSE)
     }
 
-    return(identical(token_claim_value[names(claim_value)], claim_value))
-  }
+    # compare token value with expected value
+    return(identical(token_claim_value, claim_value))
 
-  return(identical(token_claim_value, claim_value))
+  } else {
+    # claim_value is a list --> recurse
+    # cannot subset token because claim_name does not exist in token
+    # -> wrong claim_value
+    if (!claim_name %in% names(token)){
+      return(FALSE)
+    }
+    # recursively apply to all elements of claim_value
+    return(all(c(purrr::map2_lgl(names(claim_value), claim_value, check_claim,
+                                 token = token[[claim_name]]))))
+  }
 }
+
