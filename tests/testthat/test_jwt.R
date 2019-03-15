@@ -164,3 +164,23 @@ testthat::test_that("test that the wrong public key generates 401.", {
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
 })
+
+testthat::test_that("test that an expired JWT generates 401.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice",
+                                                            exp = as.numeric(Sys.time() - 1000)),
+                                    secret = test_secret)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  # plumber::forward at end of jwt() invisibly returns TRUE
+  res <- sealr::jwt(req = test_req,
+                    res = test_res,
+                    secret = test_secret)
+
+  testthat::expect_equal(res$status, "Failed.")
+  testthat::expect_equal(res$code, 401)
+  testthat::expect_equal(res$message, "Authentication required.")
+
+})

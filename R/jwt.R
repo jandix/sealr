@@ -57,25 +57,31 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
   req$HTTP_AUTHORIZATION <- stringr::str_remove(req$HTTP_AUTHORIZATION, "Bearer\\s")
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
-  # check if token is valid
+  # decode the token and check whether it is valid
   if (!is.null(pubkey)){
     # public key is specified -> RSA or EDSCA was used
-    token <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
+    payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
                       error = function (e) NULL)
   } else {
     # secret is specified -> HMAC was used
-    token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
+    payload <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
                       error = function (e) NULL)
   }
 
-  # if token not valid send error
-  if (is.null(token)) {
+  # if token could not be decoded, send error
+  if (is.null(payload)) {
+    res$status <- 401
+    return(auth_required_response())
+  }
+
+  # check that token is not expired
+  if (is_jwt_expired(payload)){
     res$status <- 401
     return(auth_required_response())
   }
 
   # check that claims are correct
-  if (!check_all_claims(token, claims)){
+  if (!check_all_claims(payload, claims)){
     res$status <- 401
     return(auth_required_response())
   }
@@ -88,18 +94,18 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 #'
 #' This function checks that all claims passed in the \code{claims} argument of the jwt function are
 #' correct.
-#' @param token JWT extracted with jose::jwt_decode_hmac.
+#' @param payload JWT payload extracted with jose::jwt_decode_hmac.
 #' @param claims named list of claims to check in the JWT. Claims can be nested.
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
 #' @importFrom purrr map2_lgl
 #' @export
 
-check_all_claims <- function(token, claims){
+check_all_claims <- function(payload, claims){
 
   claim_values <- claims
   claim_names <- names(claims)
 
-  results <- purrr::map2_lgl(claim_names, claim_values, check_claim, token = token)
+  results <- purrr::map2_lgl(claim_names, claim_values, check_claim, payload = payload)
   return(all(results))
 }
 
@@ -109,41 +115,53 @@ check_all_claims <- function(token, claims){
 #' given JWT.
 #' A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 #' Claim values can also be named lists themselves.
-#' The function recursively extracts the value for claim_name from the token.
+#' The function recursively extracts the value for claim_name from the payload.
 #' If the claim_value is atomic, it compares
 #' the retrieved value with the claimed value. Otherwise, it applies check_claim
 #' to claim_value recursively.
 #' @param claim_name name of the claim in the JWT, e.g. "iss".
 #' @param claim_value value the claim should have to pass the test.
-#' @param token JWT extracted with jose::jwt_decode_hmac.
+#' @param payload JWT payload extracted with jose::jwt_decode_hmac.
 #' @return TRUE if the claim is present in the JWT, FALSE if not.
 #' @importFrom purrr vec_depth map2_lgl
 #' @export
 
-check_claim <- function(claim_name, claim_value, token){
+check_claim <- function(claim_name, claim_value, payload){
 
   # recursion at end, claim_value is just atomic (e.g. "Alice")
   if(purrr::vec_depth(claim_value) == 1){
 
-    token_claim_value <- token[[claim_name]]
-    # claim does not exist in token
-    if (is.null(token_claim_value)) {
+    payload_claim_value <- payload[[claim_name]]
+    # claim does not exist in payload
+    if (is.null(payload_claim_value)) {
       return(FALSE)
     }
 
-    # compare token value with expected value
-    return(identical(token_claim_value, claim_value))
+    # compare payload value with expected value
+    return(identical(payload_claim_value, claim_value))
 
   } else {
     # claim_value is a list --> recurse
-    # cannot subset token because claim_name does not exist in token
+    # cannot subset payload because claim_name does not exist in payload
     # -> wrong claim_value
-    if (!claim_name %in% names(token)){
+    if (!claim_name %in% names(payload)){
       return(FALSE)
     }
     # recursively apply to all elements of claim_value
     return(all(c(purrr::map2_lgl(names(claim_value), claim_value, check_claim,
-                                 token = token[[claim_name]]))))
+                                 payload = payload[[claim_name]]))))
   }
 }
 
+#' This function checks whether a JWT is expired.
+#' @param payload  list. Payload of JWT.
+#' @return TRUE if JWT is expired, FALSE if not
+#' (either current time < expiration time or no exp claim in JWT).
+is_jwt_expired <- function(payload){
+  if (! "exp" %in% names(payload)){
+    # no exp claim there
+    return(FALSE)
+  }
+
+  return(as.numeric(Sys.time()) > payload$exp)
+}

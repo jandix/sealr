@@ -6,19 +6,19 @@
 given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 Claim values can also be named lists themselves.
-The function recursively extracts the value for claim_name from the token.
+The function recursively extracts the value for claim_name from the payload.
 If the claim_value is atomic, it compares
 the retrieved value with the claimed value. Otherwise, it applies check_claim
 to claim_value recursively.}
 \usage{
-check_claim(claim_name, claim_value, token)
+check_claim(claim_name, claim_value, payload)
 }
 \arguments{
 \item{claim_name}{name of the claim in the JWT, e.g. "iss".}
 
 \item{claim_value}{value the claim should have to pass the test.}
 
-\item{token}{JWT extracted with jose::jwt_decode_hmac.}
+\item{payload}{JWT payload extracted with jose::jwt_decode_hmac.}
 }
 \value{
 TRUE if the claim is present in the JWT, FALSE if not.
@@ -28,7 +28,7 @@ This function checks that a claim passed to the jwt function is valid in the
 given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 Claim values can also be named lists themselves.
-The function recursively extracts the value for claim_name from the token.
+The function recursively extracts the value for claim_name from the payload.
 If the claim_value is atomic, it compares
 the retrieved value with the claimed value. Otherwise, it applies check_claim
 to claim_value recursively.

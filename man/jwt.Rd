@@ -16,7 +16,7 @@ to raw bytes in the function. Default NULL.}
 
 \item{pubkey}{character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.}
 
-\item{claims}{named list. Claims that should be checked in the JWT. Claims can be nested. By default no claims are checked.}
+\item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
 }
 \description{
 This function implements a JWT authentication strategy. The function can be used as a filter in front

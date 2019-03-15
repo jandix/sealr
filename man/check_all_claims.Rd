@@ -5,10 +5,10 @@
 \title{This function checks that all claims passed in the \code{claims} argument of the jwt function are
 correct.}
 \usage{
-check_all_claims(token, claims)
+check_all_claims(payload, claims)
 }
 \arguments{
-\item{token}{JWT extracted with jose::jwt_decode_hmac.}
+\item{payload}{JWT payload extracted with jose::jwt_decode_hmac.}
 
 \item{claims}{named list of claims to check in the JWT. Claims can be nested.}
 }
