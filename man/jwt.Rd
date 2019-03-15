@@ -25,7 +25,9 @@ of the routes. The strategy uses extracts the token from the HTTP Authorization 
 \examples{
 \dontrun{
 pr$filter("sealr-jwt", function (req, res) {
-  sealr::jwt(req = req, res = res, secret = secret, claims = list(iss = "plumberapi", user = list(name = "Alice", id = "1234")))
+  sealr::jwt(req = req, res = res, secret = secret,
+             claims = list(iss = "plumberapi",
+                           user = list(name = "Alice", id = "1234")))
 })
 }
 
