@@ -5,75 +5,165 @@
 #'
 #' @param req Request object.
 #' @param res Response object.
-#' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
-#' to raw bytes in the function.
-#' @param audience character. Check if user belongs to a certain audience.
-#'
+#' @param secret character. The secret that was used to sign your JWT. The secret is converted
+#' to raw bytes in the function. Default NULL.
+#' @param pubkey character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.
+#' @param claims named list. Claims that should be checked in the JWT. Default NULL.
 #' @importFrom stringr str_remove str_trim
-#' @importFrom jose jwt_decode_hmac
+#' @importFrom jose jwt_decode_hmac jwt_decode_sig
 #' @importFrom plumber forward
 #'
 #' @examples
 #' \dontrun{
 #' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret)
+#'   sealr::jwt(req = req, res = res, secret = secret,
+#'              claims = list(iss = "plumberapi",
+#'                            user = list(name = "Alice", id = "1234")))
 #' })
 #' }
 #'
 #' @export
 #'
 
-jwt <- function (req, res, secret, audience = NULL) {
+jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   # ensure that the user passed the request object
-  if (missing(req) == TRUE)
+  if (missing(req))
     stop("Please pass the request object.")
 
+  # ensure that the user passed the response object
+  if (missing(res) == TRUE)
+    stop("Please pass the response object.")
+
   # ensure that the user passed a secret
-  if (missing(secret) == TRUE)
-    stop("Please define a secret.")
+  if (is.null(secret) && is.null(pubkey))
+    stop("Please define either a secret or a public key.")
 
-  # ensure that the secret is not an empty string
-  if (nchar(secret) < 1)
-    warning("Your secret is empty. This is a possible security risk.")
+  if (!is.null(secret) && !is.null(pubkey))
+    stop("Please define either a secret or a public key, not both.")
 
-  # convert secret to bytes
-  secret <- charToRaw(secret)
+  if (!is.null(secret)){
+    if (nchar(secret) < 1)
+      warning("Your secret is empty. This is a possible security risk.")
+    # convert secret to bytes
+    secret <- charToRaw(secret)
+  }
 
   # check if request includes authorization header
   if (is.null(req$HTTP_AUTHORIZATION)) {
     res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(auth_required_response())
   }
 
   # trim authorization token
   req$HTTP_AUTHORIZATION <- stringr::str_remove(req$HTTP_AUTHORIZATION, "Bearer\\s")
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
-  # check if token is valid
-  token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
-                   error = function (e) NULL)
-
-  # if token not valid send error
-  if (is.null(token)) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+  # decode the token and check whether it is valid
+  if (!is.null(pubkey)){
+    # public key is specified -> RSA or EDSCA was used
+    payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
+                      error = function (e) NULL)
+  } else {
+    # secret is specified -> HMAC was used
+    payload <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
+                      error = function (e) NULL)
   }
 
-  # check if audience correct
-  if (!is.null(audience)) {
-    if (audience != token$aud) {
-      res$status <- 401
-      return(list(status="Failed.",
-                  code=401,
-                  message="Authentication required."))
-    }
+  # if token could not be decoded, send error
+  if (is.null(payload)) {
+    res$status <- 401
+    return(auth_required_response())
+  }
+
+  # check that token is not expired
+  if (is_jwt_expired(payload)){
+    res$status <- 401
+    return(auth_required_response())
+  }
+
+  # check that claims are correct
+  if (!check_all_claims(payload, claims)){
+    res$status <- 401
+    return(auth_required_response())
   }
 
   # redirect to routes
   plumber::forward()
+}
+
+
+#'
+#' This function checks that all claims passed in the \code{claims} argument of the jwt function are
+#' correct.
+#' @param payload JWT payload extracted with jose::jwt_decode_hmac.
+#' @param claims named list of claims to check in the JWT. Claims can be nested.
+#' @return TRUE if the all claims are present in the JWT, FALSE if not.
+#' @importFrom purrr map2_lgl
+#' @export
+
+check_all_claims <- function(payload, claims){
+
+  claim_values <- claims
+  claim_names <- names(claims)
+
+  results <- purrr::map2_lgl(claim_names, claim_values, check_claim, payload = payload)
+  return(all(results))
+}
+
+
+#'
+#' This function checks that a claim passed to the jwt function is valid in the
+#' given JWT.
+#' A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
+#' Claim values can also be named lists themselves.
+#' The function recursively extracts the value for claim_name from the payload.
+#' If the claim_value is atomic, it compares
+#' the retrieved value with the claimed value. Otherwise, it applies check_claim
+#' to claim_value recursively.
+#' @param claim_name name of the claim in the JWT, e.g. "iss".
+#' @param claim_value value the claim should have to pass the test.
+#' @param payload JWT payload extracted with jose::jwt_decode_hmac.
+#' @return TRUE if the claim is present in the JWT, FALSE if not.
+#' @importFrom purrr vec_depth map2_lgl
+#' @export
+
+check_claim <- function(claim_name, claim_value, payload){
+
+  # recursion at end, claim_value is just atomic (e.g. "Alice")
+  if(purrr::vec_depth(claim_value) == 1){
+
+    payload_claim_value <- payload[[claim_name]]
+    # claim does not exist in payload
+    if (is.null(payload_claim_value)) {
+      return(FALSE)
+    }
+
+    # compare payload value with expected value
+    return(identical(payload_claim_value, claim_value))
+
+  } else {
+    # claim_value is a list --> recurse
+    # cannot subset payload because claim_name does not exist in payload
+    # -> wrong claim_value
+    if (!claim_name %in% names(payload)){
+      return(FALSE)
+    }
+    # recursively apply to all elements of claim_value
+    return(all(c(purrr::map2_lgl(names(claim_value), claim_value, check_claim,
+                                 payload = payload[[claim_name]]))))
+  }
+}
+
+#' This function checks whether a JWT is expired.
+#' @param payload  list. Payload of JWT.
+#' @return TRUE if JWT is expired, FALSE if not
+#' (either current time < expiration time or no exp claim in JWT).
+is_jwt_expired <- function(payload){
+  if (! "exp" %in% names(payload)){
+    # no exp claim there
+    return(FALSE)
+  }
+
+  return(as.numeric(Sys.time()) > payload$exp)
 }
