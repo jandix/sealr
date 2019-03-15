@@ -10,7 +10,7 @@
 #' @param jwks_uri character.
 #'
 #' @importFrom stringr str_remove str_trim
-#' @importFrom jose jwt_split jwt_decode_sig
+#' @importFrom jose jwt_decode_sig
 #' @importFrom anytime anytime
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
@@ -61,7 +61,7 @@ oauth2_google <- function (req,
   req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
 
   # parse google's jwt
-  jwt <- tryCatch(jose::jwt_split(req$HTTP_AUTHORIZATION),
+  jwt <- tryCatch(jwt_split(req$HTTP_AUTHORIZATION),
                   error = function (e) NULL)
 
   # if jwt not valid send error
