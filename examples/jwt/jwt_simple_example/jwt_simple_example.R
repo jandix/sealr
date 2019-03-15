@@ -74,14 +74,14 @@ pr$handle("POST", "/authentication", function (req, res, user = NULL, password =
 
 # define test route without authentication  (exclude "sealr-jwt" filter using preempt)
 pr$handle("GET", "/", function (req, res) {
-  return(iris[1:100, ])
+  return("Access to route without authentication was successful.")
 }, preempt = c("sealr-jwt"))
 
 
 
 # define test route with authentication
 pr$handle("GET", "/secret", function (req, res) {
-  return(iris[101:150, ])
+  return("Access to route requiring authentication was successful.")
 })
 
 # start API server
