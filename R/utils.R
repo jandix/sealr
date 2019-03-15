@@ -9,8 +9,11 @@ auth_required_response <- function(){
   return(http_response_list("Failed.", 401, "Authentication required."))
 }
 
-# adapted from https://github.com/jeroen/jose/blob/master/R/jwt.R until the function is exported in
-# CRAN version (version on github already exports this function)
+#' adapted from https://github.com/jeroen/jose/blob/master/R/jwt.R until the function is exported in
+#' CRAN version (version on github already exports this function)
+#' @param jwt raw. JWT.
+#' @importFrom jsonlite fromJSON
+#' @importFrom jose base64url_decode
 jwt_split <- function(jwt){
   input <- strsplit(jwt, ".", fixed = TRUE)[[1]]
   stopifnot(length(input) %in% c(2,3))
