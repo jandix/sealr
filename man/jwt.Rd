@@ -11,10 +11,10 @@ jwt(req, res, secret = NULL, pubkey = NULL, claims = NULL)
 
 \item{res}{Response object.}
 
-\item{secret}{character. This should be the secret that use to sign your JWT. The secret is converted
-to raw bytes in the function. Default NULL. Either specify pubkey or secret.}
+\item{secret}{character. The secret that was used to sign your JWT. The secret is converted
+to raw bytes in the function. Default NULL.}
 
-\item{pubkey}{public key. Default NULL. Either specify pubkey or secret.}
+\item{pubkey}{character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.}
 
 \item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
 }

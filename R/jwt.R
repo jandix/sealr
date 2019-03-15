@@ -5,9 +5,9 @@
 #'
 #' @param req Request object.
 #' @param res Response object.
-#' @param secret character. This should be the secret that use to sign your JWT. The secret is converted
-#' to raw bytes in the function. Default NULL. Either specify pubkey or secret.
-#' @param pubkey public key. Default NULL. Either specify pubkey or secret.
+#' @param secret character. The secret that was used to sign your JWT. The secret is converted
+#' to raw bytes in the function. Default NULL.
+#' @param pubkey character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.
 #' @param claims named list. Claims that should be checked in the JWT. Default NULL.
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac jwt_decode_sig
@@ -59,11 +59,11 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   # check if token is valid
   if (!is.null(pubkey)){
-    # public key is specified
+    # public key is specified -> RSA or EDSCA was used
     token <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
                       error = function (e) NULL)
   } else {
-    # secret case
+    # secret is specified -> HMAC was used
     token <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
                       error = function (e) NULL)
   }
