@@ -7,7 +7,10 @@ Authors@R: c(person("Dix", "Jan", email = "jan.dix@uni-konstanz.de", role = c("a
 Maintainer: Jan Dix <jan.dix@uni-konstanz.de>
 Description: The goal of sealr is to provide multiple authentication and authorization strategies for plumber.
 Imports:
+    anytime,
+    httr,
     jose,
+    jsonlite,
     plumber,
     stringr,
     purrr
