@@ -3,17 +3,17 @@ testthat::context("Test OAuth2 Google Strategy")
 # TEST MISSING INPUTS ------------------------------------------------------------------------------------
 
 testthat::test_that("test that the function requires request object", {
-  testthat::expect_error(sealr::oauth2_google(res = list(), client_id = "xxx"),
+  testthat::expect_error(sealr::is_authed_oauth2_google(res = list(), client_id = "xxx"),
                          regexp = "Please pass the request object.")
 })
 
 testthat::test_that("test that the function response response object", {
-  testthat::expect_error(sealr::oauth2_google(req = list(), client_id = "xxx"),
+  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), client_id = "xxx"),
                          regexp = "Please pass the response object.")
 })
 
 testthat::test_that("test that the function requires client_id", {
-  testthat::expect_error(sealr::oauth2_google(req = list(), res = list()),
+  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list()),
                          regexp = "Please pass the Google client id.")
 })
 
@@ -25,12 +25,10 @@ testthat::test_that("test that the function requires HTTP_AUTHORIZATION header",
   test_res <- list()
   client_id <- "xxx"
 
-  res <- sealr::oauth2_google(req = test_req,
-                              res = test_res,
-                              client_id = test_client_id)
-  testthat::expect_equal(res$status, "Failed.")
-  testthat::expect_equal(res$code, 401)
-  testthat::expect_equal(res$message, "Authentication required.")
+  res <- sealr::is_authed_oauth2_google(req = test_req,
+                                        res = test_res,
+                                        client_id = test_client_id)
+  testthat::expect_false(res$is_authed)
 })
 
 testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION", {
@@ -39,12 +37,10 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION", 
   test_res <- list()
   client_id <- "xxx"
 
-  res <- sealr::oauth2_google(req = test_req,
-                              res = test_res,
-                              client_id = test_client_id)
-  testthat::expect_equal(res$status, "Failed.")
-  testthat::expect_equal(res$code, 401)
-  testthat::expect_equal(res$message, "Authentication required.")
+  res <- sealr::is_authed_oauth2_google(req = test_req,
+                                        res = test_res,
+                                        client_id = test_client_id)
+  testthat::expect_false(res$is_authed)
 })
 
 testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION that matches google key", {
@@ -58,10 +54,8 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION th
   test_res <- list()
   client_id <- "xxx"
 
-  res <- sealr::oauth2_google(req = test_req,
-                              res = test_res,
-                              client_id = test_client_id)
-  testthat::expect_equal(res$status, "Failed.")
-  testthat::expect_equal(res$code, 401)
-  testthat::expect_equal(res$message, "Authentication required.")
+  res <- sealr::is_authed_oauth2_google(req = test_req,
+                                        res = test_res,
+                                        client_id = test_client_id)
+  testthat::expect_false(res$is_authed)
 })

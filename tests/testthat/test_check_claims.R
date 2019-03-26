@@ -1,4 +1,4 @@
-context("check claims function")
+context("Test check claims function")
 
 TEST_TOKEN <- list(iss = "plu",
                    user = list(
