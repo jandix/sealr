@@ -5,11 +5,12 @@
 #' @param req plumber request object
 #' @param res plumber response object
 #' @param ... arguments to be passed down to the is_authed_ function.
+#' @importFrom plumber forward
 #' @export
 authenticate <- function(strategy, req, res, ...){
 
   function_map <- list(jwt = sealr::is_authed_jwt,
-                       google = sealr::is_authed_google_oauth2)
+                       google = sealr::is_authed_oauth2_google)
 
   strategies <- names(function_map)
 
