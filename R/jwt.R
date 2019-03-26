@@ -41,7 +41,7 @@ is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NUL
 
   # check if request includes authorization header
   if (is.null(req$HTTP_AUTHORIZATION)) {
-    return(FALSE)
+    return(is_authed_return_list_401())
   }
 
   # trim authorization token
@@ -61,10 +61,10 @@ is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NUL
 
   # return FALSE if token could not be decoded, if it is expired or if checked claims are not valid
   if (is.null(payload) || is_jwt_expired(payload) || !check_all_claims(payload, claims)) {
-    return(FALSE)
+    return(is_authed_return_list_401())
   }
 
-  return(TRUE)
+  return(is_authed_return_list(TRUE))
 }
 
 

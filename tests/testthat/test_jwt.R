@@ -17,9 +17,10 @@ testthat::test_that("test that the function does not accept secret and public ke
 })
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
-  testthat::expect_false(sealr::is_authed_jwt(req = list(),
-                    res = list(),
-                    secret = "YAMYAMYAM"))
+  res <- sealr::is_authed_jwt(req = list(),
+                              res = list(),
+                              secret = "YAMYAMYAM")
+  testthat::expect_false(res$is_authed)
 })
 
 testthat::test_that("test the function throws error if the secret is empty", {
@@ -36,9 +37,10 @@ testthat::test_that("test that a valid JWT goes through the function.", {
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_true(sealr::is_authed_jwt(req = test_req,
-                                    res = test_res,
-                                    secret = test_secret))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret)
+  testthat::expect_true(res$is_authed)
 })
 
 testthat::test_that("test that a valid JWT with audience goes through the function.", {
@@ -50,10 +52,12 @@ testthat::test_that("test that a valid JWT with audience goes through the functi
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_true(sealr::is_authed_jwt(req = test_req,
-                                    res = test_res,
-                                    secret = test_secret,
-                                    claims = list(audience = "user")))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret,
+                              claims = list(audience = "user"))
+
+  testthat::expect_true(res$is_authed)
 })
 
 testthat::test_that("test that a valid JWT with wrong audience returns FALSE.", {
@@ -65,10 +69,13 @@ testthat::test_that("test that a valid JWT with wrong audience returns FALSE.", 
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    secret = test_secret,
-                    claims = list(audience = "user")))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret,
+                              claims = list(audience = "user"))
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that an invalid JWT returns FALSE.", {
@@ -80,9 +87,12 @@ testthat::test_that("test that an invalid JWT returns FALSE.", {
   test_res <- list()
   test_secret <- "BRUMMBRUMM"
 
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    secret = test_secret))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that an invalid value for JWT returns FALSE.", {
@@ -91,9 +101,12 @@ testthat::test_that("test that an invalid value for JWT returns FALSE.", {
   test_req <- list(HTTP_AUTHORIZATION = "somethingnotjwttokenlike")
   test_res <- list()
 
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    secret = test_secret))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that decoding with public key works.", {
@@ -105,9 +118,11 @@ testthat::test_that("test that decoding with public key works.", {
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_true(sealr::is_authed_jwt(req = test_req,
-                                    res = test_res,
-                                    pubkey = as.list(test_key)$pubkey))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              pubkey = as.list(test_key)$pubkey)
+  testthat::expect_true(res$is_authed)
+
 })
 
 
@@ -119,9 +134,13 @@ testthat::test_that("test that an invalid public key generates 401.", {
                                    key = test_key)
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    pubkey = "thisisnotapublickey"))
+
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              pubkey = "thisisnotapublickey")
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that the wrong public key returns FALSE.", {
@@ -134,9 +153,12 @@ testthat::test_that("test that the wrong public key returns FALSE.", {
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    pubkey = as.list(test_wrong_key)$pubkey))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              pubkey = as.list(test_wrong_key)$pubkey)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that an expired JWT returns FALSE.", {
@@ -148,9 +170,12 @@ testthat::test_that("test that an expired JWT returns FALSE.", {
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_false(sealr::is_authed_jwt(req = test_req,
-                    res = test_res,
-                    secret = test_secret))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+
 })
 
 testthat::test_that("test that an unexpired JWT goes through.", {
@@ -162,8 +187,9 @@ testthat::test_that("test that an unexpired JWT goes through.", {
   test_req <- list(HTTP_AUTHORIZATION = test_jwt)
   test_res <- list()
 
-  testthat::expect_true(sealr::is_authed_jwt(req = test_req,
-                                   res = test_res,
-                                   secret = test_secret))
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              secret = test_secret)
+  testthat::expect_true(res$is_authed)
 
 })

@@ -48,7 +48,7 @@ is_authed_oauth2_google <- function (req,
 
   # ensure that the request includes HTTP_AUTHORIZATION header
   if (!("HTTP_AUTHORIZATION" %in% names(req))) {
-    return(FALSE)
+    return(is_authed_return_list_401())
   }
 
   ## parse token -----------------------------------------------------------------------------------------
@@ -62,16 +62,21 @@ is_authed_oauth2_google <- function (req,
                   error = function (e) NULL)
 
   # if jwt not valid send error
-  if (is.null(jwt)) return(FALSE)
-
+  if (is.null(jwt)) {
+    return(is_authed_return_list_401())
+  }
   ## check signature -------------------------------------------------------------------------------------
 
   # ensure that the jwt header includes kid
-  if (!("kid" %in% names(jwt$header$kid))) return(FALSE)
+  if (!("kid" %in% names(jwt$header$kid))) {
+    return(is_authed_return_list_401())
+  }
 
   # download public key file
   response <- httr::GET(jwks_uri)
-  if (httr::http_error(response)) return(FALSE)
+  if (httr::http_error(response)) {
+    return(is_authed_return_list_401())
+  }
 
   jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
 
@@ -85,10 +90,8 @@ is_authed_oauth2_google <- function (req,
   }
 
   if (!index) {
-    res$status <- 500
-    return(list(status="Failed.",
-                code=500,
-                message="Authentication Error. Hint: jwks_uri"))
+    return(is_authed_return_list(FALSE, "Failed", 500,
+                                 "Authentication Error. Hint: jwks_uri"))
   }
 
   # parse public key
@@ -99,7 +102,9 @@ is_authed_oauth2_google <- function (req,
                       error = function (e) NULL)
 
   # if token not valid send error
-  if (is.null(payload)) return(FALSE)
+  if (is.null(payload)) {
+    return(is_authed_return_list_401())
+  }
 
   # append jwt payload to request
   req$jwt_payload <- payload
@@ -108,19 +113,25 @@ is_authed_oauth2_google <- function (req,
 
   # check if iss is correct
   if (!stringr::str_detect(payload$iss, "https://accounts.google.com||accounts.google.com")) {
-    return(FALSE)
+    return(is_authed_return_list_401())
   }
 
   # check if client id matches
-  if (payload$aud != client_id) return(FALSE)
+  if (payload$aud != client_id) {
+    return(is_authed_return_list_401())
+  }
 
   # check if token expired
-  if (is_jwt_expired(payload)) return(FALSE)
+  if (is_jwt_expired(payload)) {
+    return(is_authed_return_list_401())
+  }
 
   # check if hd is valid
   if (!is.null(hd)) {
-    if (payload$hd != hd) return(FALSE)
+    if (payload$hd != hd) {
+      return(is_authed_return_list_401())
+    }
   }
 
-  return(TRUE)
+  return(is_authed_return_list(TRUE))
 }
