@@ -69,3 +69,18 @@ testthat::test_that("test that function returns TRUE if is_authed_jwt is TRUE", 
   testthat::expect_true(sealr::authenticate(req = test_req, res = test_res,
                              is_authed_fun = sealr::is_authed_jwt, secret = test_secret))
 })
+
+testthat::test_that("test that function returns TRUE if custom function is TRUE", {
+  # plumber::forward() invisibly returns true
+
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list(HTTP_AUTHORIZATION = test_jwt)
+  test_res <- list()
+
+  is_authed_custom <- function(req, res, x) return(list(is_authed = x > 4))
+  testthat::expect_true(sealr::authenticate(req = test_req, res = test_res,
+                                            is_authed_fun = is_authed_custom, x = 5))
+})
