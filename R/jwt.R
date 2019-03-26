@@ -9,23 +9,13 @@
 #' to raw bytes in the function. Default NULL.
 #' @param pubkey character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.
 #' @param claims named list. Claims that should be checked in the JWT. Default NULL.
+#' @return TRUE if the JWT is valid, FALSE if not.
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac jwt_decode_sig
-#' @importFrom plumber forward
-#'
-#' @examples
-#' \dontrun{
-#' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::jwt(req = req, res = res, secret = secret,
-#'              claims = list(iss = "plumberapi",
-#'                            user = list(name = "Alice", id = "1234")))
-#' })
-#' }
-#'
 #' @export
 #'
 
-jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
+is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   # ensure that the user passed the request object
   if (missing(req))
@@ -44,15 +34,14 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   if (!is.null(secret)){
     if (nchar(secret) < 1)
-      warning("Your secret is empty. This is a possible security risk.")
+      stop("Your secret is empty. This is a possible security risk.")
     # convert secret to bytes
     secret <- charToRaw(secret)
   }
 
   # check if request includes authorization header
   if (is.null(req$HTTP_AUTHORIZATION)) {
-    res$status <- 401
-    return(auth_required_response())
+    return(FALSE)
   }
 
   # trim authorization token
@@ -70,26 +59,12 @@ jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
                       error = function (e) NULL)
   }
 
-  # if token could not be decoded, send error
-  if (is.null(payload)) {
-    res$status <- 401
-    return(auth_required_response())
+  # return FALSE if token could not be decoded, if it is expired or if checked claims are not valid
+  if (is.null(payload) || is_jwt_expired(payload) || !check_all_claims(payload, claims)) {
+    return(FALSE)
   }
 
-  # check that token is not expired
-  if (is_jwt_expired(payload)){
-    res$status <- 401
-    return(auth_required_response())
-  }
-
-  # check that claims are correct
-  if (!check_all_claims(payload, claims)){
-    res$status <- 401
-    return(auth_required_response())
-  }
-
-  # redirect to routes
-  plumber::forward()
+  return(TRUE)
 }
 
 

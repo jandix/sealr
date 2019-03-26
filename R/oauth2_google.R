@@ -26,7 +26,7 @@
 #' @export
 #'
 
-oauth2_google <- function (req,
+is_authed_oauth2_google <- function (req,
                            res,
                            client_id,
                            hd = NULL,
@@ -48,10 +48,7 @@ oauth2_google <- function (req,
 
   # ensure that the request includes HTTP_AUTHORIZATION header
   if (!("HTTP_AUTHORIZATION" %in% names(req))) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(FALSE)
   }
 
   ## parse token -----------------------------------------------------------------------------------------
@@ -65,31 +62,17 @@ oauth2_google <- function (req,
                   error = function (e) NULL)
 
   # if jwt not valid send error
-  if (is.null(jwt)) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
+  if (is.null(jwt)) return(FALSE)
 
   ## check signature -------------------------------------------------------------------------------------
 
   # ensure that the jwt header includes kid
-  if (!("kid" %in% names(jwt$header$kid))) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
+  if (!("kid" %in% names(jwt$header$kid))) return(FALSE)
 
   # download public key file
   response <- httr::GET(jwks_uri)
-  if (httr::http_error(response)) {
-    res$status <- 500
-    return(list(status="Failed.",
-                code=500,
-                message="Authentication Error. Hint: jwks_uri"))
-  }
+  if (httr::http_error(response)) return(FALSE)
+
   jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
 
   # match kid
@@ -116,52 +99,28 @@ oauth2_google <- function (req,
                       error = function (e) NULL)
 
   # if token not valid send error
-  if (is.null(payload)) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
+  if (is.null(payload)) return(FALSE)
 
   # append jwt payload to request
   req$jwt_payload <- payload
 
   ## check jwt payload------------------------------------------------------------------------------------
 
-  # check if iis is correct
+  # check if iss is correct
   if (!stringr::str_detect(payload$iss, "https://accounts.google.com||accounts.google.com")) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
+    return(FALSE)
   }
 
   # check if client id matches
-  if (payload$aud != client_id) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
+  if (payload$aud != client_id) return(FALSE)
 
   # check if token expired
-  if (as.numeric(as.POSIXct(Sys.time())) > payload$exp) {
-    res$status <- 401
-    return(list(status="Failed.",
-                code=401,
-                message="Authentication required."))
-  }
+  if (is_jwt_expired(payload)) return(FALSE)
 
   # check if hd is valid
   if (!is.null(hd)) {
-    if (payload$hd != hd) {
-      res$status <- 401
-      return(list(status="Failed.",
-                  code=401,
-                  message="Authentication required."))
-    }
+    if (payload$hd != hd) return(FALSE)
   }
 
-  # redirect to routes
-  plumber::forward()
+  return(TRUE)
 }
