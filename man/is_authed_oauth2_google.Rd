@@ -4,13 +4,16 @@
 \alias{is_authed_oauth2_google}
 \title{Google OAuth2.0 / OpenID Connect Strategy}
 \usage{
-is_authed_oauth2_google(req, res, client_id, hd = NULL,
+is_authed_oauth2_google(req, res, token_location, client_id, hd = NULL,
   jwks_uri = "https://www.googleapis.com/oauth2/v3/certs")
 }
 \arguments{
 \item{req}{plumber request object}
 
 \item{res}{plumber response object}
+
+\item{token_location}{character. Location of token. Either "header" or "cookie".
+See \code{\link{get_token_from_req}} for details.}
 
 \item{client_id}{character. Google client ID. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}}
 

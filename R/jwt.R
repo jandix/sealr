@@ -9,6 +9,8 @@
 #' @param res Response object.
 #' @param secret character. The secret that was used to sign your JWT. The secret is converted
 #' to raw bytes in the function. Default NULL.
+#' @param token_location character. Location of JWT. Either "header" or "cookie".
+#' See \code{\link{get_token_from_req}} for details.
 #' @param pubkey character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.
 #' @param claims named list. Claims that should be checked in the JWT. Default NULL.
 #' @return list with the following elements:
@@ -18,7 +20,6 @@
 #'   \item code: integer. Optional. HTTP status code.
 #'   \item message: character. Optional. Longer description.
 #' }
-#'
 #' @examples
 #' \dontrun{
 #'  pr$filter("sealr-jwt-filter", function(req, res){ # usage in a filter
@@ -45,7 +46,7 @@
 #' @export
 
 
-is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
+is_authed_jwt <- function (req, res, token_location, secret = NULL,  pubkey = NULL, claims = NULL) {
 
   # ensure that the user passed the request object
   if (missing(req))
@@ -54,6 +55,9 @@ is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NUL
   # ensure that the user passed the response object
   if (missing(res) == TRUE)
     stop("Please pass the response object.")
+
+  if (missing(token_location))
+    stop("Please specify a token location.")
 
   # ensure that the user passed a secret
   if (is.null(secret) && is.null(pubkey))
@@ -69,23 +73,20 @@ is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NUL
     secret <- charToRaw(secret)
   }
 
-  # check if request includes authorization header
-  if (is.null(req$HTTP_AUTHORIZATION)) {
-    return(is_authed_return_list_401())
-  }
+  # check if request includes authorization header or session cookie
+  token <- get_token_from_req(req, token_location)
 
-  # trim authorization token
-  req$HTTP_AUTHORIZATION <- stringr::str_remove(req$HTTP_AUTHORIZATION, "Bearer\\s")
-  req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
+  # remove "Bearer" part from token
+  token <- clean_bearer_token(token)
 
   # decode the token and check whether it is valid
   if (!is.null(pubkey)){
     # public key is specified -> RSA or EDSCA was used
-    payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pubkey = pubkey),
+    payload <- tryCatch(jose::jwt_decode_sig(token, pubkey = pubkey),
                       error = function (e) NULL)
   } else {
     # secret is specified -> HMAC was used
-    payload <- tryCatch(jose::jwt_decode_hmac(req$HTTP_AUTHORIZATION, secret = secret),
+    payload <- tryCatch(jose::jwt_decode_hmac(token, secret = secret),
                       error = function (e) NULL)
   }
 

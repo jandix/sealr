@@ -8,6 +8,8 @@
 #' \code{is_authed_oauth2_google} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
 #' @param req plumber request object
 #' @param res plumber response object
+#' @param token_location character. Location of token. Either "header" or "cookie".
+#' See \code{\link{get_token_from_req}} for details.
 #' @param client_id character. Google client ID. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}
 #' @param hd character. hosted domain. Default NULL. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}.
 #' @param jwks_uri character. JSON Web Key URI. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#discovery}{docs for Google OpenID Connect}.
@@ -40,6 +42,7 @@
 
 is_authed_oauth2_google <- function (req,
                            res,
+                           token_location,
                            client_id,
                            hd = NULL,
                            jwks_uri = "https://www.googleapis.com/oauth2/v3/certs") {
@@ -54,29 +57,33 @@ is_authed_oauth2_google <- function (req,
   if (missing(res) == TRUE)
     stop("Please pass the response object.")
 
+  if (missing(token_location))
+    stop("Please specify a token location.")
+
   # ensure that the user passed the client_id
   if (missing(client_id) == TRUE)
     stop("Please pass the Google client id.")
 
-  # ensure that the request includes HTTP_AUTHORIZATION header
-  if (!("HTTP_AUTHORIZATION" %in% names(req))) {
-    return(is_authed_return_list_401())
+  ## parse token ----------------------------------------------------------------
+  if (token_location == "header") {
+    # ensure that the request includes HTTP_AUTHORIZATION header
+    if (!("HTTP_AUTHORIZATION" %in% names(req))) {
+      return(is_authed_return_list_401())
+    }
   }
 
-  ## parse token -----------------------------------------------------------------------------------------
+  # get token from request object
+  token <- get_token_from_req(req, token_location)
 
-  # trim authorization token
-  req$HTTP_AUTHORIZATION <- stringr::str_remove(req$HTTP_AUTHORIZATION, "Bearer\\s")
-  req$HTTP_AUTHORIZATION <- stringr::str_trim(req$HTTP_AUTHORIZATION)
+  # remove "Bearer" part from token
+  token <- clean_bearer_token(token)
 
-  # parse google's jwt
-  jwt <- tryCatch(jwt_split(req$HTTP_AUTHORIZATION),
+  # split the JWT token into its components
+  jwt <- tryCatch(jwt_split(token),
                   error = function (e) NULL)
 
-  # if jwt not valid send error
-  if (is.null(jwt)) {
-    return(is_authed_return_list_401())
-  }
+  if(is.null(jwt)) return(is_authed_return_list_401())
+
   ## check signature -------------------------------------------------------------------------------------
 
   # ensure that the jwt header includes kid
@@ -103,7 +110,7 @@ is_authed_oauth2_google <- function (req,
   pub_key <- jose::jwk_read(jwks[index, ])
 
   # check signature
-  payload <- tryCatch(jose::jwt_decode_sig(req$HTTP_AUTHORIZATION, pub_key),
+  payload <- tryCatch(jose::jwt_decode_sig(token, pub_key),
                       error = function (e) NULL)
 
   # if token not valid send error
