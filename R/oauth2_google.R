@@ -81,15 +81,9 @@ is_authed_oauth2_google <- function (req,
   jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
 
   # match kid
-  index <- FALSE
-  for (i in 1:nrow(jwks)) {
-    if (jwks$kid[i] == jwt$header$kid) {
-      index <- i
-      break
-    }
-  }
+  index <- which(jwks$kid == jwt$header$kid)
 
-  if (!index) {
+  if (length(index) == 0) {
     return(is_authed_return_list(FALSE, "Failed", 500,
                                  "Authentication Error. Hint: jwks_uri"))
   }
