@@ -30,15 +30,15 @@ secret <- "3ec9aaf4a744f833e98c954365892583"
 # integrate the jwt strategy in a filter
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::jwt(req = req, res = res, secret = secret,
-             claims = list(iss = "mygreatplumberapi"))
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt,
+                      secret = secret, claims = list(iss = "mygreatplumberapi"))
 })
 
 # filter that checks whether the user is an admin
 pr$filter("sealr-jwt-admin-only", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::jwt(req = req, res = res, secret = secret,
-             claims = list(iss = "mygreatplumberapi", admin = TRUE))
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt,
+                      secret = secret, claims = list(iss = "mygreatplumberapi", admin = TRUE))
 })
 
 # define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)

@@ -2,31 +2,49 @@
 % Please edit documentation in R/oauth2_google.R
 \name{is_authed_oauth2_google}
 \alias{is_authed_oauth2_google}
-\title{JWT Strategy}
+\title{Google OAuth2.0 / OpenID Connect Strategy}
 \usage{
 is_authed_oauth2_google(req, res, client_id, hd = NULL,
   jwks_uri = "https://www.googleapis.com/oauth2/v3/certs")
 }
 \arguments{
-\item{req}{Request object.}
+\item{req}{plumber request object}
 
-\item{res}{Response object.}
+\item{res}{plumber response object}
 
-\item{client_id}{character.}
+\item{client_id}{character. Google client ID. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}}
 
-\item{hd}{character.}
+\item{hd}{character. hosted domain. Default NULL. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}.}
 
-\item{jwks_uri}{character.}
+\item{jwks_uri}{character. JSON Web Key URI. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#discovery}{docs for Google OpenID Connect}.}
+}
+\value{
+list with the following elements:
+\itemize{
+  \item is_authed: TRUE or FALSE. Result of the check whether the access token is valid.
+  \item status: character. Optional. Short description of HTTP status code.
+  \item code: integer. Optional. HTTP status code.
+  \item message: character. Optional. Longer description.
+}
 }
 \description{
-This function implements a JWT authentication strategy. The function can be used as a filter in front
-of the routes. The strategy uses extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+\code{is_authed_oauth2_google} checks whether a Google access token
+obtained via Google's OpenID Connect (an implementation of OAuth 2.0 for
+authentication) passed as part of the HTTP request is valid.
+The function can be passed to \code{\link{authenticate}}'s \code{is_authed_fun}
+argument or it can be used standalone in any plumber endpoint.
+\code{is_authed_oauth2_google} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
 }
 \examples{
 \dontrun{
-pr$filter("sealr-jwt", function (req, res) {
-  sealr::oauth2_google(req = req, res = res, secret = secret)
+pr$filter("sealr-google-oauth", function (req, res) {
+  sealr::authenticate(req = req, res = res,
+                      is_authed_fun = is_authed_oauth2_google,
+                      client_id = Sys.getenv("GOOGLE_CLIENT_ID"))
 })
 }
 
+}
+\seealso{
+\url{https://developers.google.com/identity/protocols/OpenIDConnect}
 }

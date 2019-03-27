@@ -2,7 +2,7 @@
 % Please edit documentation in R/jwt.R
 \name{check_claim}
 \alias{check_claim}
-\title{This function checks that a claim passed to the jwt function is valid in the
+\title{This function checks that a claim passed to the \code{\link{is_authed_jwt}} function is valid in the
 given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 Claim values can also be named lists themselves.
@@ -24,7 +24,7 @@ check_claim(claim_name, claim_value, payload)
 TRUE if the claim is present in the JWT, FALSE if not.
 }
 \description{
-This function checks that a claim passed to the jwt function is valid in the
+This function checks that a claim passed to the \code{\link{is_authed_jwt}} function is valid in the
 given JWT.
 A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 Claim values can also be named lists themselves.

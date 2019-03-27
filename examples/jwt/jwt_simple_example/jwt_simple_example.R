@@ -24,7 +24,7 @@ secret <- "3ec9aaf4a744f833e98c954365892583"
 # integrate the jwt strategy in a filter
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::jwt(req = req, res = res, secret = secret)
+  sealr::authenticate(req = req, res = res, is_authed_fun = sealr::is_authed_jwt, secret = secret)
 })
 
 # define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
@@ -63,10 +63,10 @@ pr$handle("POST", "/authentication", function (req, res, user = NULL, password =
   payload <- jose::jwt_claim(userID = users$id[index])
 
   # convert secret to bytes
-  secret <- charToRaw(secret)
+  secret_raw <- charToRaw(secret)
 
   # encode token using the secret
-  jwt <- jose::jwt_encode_hmac(payload, secret = secret)
+  jwt <- jose::jwt_encode_hmac(payload, secret = secret_raw)
 
   # return jwt as response
   return(jwt = jwt)

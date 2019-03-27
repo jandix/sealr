@@ -1,13 +1,16 @@
-#' JWT Strategy
+#' Google OAuth2.0 / OpenID Connect Strategy
 #'
-#' This function implements a JWT authentication strategy. The function can be used as a filter in front
-#' of the routes. The strategy uses extracts the token from the HTTP Authorization header with the scheme 'bearer'.
-#'
-#' @param req Request object.
-#' @param res Response object.
-#' @param client_id character.
-#' @param hd character.
-#' @param jwks_uri character.
+#' @description  \code{is_authed_oauth2_google} checks whether a Google access token
+#' obtained via Google's OpenID Connect (an implementation of OAuth 2.0 for
+#' authentication) passed as part of the HTTP request is valid.
+#' The function can be passed to \code{\link{authenticate}}'s \code{is_authed_fun}
+#' argument or it can be used standalone in any plumber endpoint.
+#' \code{is_authed_oauth2_google} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+#' @param req plumber request object
+#' @param res plumber response object
+#' @param client_id character. Google client ID. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}
+#' @param hd character. hosted domain. Default NULL. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#authenticationuriparameters}{docs for Google OpenID Connect}.
+#' @param jwks_uri character. JSON Web Key URI. See \href{https://developers.google.com/identity/protocols/OpenIDConnect#discovery}{docs for Google OpenID Connect}.
 #'
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_sig
@@ -15,16 +18,25 @@
 #' @importFrom httr GET content
 #' @importFrom jsonlite fromJSON
 #' @importFrom plumber forward
+#' @return list with the following elements:
+#' \itemize{
+#'   \item is_authed: TRUE or FALSE. Result of the check whether the access token is valid.
+#'   \item status: character. Optional. Short description of HTTP status code.
+#'   \item code: integer. Optional. HTTP status code.
+#'   \item message: character. Optional. Longer description.
+#' }
 #'
 #' @examples
 #' \dontrun{
-#' pr$filter("sealr-jwt", function (req, res) {
-#'   sealr::oauth2_google(req = req, res = res, secret = secret)
+#' pr$filter("sealr-google-oauth", function (req, res) {
+#'   sealr::authenticate(req = req, res = res,
+#'                       is_authed_fun = is_authed_oauth2_google,
+#'                       client_id = Sys.getenv("GOOGLE_CLIENT_ID"))
 #' })
 #' }
 #'
 #' @export
-#'
+#' @seealso \url{https://developers.google.com/identity/protocols/OpenIDConnect}
 
 is_authed_oauth2_google <- function (req,
                            res,
@@ -78,9 +90,8 @@ is_authed_oauth2_google <- function (req,
     return(is_authed_return_list_401())
   }
 
-  jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
-
   # match kid
+  jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
   index <- which(jwks$kid == jwt$header$kid)
 
   if (length(index) == 0) {

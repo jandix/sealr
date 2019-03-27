@@ -15,6 +15,62 @@ In doing so, we hope to make best practices in authentication easy to
 implement for the R community. The package is inspired by the amazing
 [passport.js](http://www.passportjs.org/) library for Node.js.
 
+## Plumber filters for authentication / authorization
+
+coming soon
+
+## Implementation overview
+
+#### `authenticate`
+
+`sealr`’s main function is the `authenticate` function. `authenticate`
+takes a `is_authed_*` function (see below) as input and depending on the
+output of this “checker” function, takes action:
+
+  - if the request is authenticated / authorized, it forwards to the
+    next plumber handler using `plumber::forward`.
+  - if the request is not authenticated / authorized, it `return`s to
+    the user, passing forward HTTP status code, description and message
+    from the output of the `is_authed_` function.
+
+By accepting a function object as argument, `authenticate` is quite
+flexible: You can even pass your own `is_authed` function.
+
+#### `is_authed` family of functions
+
+The functions starting with `is_authed` provide the actual
+implementations of the different authentication / authorization
+strategies that `sealr` aims to provide. Currently implemented are:
+
+  - `is_authed_jwt`: implements JSON Web Token verification and
+    checking.
+  - `is_authed_oauth2_google`: implements Google’s OpenID Connect (which
+    is based on OAuth2.0)
+
+`is_authed_*` functions return a list with the following elements:
+
+  - `is_authed`: TRUE or FALSE. Result of the check whether the request
+    is authenticated / authorized.
+  - `status`: character. Optional (typically only set if `is_authed` is
+    FALSE). Short description of HTTP status code.
+  - `code`: integer. Optional (typically only set if `is_authed` is
+    FALSE). HTTP status code.
+  - `message`: character. Optional (typically only set if `is_authed` is
+    FALSE). Longer description.
+
+Currently, the `plumber` package does not support imposing filters on
+individual endpoints (but it is on the developer team’s radar, see [this
+issue](https://github.com/trestletech/plumber/issues/108) :)). That
+makes it difficult to require different levels of authorization,
+e.g. specific authorization for specific endpoints using the plumber
+filter method (see
+[jwt\_claims\_example](https://github.com/jandix/sealr/tree/master/examples/jwt/jwt_claims_example)).
+
+As a workaround, you can put your authentication / authorization checks
+in the individual endpoints. The `is_authed_*` functions are designed so
+that you can use them independently from plumber filters as long as you
+pass a plumber request and response object.
+
 ## Installation
 
 Currently, the package is under development. Please feel free to
@@ -37,7 +93,7 @@ complete and can be expanded with your suggestions.
   - \[ \] Bearer Token
   - \[ \] Sessions
   - \[ \] Twitter OAuth
-  - \[ \] Facbook OAuth
+  - \[ \] Facebook OAuth
   - \[ \] Google OAuth
 
 ## Testing

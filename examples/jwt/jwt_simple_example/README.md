@@ -25,7 +25,7 @@ The JWT filter looks like this:
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
   # please change the secret
-  sealr::jwt(req = req, res = res, secret = "3ec9aaf4a744f833e98c954365892583")
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = "3ec9aaf4a744f833e98c954365892583")
 })
 ```
 
@@ -58,11 +58,17 @@ frame).
 
 | id | user               | password                                                       |
 | -: | :----------------- | :------------------------------------------------------------- |
-|  1 | <jane@example.com> | $2a$12$5JnYESvwmKnyti.X6l7cuOMY78Ourinc4ujutZnQiFb0jNh1X4pH2   |
-|  2 | <bob@example.com>  | $2a\(12\)zDT7.kkN0ZYjO2iUVAKzqeJ40TeGlx7jb62VoOnKfQNqoznaawidG |
+|  1 | <jane@example.com> | $2a\(12\)QN3wbHbLNXXsTORm/ggmEeci90sr4u2i/fvQK74890donJmfuGDvi |
+|  2 | <bob@example.com>  | $2a\(12\)Twaz2aY60XWRVBmomCGIluy1As9eu6Q9yfp37IHv/nJDZzoSSyT8e |
 
-For example, in
-    curl:
+For example, in curl:
+
+**Note**: You might get different JWTs as `jose::jwt_encode_hmac`
+automatically adds the time when the JWT was issued as a claim (`iat`
+claim). However, those examples should still work because we do not add
+an expiration time to the token - something you should definetely
+consider for production use
+    cases.
 
     curl --data '{"user": "jane@example.com", "password": "12345"}' localhost:9090/authentication
 

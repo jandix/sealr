@@ -19,9 +19,38 @@ to raw bytes in the function. Default NULL.}
 \item{claims}{named list. Claims that should be checked in the JWT. Default NULL.}
 }
 \value{
-TRUE if the JWT is valid, FALSE if not.
+list with the following elements:
+\itemize{
+  \item is_authed: TRUE or FALSE. Result of the check whether the JWT is valid.
+  \item status: character. Optional. Short description of HTTP status code.
+  \item code: integer. Optional. HTTP status code.
+  \item message: character. Optional. Longer description.
+}
 }
 \description{
-This function implements a JWT authentication strategy. The function can be used as a filter in front
-of the routes. The strategy uses extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+\code{is_authed_jwt} checks whether a JWT passed as part of the HTTP request is valid.
+The function can be passed to \code{\link{authenticate}}'s \code{is_authed_fun}
+argument or it can be used standalone in any plumber endpoint.
+\code{is_authed_jwt} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+}
+\examples{
+\dontrun{
+ pr$filter("sealr-jwt-filter", function(req, res){ # usage in a filter
+   sealr::authenticate(req = req, res = res, sealr::is_authed_jwt, secret = "averylongsupersecretsecret")
+ })
+}
+
+\dontrun{
+ pr$handle("GET", "/somedata", function(req, res){ # usage in an endpoint
+   is_authed_list <- sealr::is_authed_jwt(req, res, secret = "averylongsupersecretsecret",
+                                     claims = list(iss = "myplumberapi"))
+   if (is_authed_list$is_authed){
+     return("somedata")
+   } else {
+     # return error or do something else
+     is_authed_list$is_authed <- NULL
+     return(is_authed_list)
+   }
+ })
+}
 }

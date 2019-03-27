@@ -4,6 +4,7 @@
 JSON Web Tokens (JWT) *can* contain claims. “Claims are statements about
 an entity (typically, the user) and additional data”
 (<https://jwt.io/introduction/>). They are expressed as key-value pairs.
+
 There are three different types of claims: registered, public and
 private claims. All types of claims are implemented in the same manner,
 they only differ in whether and where the claims are registered with the
@@ -11,16 +12,17 @@ Internet Assigned Numbers Authority (IANA). For example, the `iss` claim
 is a registered claim defined in the JWT standard
 [RFC 7519](https://tools.ietf.org/html/rfc7519#page-8) and registered at
 IANA. See the [JWT Introduction](https://jwt.io/introduction/) of
-[jwt.io](jwt.io) for what those terms exactly mean.
+[jwt.io](jwt.io) for more details.
 
-`sealr` allows you to check for the validity of all types of claims
-using the `claims` argument of the `sealr::jwt` function.
+`sealr` allows you to check for the validity of all types of claims in a
+given JWT using the `claims` argument of the `sealr::is_authed_jwt`
+function.
 
 In this example implementation, we have two filters:
 
 The filter `sealr-jwt` simply checks whether the user is authenticated
 and that the issuer claim `iss` is set to `mygreatplumberapi`, the value
-we set in the `authenticate` route. The second filter
+we set in the `authentication` route. The second filter
 `sealr-jwt-admin-only` additionally checks whether the user is an admin
 by validating that the claim `admin` is `TRUE`.
 
@@ -28,13 +30,13 @@ by validating that the claim `admin` is `TRUE`.
 # integrate the jwt strategy in a filter
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::jwt(req = req, res = res, secret = secret,
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = secret,
              claims = list(iss = "mygreatplumberapi"))
 })
 
 pr$filter("sealr-jwt-admin-only", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::jwt(req = req, res = res, secret = secret,
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = secret,
              claims = list(iss = "mygreatplumberapi", admin = TRUE))
 })
 ```
@@ -47,6 +49,10 @@ routes that are accessible to admins only. The former requires
 Unfortunately, it is currently not possible to extend this filter-based
 authorization mechanism to more than two authorization “levels” because
 `plumber` does not allow for preempting more than one filter per route.
+This problem is on the radar of the `plumber` team and they’ll provide
+the opportunity to impose filters on specific endpoints in the future
+(kind of “reverting” the `preempt` logic). See [this plumber
+issue](https://github.com/trestletech/plumber/issues/108).
 
 ## Install the packages
 
@@ -73,25 +79,30 @@ frame).
 
 | id | user               | password                                                       | admin | gender |
 | -: | :----------------- | :------------------------------------------------------------- | :---- | :----- |
-|  1 | <jane@example.com> | $2a\(12\)mIsc5X2lojpDvU31BL5c5u28px7yMhCCz1tE5SDPlYE7EUSM1SGae | TRUE  | woman  |
-|  2 | <bob@example.com>  | $2a\(12\)jNFhtw3m.5c8A0iX.WVaT.6Swf4i89QEnRnrnKiAaFV/G460xKCdy | FALSE | man    |
+|  1 | <jane@example.com> | $2a\(12\)dbYbnyOU/vCCM1X/skoffOX0yQSKivgosuk04tjXAnEWEQo6GYwLu | TRUE  | woman  |
+|  2 | <bob@example.com>  | $2a\(12\)e4RQaa9A2FwPpuMJE10hhuUZXsUqcpGhHpoMnnxHw2FqTMX0jXxya | FALSE | man    |
 
-Get the JWT for both
-    users:
+Get the JWT for both users:
+
+**Note**: You might get different JWTs as we also add the time when the
+token was issued as a claim (`iat`). However, those examples should
+still work because we do not add an expiration time to the token -
+something you should definetely consider for production use
+    cases.
 
   - Jane
 
 <!-- end list -->
 
     curl --data '{"user": "jane@example.com", "password": "12345"}' localhost:9090/authentication
-    ["eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjAzNSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.jNSnrZl3_a3iLsfOuJCB0dIvOOgvpZFXC_v48Odh43A"]
+    ["eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NjE0NiwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.AZqJFuXZkjwKbnULHfJVmBapFhZpBgLIUuX7HOJAUhU"]
 
   - Bob
 
 <!-- end list -->
 
     curl --data '{"user": "bob@example.com", "password": "45678"}' localhost:9090/authentication
-    ["eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjE1MSwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.rPgUcU3m7P8dhWRYKzMVUFqVH2zdzfgQxpPp6j54ZOE"]
+    ["eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s"]
 
 ### Routes with different authorization levels
 
@@ -104,7 +115,7 @@ access.
 
 <!-- end list -->
 
-    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjAzNSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.jNSnrZl3_a3iLsfOuJCB0dIvOOgvpZFXC_v48Odh43A" localhost:9090/secret
+    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE" localhost:9090/secret
     
     ["Access to route that requires authentication was successful."]
 
@@ -112,7 +123,7 @@ access.
 
 <!-- end list -->
 
-    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjE1MSwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.rPgUcU3m7P8dhWRYKzMVUFqVH2zdzfgQxpPp6j54ZOE" localhost:9090/secret
+    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s" localhost:9090/secret
     
     ["Access to route that requires authentication was successful."]
 
@@ -123,7 +134,7 @@ In contrast, only Jane can access the `/secret-admin-only`
 
 <!-- end list -->
 
-    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjAzNSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.jNSnrZl3_a3iLsfOuJCB0dIvOOgvpZFXC_v48Odh43A" localhost:9090/secret-admin-only
+    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE" localhost:9090/secret-admin-only
     
     ["Access to route that requires admin authorization was successful."]
 
@@ -131,6 +142,6 @@ In contrast, only Jane can access the `/secret-admin-only`
 
 <!-- end list -->
 
-    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MjU2NjE1MSwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.rPgUcU3m7P8dhWRYKzMVUFqVH2zdzfgQxpPp6j54ZOE" localhost:9090/secret-admin-only
+    curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s" localhost:9090/secret-admin-only
     
     {"status":["Failed."],"code":[401],"message":["Authentication required."]}

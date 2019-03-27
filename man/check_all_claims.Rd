@@ -2,8 +2,8 @@
 % Please edit documentation in R/jwt.R
 \name{check_all_claims}
 \alias{check_all_claims}
-\title{This function checks that all claims passed in the \code{claims} argument of the jwt function are
-correct.}
+\title{This function checks that all claims passed in the \code{claims} argument of
+the \code{\link{is_authed_jwt}} function are correct.}
 \usage{
 check_all_claims(payload, claims)
 }
@@ -16,6 +16,6 @@ check_all_claims(payload, claims)
 TRUE if the all claims are present in the JWT, FALSE if not.
 }
 \description{
-This function checks that all claims passed in the \code{claims} argument of the jwt function are
-correct.
+This function checks that all claims passed in the \code{claims} argument of
+the \code{\link{is_authed_jwt}} function are correct.
 }

@@ -1,7 +1,9 @@
 #' JWT Strategy
 #'
-#' This function implements a JWT authentication strategy. The function can be used as a filter in front
-#' of the routes. The strategy uses extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+#' @description  \code{is_authed_jwt} checks whether a JWT passed as part of the HTTP request is valid.
+#' The function can be passed to \code{\link{authenticate}}'s \code{is_authed_fun}
+#' argument or it can be used standalone in any plumber endpoint.
+#' \code{is_authed_jwt} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
 #'
 #' @param req Request object.
 #' @param res Response object.
@@ -9,11 +11,39 @@
 #' to raw bytes in the function. Default NULL.
 #' @param pubkey character. Public RSA or ECDSA key that was used to generate the JWT. Default NULL.
 #' @param claims named list. Claims that should be checked in the JWT. Default NULL.
-#' @return TRUE if the JWT is valid, FALSE if not.
+#' @return list with the following elements:
+#' \itemize{
+#'   \item is_authed: TRUE or FALSE. Result of the check whether the JWT is valid.
+#'   \item status: character. Optional. Short description of HTTP status code.
+#'   \item code: integer. Optional. HTTP status code.
+#'   \item message: character. Optional. Longer description.
+#' }
+#'
+#' @examples
+#' \dontrun{
+#'  pr$filter("sealr-jwt-filter", function(req, res){ # usage in a filter
+#'    sealr::authenticate(req = req, res = res, sealr::is_authed_jwt, secret = "averylongsupersecretsecret")
+#'  })
+#' }
+#'
+#
+#' \dontrun{
+#'  pr$handle("GET", "/somedata", function(req, res){ # usage in an endpoint
+#'    is_authed_list <- sealr::is_authed_jwt(req, res, secret = "averylongsupersecretsecret",
+#'                                      claims = list(iss = "myplumberapi"))
+#'    if (is_authed_list$is_authed){
+#'      return("somedata")
+#'    } else {
+#'      # return error or do something else
+#'      is_authed_list$is_authed <- NULL
+#'      return(is_authed_list)
+#'    }
+#'  })
+#' }
 #' @importFrom stringr str_remove str_trim
 #' @importFrom jose jwt_decode_hmac jwt_decode_sig
 #' @export
-#'
+
 
 is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NULL) {
 
@@ -69,8 +99,8 @@ is_authed_jwt <- function (req, res, secret = NULL,  pubkey = NULL, claims = NUL
 
 
 #'
-#' This function checks that all claims passed in the \code{claims} argument of the jwt function are
-#' correct.
+#' This function checks that all claims passed in the \code{claims} argument of
+#' the \code{\link{is_authed_jwt}} function are correct.
 #' @param payload JWT payload extracted with jose::jwt_decode_hmac.
 #' @param claims named list of claims to check in the JWT. Claims can be nested.
 #' @return TRUE if the all claims are present in the JWT, FALSE if not.
@@ -88,7 +118,7 @@ check_all_claims <- function(payload, claims){
 
 
 #'
-#' This function checks that a claim passed to the jwt function is valid in the
+#' This function checks that a claim passed to the \code{\link{is_authed_jwt}} function is valid in the
 #' given JWT.
 #' A claim consists of a claim name (e.g. "iss") and a claim value (e.g. "company A").
 #' Claim values can also be named lists themselves.
