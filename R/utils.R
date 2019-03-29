@@ -1,3 +1,39 @@
+#' clean_bearer_token
+#' @description helper function that removes 'Bearer' from a bearer scheme token and trims whitespace.
+#' @param token character. The token to be handled.
+#' @return the cleaned token.
+clean_bearer_token <- function(token){
+  token <- stringr::str_remove(token, "Bearer\\s")
+  token <- stringr::str_trim(token)
+  return(token)
+}
+
+
+#' get_token_from_req
+#' @description helper function that extracts the token from the request object based
+#' on the token_location argument.
+#' @param req plumber request object.
+#' @param token_location character. Location of token. Either "header" or "cookie". See details.
+#' @details Specify "header" for the \code{token_location} argument if the token
+#' is stored in the HTTP Authorization header. Specify "cookie" if the token is stored as an
+#' encrypted session cookie called "token" (note that unencrypted cookies are not supported).
+#' See the \href{https://www.rplumber.io/docs/rendering-and-output.html#encrypted-cookies}{plumber docs}
+#' for how to set an encrypted cookie.
+#' @return token
+#' @seealso \url{https://www.rplumber.io/docs/rendering-and-output.html#encrypted-cookies}
+get_token_from_req <- function(req, token_location){
+  # get token from request object based on token_location argument
+  if (token_location == "header") {
+    token <- req$HTTP_AUTHORIZATION
+  } else if (token_location == "cookie") {
+    token <- req$session$token
+  } else {
+    stop("Invalid token_location argument. Must be either 'header' or 'cookie'.")
+  }
+  return(token)
+}
+
+
 #' Small convenience function that wraps \code{is_authed_return_list} for the
 #' common case in this package of a "401 - Authentication required" response
 #' @export

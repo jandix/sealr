@@ -7,24 +7,33 @@ testthat::test_that("test that the function requires request object", {
 })
 
 testthat::test_that("test that the function requires secret or public key", {
-  testthat::expect_error(sealr::is_authed_jwt(res = list(), req = list()),
+  testthat::expect_error(sealr::is_authed_jwt(res = list(), req = list(), token_location = "header"),
                          regexp = "either a secret or a public key.")
 })
 
+testthat::test_that("test that the function requires token_location", {
+  testthat::expect_error(sealr::is_authed_jwt(req = list(), res = list()),
+                         regexp = "Please specify a token location.")
+})
+
 testthat::test_that("test that the function does not accept secret and public key", {
-  testthat::expect_error(sealr::is_authed_jwt(res = list(), req = list(), secret = "1223", pubkey = "key"),
+  testthat::expect_error(sealr::is_authed_jwt(res = list(), req = list(),
+                                              token_location = "header",
+                                              secret = "1223", pubkey = "key"),
                          regexp = "either a secret or a public key, not both.")
 })
 
 testthat::test_that("test that the function requires HTTP Authorization header", {
   res <- sealr::is_authed_jwt(req = list(),
                               res = list(),
+                              token_location = "header",
                               secret = "YAMYAMYAM")
   testthat::expect_false(res$is_authed)
 })
 
 testthat::test_that("test the function throws error if the secret is empty", {
-  testthat::expect_error(sealr::is_authed_jwt(req = list(), res = list(), secret = ""),
+  testthat::expect_error(sealr::is_authed_jwt(req = list(), res = list(),
+                                              token_location = "header", secret = ""),
                            regexp = "Your secret is empty. This is a possible security risk.")
 })
 
@@ -39,6 +48,7 @@ testthat::test_that("test that a valid JWT goes through the function.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret)
   testthat::expect_true(res$is_authed)
 })
@@ -54,6 +64,7 @@ testthat::test_that("test that a valid JWT with audience goes through the functi
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret,
                               claims = list(audience = "user"))
 
@@ -71,6 +82,7 @@ testthat::test_that("test that a valid JWT with wrong audience returns FALSE.", 
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret,
                               claims = list(audience = "user"))
   testthat::expect_false(res$is_authed)
@@ -89,6 +101,7 @@ testthat::test_that("test that an invalid JWT returns FALSE.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret)
   testthat::expect_false(res$is_authed)
   testthat::expect_equal(res$code, 401)
@@ -103,6 +116,7 @@ testthat::test_that("test that an invalid value for JWT returns FALSE.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret)
   testthat::expect_false(res$is_authed)
   testthat::expect_equal(res$code, 401)
@@ -120,6 +134,7 @@ testthat::test_that("test that decoding with public key works.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               pubkey = as.list(test_key)$pubkey)
   testthat::expect_true(res$is_authed)
 
@@ -137,6 +152,7 @@ testthat::test_that("test that an invalid public key generates 401.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               pubkey = "thisisnotapublickey")
   testthat::expect_false(res$is_authed)
   testthat::expect_equal(res$code, 401)
@@ -155,6 +171,7 @@ testthat::test_that("test that the wrong public key returns FALSE.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               pubkey = as.list(test_wrong_key)$pubkey)
   testthat::expect_false(res$is_authed)
   testthat::expect_equal(res$code, 401)
@@ -172,6 +189,7 @@ testthat::test_that("test that an expired JWT returns FALSE.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret)
   testthat::expect_false(res$is_authed)
   testthat::expect_equal(res$code, 401)
@@ -189,7 +207,39 @@ testthat::test_that("test that an unexpired JWT goes through.", {
 
   res <- sealr::is_authed_jwt(req = test_req,
                               res = test_res,
+                              token_location = "header",
                               secret = test_secret)
   testthat::expect_true(res$is_authed)
 
+})
+
+testthat::test_that("test that a valid JWT stored in a cookie goes through the function.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list(session = list(token = test_jwt))
+  test_res <- list()
+
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              token_location = "cookie",
+                              secret = test_secret)
+  testthat::expect_true(res$is_authed)
+})
+
+testthat::test_that("test that a function returns 401 if there is no cookie.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list()
+  test_res <- list()
+
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              token_location = "cookie",
+                              secret = test_secret)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
 })

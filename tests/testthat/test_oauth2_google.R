@@ -7,19 +7,25 @@ testthat::test_that("test that the function requires request object", {
                          regexp = "Please pass the request object.")
 })
 
-testthat::test_that("test that the function response response object", {
+testthat::test_that("test that the function requires response object", {
   testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), client_id = "xxx"),
                          regexp = "Please pass the response object.")
 })
 
+testthat::test_that("test that the function requires token_location", {
+  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list(),
+                                                        client_id = "xxx"),
+                         regexp = "Please specify a token location.")
+})
+
 testthat::test_that("test that the function requires client_id", {
-  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list()),
+  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list(), token_location = "header"),
                          regexp = "Please pass the Google client id.")
 })
 
 # TEST FUNCTION ------------------------------------------------------------------------------------------
 
-testthat::test_that("test that the function requires HTTP_AUTHORIZATION header", {
+testthat::test_that("test that the function requires HTTP_AUTHORIZATION header if token_location is 'header'.", {
   # test data
   test_req <- list()
   test_res <- list()
@@ -27,6 +33,7 @@ testthat::test_that("test that the function requires HTTP_AUTHORIZATION header",
 
   res <- sealr::is_authed_oauth2_google(req = test_req,
                                         res = test_res,
+                                        token_location = "header",
                                         client_id = test_client_id)
   testthat::expect_false(res$is_authed)
 })
@@ -39,6 +46,7 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION", 
 
   res <- sealr::is_authed_oauth2_google(req = test_req,
                                         res = test_res,
+                                        token_location = "header",
                                         client_id = test_client_id)
   testthat::expect_false(res$is_authed)
 })
@@ -56,6 +64,7 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION th
 
   res <- sealr::is_authed_oauth2_google(req = test_req,
                                         res = test_res,
+                                        token_location = "header",
                                         client_id = test_client_id)
   testthat::expect_false(res$is_authed)
 })

@@ -4,12 +4,16 @@
 \alias{is_authed_jwt}
 \title{JWT Strategy}
 \usage{
-is_authed_jwt(req, res, secret = NULL, pubkey = NULL, claims = NULL)
+is_authed_jwt(req, res, token_location, secret = NULL, pubkey = NULL,
+  claims = NULL)
 }
 \arguments{
 \item{req}{Request object.}
 
 \item{res}{Response object.}
+
+\item{token_location}{character. Location of JWT. Either "header" or "cookie".
+See \code{\link{get_token_from_req}} for details.}
 
 \item{secret}{character. The secret that was used to sign your JWT. The secret is converted
 to raw bytes in the function. Default NULL.}

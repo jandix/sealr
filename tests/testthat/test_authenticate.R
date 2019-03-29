@@ -50,7 +50,8 @@ testthat::test_that("test that function returns 401 if is_authed_jwt returns FAL
 
   # is_authed_jwt will return FALSE because token is expired.
   res <- sealr::authenticate(req = test_req, res = test_res,
-                             is_authed_fun = sealr::is_authed_jwt, secret = test_secret)
+                             is_authed_fun = sealr::is_authed_jwt,
+                             token_location = "header", secret = test_secret)
   testthat::expect_equal(res$status, "Failed.")
   testthat::expect_equal(res$code, 401)
   testthat::expect_equal(res$message, "Authentication required.")
@@ -67,7 +68,8 @@ testthat::test_that("test that function returns TRUE if is_authed_jwt is TRUE", 
   test_res <- list()
 
   testthat::expect_true(sealr::authenticate(req = test_req, res = test_res,
-                             is_authed_fun = sealr::is_authed_jwt, secret = test_secret))
+                             is_authed_fun = sealr::is_authed_jwt,
+                             token_location = "header", secret = test_secret))
 })
 
 testthat::test_that("test that function returns TRUE if custom function is TRUE", {
