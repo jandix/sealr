@@ -212,3 +212,34 @@ testthat::test_that("test that an unexpired JWT goes through.", {
   testthat::expect_true(res$is_authed)
 
 })
+
+testthat::test_that("test that a valid JWT stored in a cookie goes through the function.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list(session = list(token = test_jwt))
+  test_res <- list()
+
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              token_location = "cookie",
+                              secret = test_secret)
+  testthat::expect_true(res$is_authed)
+})
+
+testthat::test_that("test that a function returns 401 if there is no cookie.", {
+  # test data
+  test_secret <- "YAMYAMYAM"
+  test_jwt <- jose::jwt_encode_hmac(claim = jose::jwt_claim(userID = "Alice"),
+                                    secret = test_secret)
+  test_req <- list()
+  test_res <- list()
+
+  res <- sealr::is_authed_jwt(req = test_req,
+                              res = test_res,
+                              token_location = "cookie",
+                              secret = test_secret)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 401)
+})
