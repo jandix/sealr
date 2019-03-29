@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.53" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/sealr/images/favicon.png" type="image/png">
+
+    <title>OAuth2 Google Simple Example :: sealr</title>
+
+    
+    <link href="/sealr/css/nucleus.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/fontawesome-all.min.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/hybrid.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/featherlight.min.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/perfect-scrollbar.min.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/auto-complete.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/theme.css?1553870633" rel="stylesheet">
+    <link href="/sealr/css/hugo-theme.css?1553870633" rel="stylesheet">
+    
+      <link href="/sealr/css/theme-blue.css?1553870633" rel="stylesheet">
+    
+
+    <script src="/sealr/js/jquery-2.x.min.js?1553870633"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/sealr/oauth_google/oauth2_google_simple_example/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h1><a href="https://jandix.github.io/sealr">sealr</a></h1>
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/sealr/js/lunr.min.js?1553870633"></script>
+<script type="text/javascript" src="/sealr/js/auto-complete.js?1553870633"></script>
+<script type="text/javascript">
+    
+        var baseurl = "https:\/\/jandix.github.io\/sealr";
+    
+</script>
+<script type="text/javascript" src="/sealr/js/search.js?1553870633"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/sealr/sealr/" title="sealr" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sealr/sealr/">
+          sealr
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/sealr/jwt/" title="JSON Web Tokens" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sealr/jwt/">
+          JSON Web Tokens
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/jwt/jwt_simple_example/" title="JWT Simple Example" class="dd-item ">
+        <a href="/sealr/jwt/jwt_simple_example/">
+        JWT Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/jwt/jwt_claims_example/" title="JWT Claims Example" class="dd-item ">
+        <a href="/sealr/jwt/jwt_claims_example/">
+        JWT Claims Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/jwt/jwt_cookie_example/" title="JWT Cookie Example" class="dd-item ">
+        <a href="/sealr/jwt/jwt_cookie_example/">
+        JWT Cookie Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/sealr/oauth_google/" title="OAuth2 Google" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/sealr/oauth_google/">
+          OAuth2 Google
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/oauth_google/oauth2_google_simple_example/" title="OAuth2 Google Simple Example" class="dd-item active">
+        <a href="/sealr/oauth_google/oauth2_google_simple_example/">
+        OAuth2 Google Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <center>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr" data-icon="octicon-star" data-show-count="true" aria-label="Star jandix/sealr on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork jandix/sealr on GitHub">Fork</a>
+
+    <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/sealr/'>sealr</a> > <a href='/sealr/oauth_google/'>OAuth2 Google</a> > OAuth2 Google Simple Example
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#install-the-packages">Install the packages</a></li>
+<li><a href="#define-a-new-plumber-router">define a new plumber router</a></li>
+<li><a href="#define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</a></li>
+<li><a href="#define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt-1">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</a></li>
+<li><a href="#start-api-server">start API server</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              OAuth2 Google Simple Example
+            </h1>
+          
+
+        
+
+
+
+
+
+<h2 id="install-the-packages">Install the packages</h2>
+
+<p>Install the following packages if you haven’t already:</p>
+
+<ul>
+<li>sealr</li>
+<li>httr</li>
+<li>jose</li>
+<li>jsonlite</li>
+</ul>
+
+<h2 id="define-a-new-plumber-router">define a new plumber router</h2>
+
+<pre><code>pr &lt;- plumber::plumber$new()
+
+pr$handle(&quot;GET&quot;, &quot;/&quot;, function (req, res, code = NULL) {
+
+})
+</code></pre>
+
+<h2 id="define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</h2>
+
+<pre><code>pr$handle(&quot;GET&quot;, &quot;/authentication&quot;, function (req, res) {
+  url &lt;- &quot;https://accounts.google.com/o/oauth2/v2/auth&quot;
+
+  query &lt;- list(client_id = &quot;62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com&quot;,
+                redirect_uri = &quot;http://localhost:9090/authentication/redirect&quot;,
+                scope = &quot;https://www.googleapis.com/auth/userinfo.profile&quot;,
+                response_type = &quot;code&quot;)
+  auth_url &lt;- httr::parse_url(url = url)
+  auth_url$query &lt;- query
+  auth_url &lt;- httr::build_url(auth_url)
+  res$status &lt;- 301
+  res$setHeader(&quot;Location&quot;, auth_url)
+  return()
+})
+</code></pre>
+
+<h2 id="define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt-1">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</h2>
+
+<pre><code>pr$handle(&quot;GET&quot;, &quot;/authentication/redirect&quot;, function (req, res, code = NULL, error = NULL) {
+  token_url &lt;- &quot;https://www.googleapis.com/oauth2/v4/token&quot;
+  body &lt;- list(
+    code = code,
+    client_id = &quot;62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com&quot;,
+    client_secret = &quot;0iE21iyz1htfHPtOw21zWcw6&quot;,
+    redirect_uri = &quot;http://localhost:9090/authentication/redirect&quot;,
+    grant_type = &quot;authorization_code&quot;
+  )
+  response &lt;- httr::POST(token_url, body = body)
+  parsed_response &lt;- jsonlite::fromJSON(httr::content(response, type = &quot;text&quot;))
+  return(parsed_response)
+})
+</code></pre>
+
+<h2 id="start-api-server">start API server</h2>
+
+<pre><code>pr$run(host=&quot;0.0.0.0&quot;, port=9090)
+</code></pre>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/sealr/js/clipboard.min.js?1553870633"></script>
+    <script src="/sealr/js/perfect-scrollbar.min.js?1553870633"></script>
+    <script src="/sealr/js/perfect-scrollbar.jquery.min.js?1553870633"></script>
+    <script src="/sealr/js/jquery.sticky.js?1553870633"></script>
+    <script src="/sealr/js/featherlight.min.js?1553870633"></script>
+    <script src="/sealr/js/html5shiv-printshiv.min.js?1553870633"></script>
+    <script src="/sealr/js/highlight.pack.js?1553870633"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/sealr/js/modernizr.custom.71422.js?1553870633"></script>
+    <script src="/sealr/js/learn.js?1553870633"></script>
+    <script src="/sealr/js/hugo-learn.js?1553870633"></script>
+
+    <link href="/sealr/mermaid/mermaid.css?1553870633" type="text/css" rel="stylesheet" />
+    <script src="/sealr/mermaid/mermaid.js?1553870633"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
+

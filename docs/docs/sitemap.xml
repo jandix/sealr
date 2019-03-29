@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/jwt/jwt_simple_example/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/oauth_google/oauth2_google_simple_example/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/sealr/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/jwt/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/jwt/jwt_claims_example/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/jwt/jwt_cookie_example/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/oauth_google/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

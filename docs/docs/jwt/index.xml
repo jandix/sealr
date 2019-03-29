@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JSON Web Tokens on sealr</title>
+    <link>https://jandix.github.io/sealr/jwt/</link>
+    <description>Recent content in JSON Web Tokens on sealr</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://jandix.github.io/sealr/jwt/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JWT Simple Example</title>
+      <link>https://jandix.github.io/sealr/jwt/jwt_simple_example/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jandix.github.io/sealr/jwt/jwt_simple_example/</guid>
+      <description>In the code below, you find a small example of how to implement a JWT strategy in an application.
+The application consists of three routes. The first route allows your users to login and issues a JWT. The second route is an open route that does not require authentication. The third route requires authentication using the JWT.
+The JWT filter looks like this:
+# integrate the jwt strategy in a filter pr$filter(&amp;quot;sealr-jwt&amp;quot;, function (req, res) { # simply call the strategy and forward the request and response sealr::authenticate(req = req, res = res, is_authed_fun = sealr::is_authed_jwt, token_location = &amp;quot;header&amp;quot;, secret = secret) })  :warning: Please change the secret to a super secure secret of your choice.</description>
+    </item>
+    
+    <item>
+      <title>JWT Claims Example</title>
+      <link>https://jandix.github.io/sealr/jwt/jwt_claims_example/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jandix.github.io/sealr/jwt/jwt_claims_example/</guid>
+      <description>JSON Web Tokens (JWT) can contain claims. “Claims are statements about an entity (typically, the user) and additional data” (https://jwt.io/introduction/). They are expressed as key-value pairs.
+There are three different types of claims: registered, public and private claims. All types of claims are implemented in the same manner, they only differ in whether and where the claims are registered with the Internet Assigned Numbers Authority (IANA). For example, the iss claim is a registered claim defined in the JWT standard RFC 7519 and registered at IANA.</description>
+    </item>
+    
+    <item>
+      <title>JWT Cookie Example</title>
+      <link>https://jandix.github.io/sealr/jwt/jwt_cookie_example/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jandix.github.io/sealr/jwt/jwt_cookie_example/</guid>
+      <description>Instead of requiring the user to send the JWT back in the HTTP Authorization header, you can also use a cookie in the browser of the API user to store the JWT. This way, the user does not have to remember to send the JWT in the Authorization header.
+Example implementation In this example, we use an encrypted cookie to store the JWT. You can find the full code for this example at the end of this page.</description>
+    </item>
+    
+  </channel>
+</rss>
