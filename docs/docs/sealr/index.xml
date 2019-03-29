@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>sealr</title>
-    <link>http://example.org/sealr/</link>
+    <link>https://jandix.github.io/sealr/sealr/</link>
     <description>Recent content on sealr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="http://example.org/sealr/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jandix.github.io/sealr/sealr/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
