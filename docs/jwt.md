@@ -1,2 +1,0 @@
-# Json Web Token (JWT)
-
