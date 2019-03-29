@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://jandix.github.io/sealr"
 languageCode = "en-us"
 title = "sealr"
 theme = "hugo-theme-learn"
