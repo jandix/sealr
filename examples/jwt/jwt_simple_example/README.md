@@ -24,8 +24,8 @@ The JWT filter looks like this:
 # integrate the jwt strategy in a filter
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
-  # please change the secret
-  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = "3ec9aaf4a744f833e98c954365892583")
+  sealr::authenticate(req = req, res = res, is_authed_fun = sealr::is_authed_jwt,
+                      token_location = "header", secret = secret)
 })
 ```
 
@@ -58,8 +58,8 @@ frame).
 
 | id | user               | password                                                       |
 | -: | :----------------- | :------------------------------------------------------------- |
-|  1 | <jane@example.com> | $2a\(12\)QN3wbHbLNXXsTORm/ggmEeci90sr4u2i/fvQK74890donJmfuGDvi |
-|  2 | <bob@example.com>  | $2a\(12\)Twaz2aY60XWRVBmomCGIluy1As9eu6Q9yfp37IHv/nJDZzoSSyT8e |
+|  1 | <jane@example.com> | $2a\(12\)IQeP0MN01sNAnaEg4rZ6iu25Y3hSUm1rYdWfVad84bIKJ9MDU88B6 |
+|  2 | <bob@example.com>  | $2a\(12\)/jOcXUWxWKVOVtvwJjugxOMmvBEYSuKdypBlFCI1Kw/bK584I2rU6 |
 
 For example, in curl:
 

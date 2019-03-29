@@ -17,15 +17,17 @@ users <- rbind(users, data.frame(id       = 2,
 
 # define a new plumber router
 pr <- plumber::plumber$new()
+# register cookie
+pr$registerHooks(plumber::sessionCookie(key = "EPCGoaMO9dIxIEPoOjOL4sjL4U6w0GQ5", name = "token"))
 
-# define your super secret
+# define your super secret for hmac
 secret <- "3ec9aaf4a744f833e98c954365892583"
 
 # integrate the jwt strategy in a filter
 pr$filter("sealr-jwt", function (req, res) {
   # simply call the strategy and forward the request and response
   sealr::authenticate(req = req, res = res, is_authed_fun = sealr::is_authed_jwt,
-                      token_location = "header", secret = secret)
+                      token_location = "cookie", secret = secret)
 })
 
 # define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
@@ -69,8 +71,9 @@ pr$handle("POST", "/authentication", function (req, res, user = NULL, password =
   # encode token using the secret
   jwt <- jose::jwt_encode_hmac(payload, secret = secret_raw)
 
-  # return jwt as response
-  return(jwt = jwt)
+  # set cookie
+  req$session$token <- jwt
+  return()
 }, preempt = c("sealr-jwt"))
 
 # define test route without authentication  (exclude "sealr-jwt" filter using preempt)
