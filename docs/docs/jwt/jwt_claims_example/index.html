@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.53" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>JWT Claims Example :: sealr</title>
+
+    
+    <link href="/css/nucleus.css?1553870315" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553870315" rel="stylesheet">
+    <link href="/css/hybrid.css?1553870315" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553870315" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553870315" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553870315" rel="stylesheet">
+    <link href="/css/theme.css?1553870315" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553870315" rel="stylesheet">
+    
+      <link href="/css/theme-blue.css?1553870315" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1553870315"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/jwt/jwt_claims_example/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h1><a href="http://example.org/">sealr</a></h1>
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1553870315"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553870315"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/example.org\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1553870315"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/sealr/" title="sealr" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sealr/">
+          sealr
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/jwt/" title="JSON Web Tokens" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/jwt/">
+          JSON Web Tokens
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_simple_example/" title="JWT Simple Example" class="dd-item ">
+        <a href="/jwt/jwt_simple_example/">
+        JWT Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_claims_example/" title="JWT Claims Example" class="dd-item active">
+        <a href="/jwt/jwt_claims_example/">
+        JWT Claims Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_cookie_example/" title="JWT Cookie Example" class="dd-item ">
+        <a href="/jwt/jwt_cookie_example/">
+        JWT Cookie Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/oauth_google/" title="OAuth2 Google" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/oauth_google/">
+          OAuth2 Google
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/oauth_google/oauth2_google_simple_example/" title="OAuth2 Google Simple Example" class="dd-item ">
+        <a href="/oauth_google/oauth2_google_simple_example/">
+        OAuth2 Google Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <center>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr" data-icon="octicon-star" data-show-count="true" aria-label="Star jandix/sealr on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork jandix/sealr on GitHub">Fork</a>
+
+    <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>sealr</a> > <a href='/jwt/'>JSON Web Tokens</a> > JWT Claims Example
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#run-the-example">Run the example</a>
+<ul>
+<li><a href="#get-authentication">Get authentication</a></li>
+<li><a href="#route-with-simple-authentication">Route with simple authentication</a></li>
+<li><a href="#route-with-admin-only-authorization">Route with admin-only authorization</a></li>
+</ul></li>
+<li><a href="#code">Code</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              JWT Claims Example
+            </h1>
+          
+
+        
+
+
+
+
+
+<p>JSON Web Tokens (JWT) <em>can</em> contain claims. “Claims are statements about
+an entity (typically, the user) and additional data”
+(<a href="https://jwt.io/introduction/">https://jwt.io/introduction/</a>). They are expressed as key-value pairs.</p>
+
+<p>There are three different types of claims: registered, public and
+private claims. All types of claims are implemented in the same manner,
+they only differ in whether and where the claims are registered with the
+Internet Assigned Numbers Authority (IANA). For example, the <code>iss</code> claim
+is a registered claim defined in the JWT standard <a href="https://tools.ietf.org/html/rfc7519#page-8">RFC
+7519</a> and registered at
+IANA. See the <a href="https://jwt.io/introduction/">JWT Introduction</a> of
+<a href="jwt.io">jwt.io</a> for more details.</p>
+
+<p><code>sealr</code> allows you to check for the validity of all types of claims in a
+given JWT using the <code>claims</code> argument of the <code>sealr::is_authed_jwt</code>
+function.</p>
+
+<p>In this example implementation (see full code <a href="#code">below</a>), we have
+two filters:</p>
+
+<p>The filter <code>sealr-jwt</code> simply checks whether the user is authenticated
+and that the issuer claim <code>iss</code> is set to <code>mygreatplumberapi</code>, the value
+we set in the <code>authentication</code> route. The second filter
+<code>sealr-jwt-admin-only</code> additionally checks whether the user is an admin
+by validating that the claim <code>admin</code> is <code>TRUE</code>.</p>
+
+<pre><code># integrate the jwt strategy in a filter
+pr$filter(&quot;sealr-jwt&quot;, function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = secret,
+             claims = list(iss = &quot;mygreatplumberapi&quot;))
+})
+
+pr$filter(&quot;sealr-jwt-admin-only&quot;, function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt, secret = secret,
+             claims = list(iss = &quot;mygreatplumberapi&quot;, admin = TRUE))
+})
+</code></pre>
+
+<p>We now have two levels of access using filters: routes that are open to
+all authenticated users with a JWT issued by <code>mygreatplumberapi</code> and
+routes that are accessible to admins only. The former requires
+<code>preempt</code>ing the more restrictive <code>sealr-jwt-admin-only</code> filter.</p>
+
+<p>Unfortunately, it is currently not possible to extend this filter-based
+authorization mechanism to more than two authorization “levels” because
+<code>plumber</code> does not allow for preempting more than one filter per route.
+This problem is on the radar of the <code>plumber</code> team and they’ll provide
+the opportunity to impose filters on specific endpoints in the future
+(kind of “reverting” the <code>preempt</code> logic). See <a href="https://github.com/trestletech/plumber/issues/108">this plumber
+issue</a>.</p>
+
+<h2 id="run-the-example">Run the example</h2>
+
+<p>Copy the code from <a href="#code">below</a> in a new R file and save it under
+<code>jwt_claims_example.R</code>. In the R console, run:</p>
+
+<pre><code>plumber::plumb(&quot;jwt_claims_example.R&quot;)
+</code></pre>
+
+<p>This will make the API available at <code>localhost:9090</code>.</p>
+
+<p>In order to run this example, you need the following packages installed:</p>
+
+<ul>
+<li>sealr</li>
+<li>plumber</li>
+<li>httr</li>
+<li>jose</li>
+<li>jsonlite</li>
+</ul>
+
+<h3 id="get-authentication">Get authentication</h3>
+
+<p>Using curl, Postman or a similar tool for sending HTTP requests, send a
+POST request with the details of one of the two users that are in the
+API’s “database” (in this simplified example, a data frame).</p>
+
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 18%" />
+<col style="width: 64%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: left;">user</th>
+<th style="text-align: left;">password</th>
+<th style="text-align: left;">admin</th>
+<th style="text-align: left;">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
+<td style="text-align: left;">$2a<span class="math inline">12</span>s1cFAO4.cSo4pqUP4YNZxeYXv33ckcvGikvXP4QAqwu80BC5fUtM2</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: left;">woman</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
+<td style="text-align: left;">$2a<span class="math inline">12</span>sgP18Eb32QQk1OkURY8Dnu71yeeKNp3PgF1ZjsueUQgZ2FHRuc79m</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">man</td>
+</tr>
+</tbody>
+</table>
+
+<p>Get the JWT for both users:</p>
+
+<ul>
+<li>Jane</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl --data '{&quot;user&quot;: &quot;jane@example.com&quot;, &quot;password&quot;: &quot;12345&quot;}' localhost:9090/authentication
+[&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NjE0NiwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.AZqJFuXZkjwKbnULHfJVmBapFhZpBgLIUuX7HOJAUhU&quot;]
+</code></pre>
+
+<ul>
+<li>Bob</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl --data '{&quot;user&quot;: &quot;bob@example.com&quot;, &quot;password&quot;: &quot;45678&quot;}' localhost:9090/authentication
+[&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot;]
+</code></pre>
+
+<p><strong>Note</strong>: You might get different JWTs as we also add the time when the
+token was issued as a claim (<code>iat</code>). However, those examples should
+still work because we do not add an expiration time to the token -
+something you should definetely consider for production use cases.</p>
+
+<h3 id="route-with-simple-authentication">Route with simple authentication</h3>
+
+<p>Both users can access the <code>/secret</code> route because they both have valid
+JWT issued by <code>mygreatplumberapi</code>. The route <code>preempt</code>s the more
+restrictive <code>sealr-jwt-admin-only</code> filter so even non-admin Bob has
+access.</p>
+
+<ul>
+<li>Jane</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE&quot; localhost:9090/secret
+
+[&quot;Access to route that requires authentication was successful.&quot;]
+</code></pre>
+
+<ul>
+<li>Bob</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot; localhost:9090/secret
+
+[&quot;Access to route that requires authentication was successful.&quot;]
+</code></pre>
+
+<h3 id="route-with-admin-only-authorization">Route with admin-only authorization</h3>
+
+<p>In contrast, only Jane can access the <code>/secret-admin-only</code> route.</p>
+
+<ul>
+<li>Jane</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE&quot; localhost:9090/secret-admin-only
+
+[&quot;Access to route that requires admin authorization was successful.&quot;]
+</code></pre>
+
+<ul>
+<li>Bob</li>
+</ul>
+
+<!-- -->
+
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot; localhost:9090/secret-admin-only
+
+{&quot;status&quot;:[&quot;Failed.&quot;],&quot;code&quot;:[401],&quot;message&quot;:[&quot;Authentication required.&quot;]}
+</code></pre>
+
+<h2 id="code">Code</h2>
+
+<pre><code># define a user database
+# you should probably use a SQL database instead of data frames
+users &lt;- data.frame(id       = integer(),
+                    name     = character(),
+                    password = character(),
+                    admin = logical(),
+                    gender = character(),
+                    stringsAsFactors = FALSE)
+
+# create test user
+users &lt;- rbind(users, data.frame(id       = 1,
+                                 user     = &quot;jane@example.com&quot;,
+                                 password = bcrypt::hashpw(&quot;12345&quot;),
+                                 admin = TRUE,
+                                 gender = &quot;woman&quot;,
+                                 stringsAsFactors = FALSE))
+users &lt;- rbind(users, data.frame(id       = 2,
+                                 user     = &quot;bob@example.com&quot;,
+                                 password = bcrypt::hashpw(&quot;45678&quot;),
+                                 admin = FALSE,
+                                 gender = &quot;man&quot;,
+                                 stringsAsFactors = FALSE))
+
+# define a new plumber router
+pr &lt;- plumber::plumber$new()
+
+# define your super secret
+secret &lt;- &quot;3ec9aaf4a744f833e98c954365892583&quot;
+
+# integrate the jwt strategy in a filter
+pr$filter(&quot;sealr-jwt&quot;, function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt,
+                      secret = secret, claims = list(iss = &quot;mygreatplumberapi&quot;))
+})
+
+# filter that checks whether the user is an admin
+pr$filter(&quot;sealr-jwt-admin-only&quot;, function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, is_authed_fun = is_authed_jwt,
+                      secret = secret, claims = list(iss = &quot;mygreatplumberapi&quot;, admin = TRUE))
+})
+
+# define authentication route to issue web tokens (exclude &quot;sealr-jwt&quot; filter using preempt)
+pr$handle(&quot;POST&quot;, &quot;/authentication&quot;, function (req, res, user = NULL, password = NULL) {
+
+  # check if user provided credentials
+  if (is.null(user) || is.null(password)) {
+    res$status &lt;- 404
+    return(list(status=&quot;Failed.&quot;,
+                code=404,
+                message=&quot;Please specify password or username.&quot;))
+  }
+
+  # find user in database
+  index &lt;- match(user, users$user)
+
+  # check if user exist
+  if (is.na(index)) {
+    res$status &lt;- 401
+    return(list(status=&quot;Failed.&quot;,
+                code=401,
+                message=&quot;User or password wrong.&quot;))
+  }
+
+  # check if password is correct
+  if (!bcrypt::checkpw(password, users$password[index])){
+    res$status &lt;- 401
+    return(list(status=&quot;Failed.&quot;,
+                code=401,
+                message=&quot;User or password wrong.&quot;))
+  }
+
+  # define jwt payload
+  # information about the additional fields can be found at
+  # https://tools.ietf.org/html/rfc7519#section-4.1
+  payload &lt;- jose::jwt_claim(iss = &quot;mygreatplumberapi&quot;, # registered claim
+                             iat = as.numeric(Sys.time()), # registered claim
+                             admin = users$admin[index],
+                             gender = users$gender[index], # a public claim
+                             userID = users$id[index]) # private claim
+
+  # convert secret to bytes
+  secret &lt;- charToRaw(secret)
+
+  # encode token using the secret
+  jwt &lt;- jose::jwt_encode_hmac(payload, secret = secret)
+
+  # return jwt as response
+  return(jwt = jwt)
+}, preempt = c(&quot;sealr-jwt&quot;))
+
+
+
+# define test route with authentication
+pr$handle(&quot;GET&quot;, &quot;/secret&quot;, function (req, res) {
+  return(&quot;Access to route that requires authentication was successful.&quot;)
+}, preempt = &quot;sealr-jwt-admin-only&quot;)
+
+# define test route with authentication
+pr$handle(&quot;GET&quot;, &quot;/secret-admin-only&quot;, function (req, res) {
+  return(&quot;Access to route that requires admin authorization was successful.&quot;)
+})
+
+# start API server
+pr$run(host = &quot;0.0.0.0&quot;, port = 9090)
+</code></pre>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1553870315"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553870315"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553870315"></script>
+    <script src="/js/jquery.sticky.js?1553870315"></script>
+    <script src="/js/featherlight.min.js?1553870315"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553870315"></script>
+    <script src="/js/highlight.pack.js?1553870315"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js?1553870315"></script>
+    <script src="/js/learn.js?1553870315"></script>
+    <script src="/js/hugo-learn.js?1553870315"></script>
+
+    <link href="/mermaid/mermaid.css?1553870315" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553870315"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
+

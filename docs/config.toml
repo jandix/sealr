@@ -2,6 +2,7 @@ baseURL = "http://example.org/"
 languageCode = "en-us"
 title = "sealr"
 theme = "hugo-theme-learn"
+publishDir = "docs"
 
 # For search functionality
 [outputs]

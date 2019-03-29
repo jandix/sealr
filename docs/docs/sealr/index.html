@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.53" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>sealr :: sealr</title>
+
+    
+    <link href="/css/nucleus.css?1553870315" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1553870315" rel="stylesheet">
+    <link href="/css/hybrid.css?1553870315" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1553870315" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1553870315" rel="stylesheet">
+    <link href="/css/auto-complete.css?1553870315" rel="stylesheet">
+    <link href="/css/theme.css?1553870315" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1553870315" rel="stylesheet">
+    
+      <link href="/css/theme-blue.css?1553870315" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1553870315"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/sealr/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h1><a href="http://example.org/">sealr</a></h1>
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1553870315"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1553870315"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/example.org\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1553870315"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/sealr/" title="sealr" class="dd-item 
+        parent
+        active
+        
+        ">
+      <a href="/sealr/">
+          sealr
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/jwt/" title="JSON Web Tokens" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/jwt/">
+          JSON Web Tokens
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_simple_example/" title="JWT Simple Example" class="dd-item ">
+        <a href="/jwt/jwt_simple_example/">
+        JWT Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_claims_example/" title="JWT Claims Example" class="dd-item ">
+        <a href="/jwt/jwt_claims_example/">
+        JWT Claims Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/jwt/jwt_cookie_example/" title="JWT Cookie Example" class="dd-item ">
+        <a href="/jwt/jwt_cookie_example/">
+        JWT Cookie Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/oauth_google/" title="OAuth2 Google" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/oauth_google/">
+          OAuth2 Google
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/oauth_google/oauth2_google_simple_example/" title="OAuth2 Google Simple Example" class="dd-item ">
+        <a href="/oauth_google/oauth2_google_simple_example/">
+        OAuth2 Google Simple Example
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+
+    
+    <section id="footer">
+      <center>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr" data-icon="octicon-star" data-show-count="true" aria-label="Star jandix/sealr on GitHub">Star</a>
+
+    
+    <a class="github-button" href="https://github.com/jandix/sealr/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork jandix/sealr on GitHub">Fork</a>
+
+    <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>sealr</a> > sealr
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</a></li>
+<li><a href="#implementation-overview">Implementation overview</a>
+<ul>
+<li>
+<ul>
+<li><a href="#authenticate">authenticate</a></li>
+<li><a href="#is-authed-functions">is_authed functions</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#contribute">Contribute</a>
+<ul>
+<li>
+<ul>
+<li><a href="#possible-strategies">Possible Strategies</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#warranity-notice">Warranity Notice</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              sealr
+            </h1>
+          
+
+        
+
+
+
+
+	
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<p><a href="https://travis-ci.org/jandix/sealr"><img src="https://travis-ci.org/jandix/sealr.svg?branch=master" alt="Build
+Status" /></a>
+<a href="https://codecov.io/gh/jandix/sealr"><img src="https://codecov.io/gh/jandix/sealr/branch/master/graph/badge.svg" alt="codecov" /></a></p>
+
+<p>The goal of sealr is to provide multiple authentication and
+authorization strategies for <a href="https://www.rplumber.io/">plumber</a> by
+using
+<a href="https://www.rplumber.io/docs/routing-and-input.html#filters">filters</a>.
+In doing so, we hope to make best practices in authentication easy to
+implement for the R community. The package is inspired by the amazing
+<a href="http://www.passportjs.org/">passport.js</a> library for Node.js.</p>
+
+<h2 id="plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</h2>
+
+<p>coming soon</p>
+
+<h2 id="implementation-overview">Implementation overview</h2>
+
+<h4 id="authenticate">authenticate</h4>
+
+<p><code>sealr</code>’s main function is the <code>authenticate</code> function. <code>authenticate</code>
+takes a <code>is_authed_*</code> function (see below) as input and depending on the
+output of this “checker” function, takes action:</p>
+
+<ul>
+<li>if the request is authenticated / authorized, it forwards to the
+next plumber handler using <code>plumber::forward</code>.</li>
+<li>if the request is not authenticated / authorized, it <code>return</code>s to
+the user, passing forward HTTP status code, description and message
+from the output of the <code>is_authed_</code> function.</li>
+</ul>
+
+<p>By accepting a function object as argument, <code>authenticate</code> is quite
+flexible: You can even pass your own <code>is_authed</code> function.</p>
+
+<h4 id="is-authed-functions">is_authed functions</h4>
+
+<p>The functions starting with <code>is_authed</code> provide the actual
+implementations of the different authentication / authorization
+strategies that <code>sealr</code> aims to provide. Currently implemented are:</p>
+
+<ul>
+<li><code>is_authed_jwt</code>: implements JSON Web Token verification and
+checking.</li>
+<li><code>is_authed_oauth2_google</code>: implements Google’s OpenID Connect (which
+is based on OAuth2.0)</li>
+</ul>
+
+<p><code>is_authed_*</code> functions return a list with the following elements:</p>
+
+<ul>
+<li><code>is_authed</code>: TRUE or FALSE. Result of the check whether the request
+is authenticated / authorized.</li>
+<li><code>status</code>: character. Optional (typically only set if <code>is_authed</code> is
+FALSE). Short description of HTTP status code.</li>
+<li><code>code</code>: integer. Optional (typically only set if <code>is_authed</code> is
+FALSE). HTTP status code.</li>
+<li><code>message</code>: character. Optional (typically only set if <code>is_authed</code> is
+FALSE). Longer description.</li>
+</ul>
+
+<p>Currently, the <code>plumber</code> package does not support imposing filters on
+individual endpoints (but it is on the developer team’s radar, see <a href="https://github.com/trestletech/plumber/issues/108">this
+issue</a> :)). That
+makes it difficult to require different levels of authorization,
+e.g. specific authorization for specific endpoints using the plumber
+filter method (see
+<a href="https://github.com/jandix/sealr/tree/master/examples/jwt/jwt_claims_example">jwt_claims_example</a>).</p>
+
+<p>As a workaround, you can put your authentication / authorization checks
+in the individual endpoints. The <code>is_authed_*</code> functions are designed so
+that you can use them independently from plumber filters as long as you
+pass a plumber request and response object.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Currently, the package is under development. Please feel free to
+contribute to the package. You can install and use the package using
+<code>devtools</code>.</p>
+
+<pre><code>devtools::install_github(&quot;jandix/sealr&quot;)
+</code></pre>
+
+<h2 id="contribute">Contribute</h2>
+
+<p>We are still at the very beginning of the package and we welcome any
+support and contribution. Below you find a list with possible
+authentication strategies that you could implement. The list is not
+complete and can be expanded with your suggestions.</p>
+
+<h4 id="possible-strategies">Possible Strategies</h4>
+
+<ul class="task-list">
+<li><label><input type="checkbox" disabled class="task-list-item"> Bearer Token</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> Sessions</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> Twitter OAuth</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> Facebook OAuth</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> Google OAuth</label></li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>You can use curl for testing purposes. Unfortunately, curl quickly gets
+quite complicated if you want to add a body, parameters and unique
+headers. Therefore, we recommend to use
+<a href="https://www.getpostman.com/">Postman</a> for larger, more complicated
+projects.</p>
+
+<h2 id="examples">Examples</h2>
+
+<p>We provide some simple sample implementations for different strategies
+and use cases. You can find them in the <code>examples</code> folder.</p>
+
+<h2 id="warranity-notice">Warranity Notice</h2>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1553870315"></script>
+    <script src="/js/perfect-scrollbar.min.js?1553870315"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1553870315"></script>
+    <script src="/js/jquery.sticky.js?1553870315"></script>
+    <script src="/js/featherlight.min.js?1553870315"></script>
+    <script src="/js/html5shiv-printshiv.min.js?1553870315"></script>
+    <script src="/js/highlight.pack.js?1553870315"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom.71422.js?1553870315"></script>
+    <script src="/js/learn.js?1553870315"></script>
+    <script src="/js/hugo-learn.js?1553870315"></script>
+
+    <link href="/mermaid/mermaid.css?1553870315" type="text/css" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1553870315"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    
+
+  </body>
+</html>
