@@ -3,45 +3,45 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://jandix.github.io/sealr/jwt/jwt_simple_example/</loc>
+    <loc>https://jandix.github.io/sealr/docs/jwt/jwt_simple_example/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/oauth_google/oauth2_google_simple_example/</loc>
+    <loc>https://jandix.github.io/sealr/docs/oauth_google/oauth2_google_simple_example/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/sealr/</loc>
+    <loc>https://jandix.github.io/sealr/docs/sealr/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/jwt/</loc>
+    <loc>https://jandix.github.io/sealr/docs/jwt/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/jwt/jwt_claims_example/</loc>
+    <loc>https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/jwt/jwt_cookie_example/</loc>
+    <loc>https://jandix.github.io/sealr/docs/jwt/jwt_cookie_example/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/oauth_google/</loc>
+    <loc>https://jandix.github.io/sealr/docs/oauth_google/</loc>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/categories/</loc>
+    <loc>https://jandix.github.io/sealr/docs/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/tags/</loc>
+    <loc>https://jandix.github.io/sealr/docs/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/</loc>
+    <loc>https://jandix.github.io/sealr/docs/</loc>
     <priority>0</priority>
   </url>
   
