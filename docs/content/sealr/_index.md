@@ -20,6 +20,16 @@ In doing so, we hope to make best practices in authentication easy to
 implement for the R community. The package is inspired by the amazing
 [passport.js](http://www.passportjs.org/) library for Node.js.
 
+Disclaimer
+----------
+
+⚠️ We are currently looking for security experts to help us develop this
+project / review our code. That being said, while we try to thouroughly
+understand the concepts behind a strategy before we implement it in
+`sealr`, **we are not experts** in security. Please make sure you
+understand the risks and possible attack vectors when using `sealr` -
+especially in production environments. ⚠️
+
 Plumber filters for authentication / authorization
 --------------------------------------------------
 
