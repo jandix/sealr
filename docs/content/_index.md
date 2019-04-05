@@ -1,5 +1,5 @@
 ---
-title: OAuth2 Google
+title: sealr
 weight: 3
 ---
 

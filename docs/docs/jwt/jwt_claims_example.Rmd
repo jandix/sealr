@@ -10,9 +10,11 @@ title: JWT Claims Example
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 JSON Web Tokens (JWT) *can* contain claims. "Claims are statements about an entity (typically, the user) and additional data" ([https://jwt.io/introduction/](https://jwt.io/introduction/)). They are expressed as key-value pairs.
 
 There are three different types of claims: registered, public and private claims. All types of claims are implemented in the same manner, they only differ in whether and where the claims are registered with the Internet Assigned Numbers Authority (IANA). For example, the `iss` claim is a registered claim defined in the JWT standard [RFC 7519](https://tools.ietf.org/html/rfc7519#page-8) and registered at IANA. See the [JWT Introduction](https://jwt.io/introduction/) of [jwt.io](jwt.io) for more details.
+
 
 `sealr` allows you to check for the validity of all types of claims in a given JWT using the `claims` argument of the `sealr::is_authed_jwt` function. 
 
@@ -44,6 +46,8 @@ Unfortunately, it is currently not possible to extend this filter-based authoriz
 This problem is on the radar of the `plumber` team and they'll provide the opportunity to impose filters on specific
 endpoints in the future (kind of "reverting" the `preempt` logic). See [this plumber issue](https://github.com/trestletech/plumber/issues/108).
 
+As a workaround, you could put your authentication / authorization checks in the individual endpoints.
+In this case, use `is_authed_*` functions instead of the `authenticate` wrapper.
 
 ## Run the example
 Copy the code from [below](#code) in a new R file and 

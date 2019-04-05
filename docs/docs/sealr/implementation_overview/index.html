@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/sealr/docs/images/favicon.png" type="image/png">
 
-    <title>sealr :: sealr</title>
+    <title>Implementation Overview :: sealr</title>
 
     
     <link href="/sealr/docs/css/nucleus.css?1554478468" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/sealr/docs/">
+  <body class="" data-url="/sealr/docs/sealr/implementation_overview/">
     <nav id="sidebar" class="">
 
 
@@ -75,7 +75,7 @@
   
     
     <li data-nav-id="/sealr/docs/sealr/" title="sealr" class="dd-item 
-        
+        parent
         
         
         ">
@@ -118,7 +118,7 @@
  
   
     
-      <li data-nav-id="/sealr/docs/sealr/implementation_overview/" title="Implementation Overview" class="dd-item ">
+      <li data-nav-id="/sealr/docs/sealr/implementation_overview/" title="Implementation Overview" class="dd-item active">
         <a href="/sealr/docs/sealr/implementation_overview/">
         Implementation Overview
         
@@ -310,26 +310,140 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/sealr/docs/'>sealr</a> > <a href='/sealr/docs/sealr/'>sealr</a> > Implementation Overview
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#authenticate">authenticate</a></li>
+<li><a href="#is-authed-functions">is_authed functions</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
         <div id="head-tags">
         
         </div>
         
         <div id="body-inner">
           
+            <h1>
+              
+              Implementation Overview
+            </h1>
+          
 
         
 
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>This is the documentation for the <a href="https://github.com/jandix/sealr">sealr</a> R package.</p>
 
-<p>Check out the navigation on the left to dig into the docs.</p>
+
+<h2 id="authenticate">authenticate</h2>
+
+<p>*sealr*’s main function is the <code>authenticate</code> function. It is supposed
+to be used within a plumber filter. <code>authenticate</code> takes a <code>is_authed_*</code>
+function (see below) as input and depending on the output of this
+“checker” function, takes action:</p>
+
+<ul>
+<li>if the request is authenticated / authorized, it forwards to the
+next plumber handler using <code>plumber::forward</code>.</li>
+<li>if the request is not authenticated / authorized, it <code>return</code>s to
+the user, passing forward HTTP status code, description and message
+from the output of the <code>is_authed_</code> function. Most often, this will
+be a “401 - Authentication failed.” error.</li>
+</ul>
+
+<p>By accepting a function object as argument, <code>authenticate</code> is quite
+flexible: You can even pass your own <code>is_authed</code> function. See the
+examples section of <code>?sealr::authenticate</code> for a simple example.</p>
+
+<h2 id="is-authed-functions">is_authed functions</h2>
+
+<p>The functions starting with <code>is_authed</code> provide the actual
+implementations of the different authentication / authorization
+strategies that <em>sealr</em> aims to provide. Currently implemented are:</p>
+
+<ul>
+<li><code>is_authed_jwt</code>: implements JSON Web Token verification and
+checking.</li>
+<li><code>is_authed_oauth2_google</code>: implements Google’s OpenID Connect (which
+is based on OAuth2.0)</li>
+</ul>
+
+<p><code>is_authed_*</code> functions return a list with the following elements:</p>
+
+<ul>
+<li><code>is_authed</code>: TRUE or FALSE. Result of the check whether the request
+is authenticated / authorized.</li>
+<li><code>status</code>: character. Optional (typically only set if <code>is_authed</code> is
+FALSE). Short description of HTTP status code.</li>
+<li><code>code</code>: integer. Optional (typically only set if <code>is_authed</code> is
+FALSE). HTTP status code.</li>
+<li><code>message</code>: character. Optional (typically only set if <code>is_authed</code> is
+FALSE). Longer description.</li>
+</ul>
+
+<p>Usage of the <code>is_authed</code> functions is not restricted to plumber filters.
+For example, you can use an <code>is_authed</code> function at the top of an
+endpoint to restrict access to certain endpoints or use different
+authorization “levels” for different endpoints. This is particularly
+relevant if you have more than two “levels” of authorization (see the
+<a href="https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/">claims
+example</a>).</p>
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -361,8 +475,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -376,6 +488,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 
@@ -393,6 +508,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -411,6 +527,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

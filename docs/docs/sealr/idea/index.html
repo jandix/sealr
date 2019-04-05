@@ -9,7 +9,7 @@
 
     <link rel="icon" href="/sealr/docs/images/favicon.png" type="image/png">
 
-    <title>sealr :: sealr</title>
+    <title>General Idea :: sealr</title>
 
     
     <link href="/sealr/docs/css/nucleus.css?1554478468" rel="stylesheet">
@@ -35,7 +35,7 @@
     </style>
     
   </head>
-  <body class="" data-url="/sealr/docs/">
+  <body class="" data-url="/sealr/docs/sealr/idea/">
     <nav id="sidebar" class="">
 
 
@@ -75,7 +75,7 @@
   
     
     <li data-nav-id="/sealr/docs/sealr/" title="sealr" class="dd-item 
-        
+        parent
         
         
         ">
@@ -99,7 +99,7 @@
  
   
     
-      <li data-nav-id="/sealr/docs/sealr/idea/" title="General Idea" class="dd-item ">
+      <li data-nav-id="/sealr/docs/sealr/idea/" title="General Idea" class="dd-item active">
         <a href="/sealr/docs/sealr/idea/">
         General Idea
         
@@ -310,26 +310,109 @@
         <div id="overlay"></div>
         <div class="padding highlightable">
               
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/sealr/docs/'>sealr</a> > <a href='/sealr/docs/sealr/'>sealr</a> > General Idea
+          
+         
+          
+         
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
         <div id="head-tags">
         
         </div>
         
         <div id="body-inner">
           
+            <h1>
+              
+              General Idea
+            </h1>
+          
 
         
 
 
-<span id="sidebar-toggle-span">
-<a href="#" id="sidebar-toggle" data-sidebar-toggle=""><i class="fas fa-bars"></i> navigation</a>
-</span>
 
- 
-<p>This is the documentation for the <a href="https://github.com/jandix/sealr">sealr</a> R package.</p>
 
-<p>Check out the navigation on the left to dig into the docs.</p>
+
+<h2 id="plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</h2>
+
+<p>The primary logic of <em>sealr</em> is based on plumber filters (although you
+can use sealr functionality without filters as well by using the
+<code>is_authed</code> functions directly, see below). “Plumber filters can be used
+to define a “pipeline” for handling incoming requests&rdquo; (<a href="https://www.rplumber.io/docs/routing-and-input.html#filters">Plumber
+docs</a>).</p>
+
+<p>So if your plumber API receives a request, the request will first be
+routed through the different filters before it “arrives” at its
+destination endpoint.</p>
+
+<div class="mermaid" align="left"> graph LR; A\[Hard edge\] –&gt;|Link text|
+B(Round edge) B –&gt; C{Decision} C –&gt;|One| D\[Result one\] C
+–&gt;|Two| E\[Result two\] {{&lt; /mermaid &gt;}}
+
+The idea of *sealr* is to use a filter for authentication. If a request
+is not properly authenticated / authorized, *sealr* will immediately
+return a “401 - Authentication failed.” error from the filter to the
+user. In this way, an unauthenticated / unauthorized request will not
+“reach” its destination endpoint.
+</div>
+
+
+
+<footer class=" footline" >
 	
-  
+</footer>
+
+
         
         </div> 
         
@@ -361,8 +444,6 @@
             
                 
                     
-                        
-                        
                     
                 
                 
@@ -376,6 +457,7 @@
             
             
                 
+                    
                     
                 
                 
@@ -392,6 +474,9 @@
             
             
                 
+                    
+                        
+                        
                     
                 
                 

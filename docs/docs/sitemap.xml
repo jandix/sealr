@@ -15,6 +15,10 @@
   </url>
   
   <url>
+    <loc>https://jandix.github.io/sealr/docs/sealr/idea/</loc>
+  </url>
+  
+  <url>
     <loc>https://jandix.github.io/sealr/docs/jwt/</loc>
   </url>
   
@@ -23,15 +27,19 @@
   </url>
   
   <url>
+    <loc>https://jandix.github.io/sealr/docs/oauth_google/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/docs/sealr/implementation_overview/</loc>
+  </url>
+  
+  <url>
     <loc>https://jandix.github.io/sealr/docs/jwt/jwt_cookie_example/</loc>
   </url>
   
   <url>
     <loc>https://jandix.github.io/sealr/docs/</loc>
-  </url>
-  
-  <url>
-    <loc>https://jandix.github.io/sealr/docs/oauth_google/</loc>
   </url>
   
   <url>

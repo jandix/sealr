@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>OAuth2 Google on sealr</title>
+    <title>sealr</title>
     <link>https://jandix.github.io/sealr/docs/</link>
-    <description>Recent content in OAuth2 Google on sealr</description>
+    <description>Recent content on sealr</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
@@ -33,6 +33,16 @@ The JWT filter looks like this:
     </item>
     
     <item>
+      <title>General Idea</title>
+      <link>https://jandix.github.io/sealr/docs/sealr/idea/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jandix.github.io/sealr/docs/sealr/idea/</guid>
+      <description>Plumber filters for authentication / authorization The primary logic of sealr is based on plumber filters (although you can use sealr functionality without filters as well by using the is_authed functions directly, see below). “Plumber filters can be used to define a “pipeline” for handling incoming requests&amp;rdquo; (Plumber docs).
+So if your plumber API receives a request, the request will first be routed through the different filters before it “arrives” at its destination endpoint.</description>
+    </item>
+    
+    <item>
       <title>JWT Claims Example</title>
       <link>https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -40,6 +50,16 @@ The JWT filter looks like this:
       <guid>https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/</guid>
       <description>JSON Web Tokens (JWT) can contain claims. “Claims are statements about an entity (typically, the user) and additional data” (https://jwt.io/introduction/). They are expressed as key-value pairs.
 There are three different types of claims: registered, public and private claims. All types of claims are implemented in the same manner, they only differ in whether and where the claims are registered with the Internet Assigned Numbers Authority (IANA). For example, the iss claim is a registered claim defined in the JWT standard RFC 7519 and registered at IANA.</description>
+    </item>
+    
+    <item>
+      <title>Implementation Overview</title>
+      <link>https://jandix.github.io/sealr/docs/sealr/implementation_overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jandix.github.io/sealr/docs/sealr/implementation_overview/</guid>
+      <description>authenticate *sealr*’s main function is the authenticate function. It is supposed to be used within a plumber filter. authenticate takes a is_authed_* function (see below) as input and depending on the output of this “checker” function, takes action:
+ if the request is authenticated / authorized, it forwards to the next plumber handler using plumber::forward. if the request is not authenticated / authorized, it returns to the user, passing forward HTTP status code, description and message from the output of the is_authed_ function.</description>
     </item>
     
     <item>

@@ -12,19 +12,20 @@
     <title>sealr :: sealr</title>
 
     
-    <link href="/sealr/docs/css/nucleus.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/fontawesome-all.min.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/hybrid.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/featherlight.min.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/perfect-scrollbar.min.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/auto-complete.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/theme.css?1553874639" rel="stylesheet">
-    <link href="/sealr/docs/css/hugo-theme.css?1553874639" rel="stylesheet">
+    <link href="/sealr/docs/css/nucleus.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/fontawesome-all.min.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/hybrid.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/featherlight.min.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/perfect-scrollbar.min.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/auto-complete.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/atom-one-dark-reasonable.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/theme.css?1554478468" rel="stylesheet">
+    <link href="/sealr/docs/css/hugo-theme.css?1554478468" rel="stylesheet">
     
-      <link href="/sealr/docs/css/theme-blue.css?1553874639" rel="stylesheet">
+      <link href="/sealr/docs/css/theme-sealr.css?1554478468" rel="stylesheet">
     
 
-    <script src="/sealr/docs/js/jquery-2.x.min.js?1553874639"></script>
+    <script src="/sealr/docs/js/jquery-3.3.1.min.js?1554478468"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -50,14 +51,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/sealr/docs/js/lunr.min.js?1553874639"></script>
-<script type="text/javascript" src="/sealr/docs/js/auto-complete.js?1553874639"></script>
+<script type="text/javascript" src="/sealr/docs/js/lunr.min.js?1554478468"></script>
+<script type="text/javascript" src="/sealr/docs/js/auto-complete.js?1554478468"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/jandix.github.io\/sealr\/docs";
     
 </script>
-<script type="text/javascript" src="/sealr/docs/js/search.js?1553874639"></script>
+<script type="text/javascript" src="/sealr/docs/js/search.js?1554478468"></script>
 
     
   </div>
@@ -83,6 +84,54 @@
           
       </a>
       
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/docs/sealr/idea/" title="General Idea" class="dd-item ">
+        <a href="/sealr/docs/sealr/idea/">
+        General Idea
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/sealr/docs/sealr/implementation_overview/" title="Implementation Overview" class="dd-item ">
+        <a href="/sealr/docs/sealr/implementation_overview/">
+        Implementation Overview
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
               
     </li>
   
@@ -184,13 +233,13 @@
  
   
     
-    <li data-nav-id="/sealr/docs/oauth_google/" title="OAuth2 Google" class="dd-item 
+    <li data-nav-id="/sealr/docs/oauth_google/" title="Google - OpenID Connect" class="dd-item 
         
         
         
         ">
       <a href="/sealr/docs/oauth_google/">
-          OAuth2 Google
+          Google - OpenID Connect
           
       </a>
       
@@ -284,7 +333,7 @@
             
           
           
-            <a href='/sealr/docs/'>OAuth2 Google</a> > sealr
+            <a href='/sealr/docs/'>sealr</a> > sealr
           
          
           
@@ -299,23 +348,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</a></li>
-<li><a href="#implementation-overview">Implementation overview</a>
-<ul>
-<li>
-<ul>
-<li><a href="#authenticate">authenticate</a></li>
-<li><a href="#is-authed-functions">is_authed functions</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#disclaimer">Disclaimer</a></li>
 <li><a href="#installation">Installation</a></li>
-<li><a href="#contribute">Contribute</a>
-<ul>
-<li>
-<ul>
-<li><a href="#possible-strategies">Possible Strategies</a></li>
-</ul></li>
-</ul></li>
+<li><a href="#contribute">Contribute</a></li>
 <li><a href="#testing">Testing</a></li>
 <li><a href="#examples">Examples</a></li>
 <li><a href="#warranity-notice">Warranity Notice</a></li>
@@ -351,8 +386,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <p><a href="https://travis-ci.org/jandix/sealr"><img src="https://travis-ci.org/jandix/sealr.svg?branch=master" alt="Build
-Status" /></a>
-<a href="https://codecov.io/gh/jandix/sealr"><img src="https://codecov.io/gh/jandix/sealr/branch/master/graph/badge.svg" alt="codecov" /></a></p>
+Status" /></a></p>
 
 <p>The goal of sealr is to provide multiple authentication and
 authorization strategies for <a href="https://www.rplumber.io/">plumber</a> by
@@ -362,67 +396,14 @@ In doing so, we hope to make best practices in authentication easy to
 implement for the R community. The package is inspired by the amazing
 <a href="http://www.passportjs.org/">passport.js</a> library for Node.js.</p>
 
-<h2 id="plumber-filters-for-authentication-authorization">Plumber filters for authentication / authorization</h2>
+<h2 id="disclaimer">Disclaimer</h2>
 
-<p>coming soon</p>
-
-<h2 id="implementation-overview">Implementation overview</h2>
-
-<h4 id="authenticate">authenticate</h4>
-
-<p><code>sealr</code>’s main function is the <code>authenticate</code> function. <code>authenticate</code>
-takes a <code>is_authed_*</code> function (see below) as input and depending on the
-output of this “checker” function, takes action:</p>
-
-<ul>
-<li>if the request is authenticated / authorized, it forwards to the
-next plumber handler using <code>plumber::forward</code>.</li>
-<li>if the request is not authenticated / authorized, it <code>return</code>s to
-the user, passing forward HTTP status code, description and message
-from the output of the <code>is_authed_</code> function.</li>
-</ul>
-
-<p>By accepting a function object as argument, <code>authenticate</code> is quite
-flexible: You can even pass your own <code>is_authed</code> function.</p>
-
-<h4 id="is-authed-functions">is_authed functions</h4>
-
-<p>The functions starting with <code>is_authed</code> provide the actual
-implementations of the different authentication / authorization
-strategies that <code>sealr</code> aims to provide. Currently implemented are:</p>
-
-<ul>
-<li><code>is_authed_jwt</code>: implements JSON Web Token verification and
-checking.</li>
-<li><code>is_authed_oauth2_google</code>: implements Google’s OpenID Connect (which
-is based on OAuth2.0)</li>
-</ul>
-
-<p><code>is_authed_*</code> functions return a list with the following elements:</p>
-
-<ul>
-<li><code>is_authed</code>: TRUE or FALSE. Result of the check whether the request
-is authenticated / authorized.</li>
-<li><code>status</code>: character. Optional (typically only set if <code>is_authed</code> is
-FALSE). Short description of HTTP status code.</li>
-<li><code>code</code>: integer. Optional (typically only set if <code>is_authed</code> is
-FALSE). HTTP status code.</li>
-<li><code>message</code>: character. Optional (typically only set if <code>is_authed</code> is
-FALSE). Longer description.</li>
-</ul>
-
-<p>Currently, the <code>plumber</code> package does not support imposing filters on
-individual endpoints (but it is on the developer team’s radar, see <a href="https://github.com/trestletech/plumber/issues/108">this
-issue</a> :)). That
-makes it difficult to require different levels of authorization,
-e.g. specific authorization for specific endpoints using the plumber
-filter method (see
-<a href="https://github.com/jandix/sealr/tree/master/examples/jwt/jwt_claims_example">jwt_claims_example</a>).</p>
-
-<p>As a workaround, you can put your authentication / authorization checks
-in the individual endpoints. The <code>is_authed_*</code> functions are designed so
-that you can use them independently from plumber filters as long as you
-pass a plumber request and response object.</p>
+<p>⚠️ We are currently looking for security experts to help us develop this
+project / review our code. That being said, while we try to thouroughly
+understand the concepts behind a strategy before we implement it in
+<em>sealr</em>, <strong>we are not experts</strong> in security. Please make sure you
+understand the risks and possible attack vectors when using <em>sealr</em> -
+especially in production environments. ⚠️</p>
 
 <h2 id="installation">Installation</h2>
 
@@ -436,19 +417,8 @@ contribute to the package. You can install and use the package using
 <h2 id="contribute">Contribute</h2>
 
 <p>We are still at the very beginning of the package and we welcome any
-support and contribution. Below you find a list with possible
-authentication strategies that you could implement. The list is not
-complete and can be expanded with your suggestions.</p>
-
-<h4 id="possible-strategies">Possible Strategies</h4>
-
-<ul class="task-list">
-<li><label><input type="checkbox" disabled class="task-list-item"> Bearer Token</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> Sessions</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> Twitter OAuth</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> Facebook OAuth</label></li>
-<li><label><input type="checkbox" disabled class="task-list-item"> Google OAuth</label></li>
-</ul>
+support and contribution. Comment on an existing issue or file a new one
+on <a href="https://github.com/jandix/sealr/issues">GitHub</a>.</p>
 
 <h2 id="testing">Testing</h2>
 
@@ -461,7 +431,8 @@ projects.</p>
 <h2 id="examples">Examples</h2>
 
 <p>We provide some simple sample implementations for different strategies
-and use cases. You can find them in the <code>examples</code> folder.</p>
+and use cases. You can find them on the subpages of the different
+strategies in the navigation bar on the left.</p>
 
 <h2 id="warranity-notice">Warranity Notice</h2>
 
@@ -521,6 +492,22 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
                     
 
                     
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -529,8 +516,24 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
                         
-                        
+            
+            
+                
                     
                 
                 
@@ -638,20 +641,20 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/sealr/docs/js/clipboard.min.js?1553874639"></script>
-    <script src="/sealr/docs/js/perfect-scrollbar.min.js?1553874639"></script>
-    <script src="/sealr/docs/js/perfect-scrollbar.jquery.min.js?1553874639"></script>
-    <script src="/sealr/docs/js/jquery.sticky.js?1553874639"></script>
-    <script src="/sealr/docs/js/featherlight.min.js?1553874639"></script>
-    <script src="/sealr/docs/js/html5shiv-printshiv.min.js?1553874639"></script>
-    <script src="/sealr/docs/js/highlight.pack.js?1553874639"></script>
+    <script src="/sealr/docs/js/clipboard.min.js?1554478468"></script>
+    <script src="/sealr/docs/js/perfect-scrollbar.min.js?1554478468"></script>
+    <script src="/sealr/docs/js/perfect-scrollbar.jquery.min.js?1554478468"></script>
+    <script src="/sealr/docs/js/jquery.sticky.js?1554478468"></script>
+    <script src="/sealr/docs/js/featherlight.min.js?1554478468"></script>
+    <script src="/sealr/docs/js/html5shiv-printshiv.min.js?1554478468"></script>
+    <script src="/sealr/docs/js/highlight.pack.js?1554478468"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/sealr/docs/js/modernizr.custom.71422.js?1553874639"></script>
-    <script src="/sealr/docs/js/learn.js?1553874639"></script>
-    <script src="/sealr/docs/js/hugo-learn.js?1553874639"></script>
+    <script src="/sealr/docs/js/modernizr.custom-3.6.0.js?1554478468"></script>
+    <script src="/sealr/docs/js/learn.js?1554478468"></script>
+    <script src="/sealr/docs/js/hugo-learn.js?1554478468"></script>
 
-    <link href="/sealr/docs/mermaid/mermaid.css?1553874639" type="text/css" rel="stylesheet" />
-    <script src="/sealr/docs/mermaid/mermaid.js?1553874639"></script>
+    <link href="/sealr/docs/mermaid/mermaid.css?1554478468" type="text/css" rel="stylesheet" />
+    <script src="/sealr/docs/mermaid/mermaid.js?1554478468"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

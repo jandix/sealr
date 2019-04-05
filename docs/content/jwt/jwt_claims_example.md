@@ -58,6 +58,10 @@ the opportunity to impose filters on specific endpoints in the future
 (kind of “reverting” the `preempt` logic). See [this plumber
 issue](https://github.com/trestletech/plumber/issues/108).
 
+As a workaround, you could put your authentication / authorization
+checks in the individual endpoints. In this case, use `is_authed_*`
+functions instead of the `authenticate` wrapper.
+
 Run the example
 ---------------
 
@@ -103,14 +107,14 @@ API’s “database” (in this simplified example, a data frame).
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: left;"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
-<td style="text-align: left;">$2a<span class="math inline">12</span>s1cFAO4.cSo4pqUP4YNZxeYXv33ckcvGikvXP4QAqwu80BC5fUtM2</td>
+<td style="text-align: left;">$2a<span class="math inline">12</span>OIUZboRrNamFXs0A9cNfuu82AHBQ51qdhSE1H5CL23gbRaW1vODyK</td>
 <td style="text-align: left;">TRUE</td>
 <td style="text-align: left;">woman</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
 <td style="text-align: left;"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
-<td style="text-align: left;">$2a<span class="math inline">12</span>sgP18Eb32QQk1OkURY8Dnu71yeeKNp3PgF1ZjsueUQgZ2FHRuc79m</td>
+<td style="text-align: left;">$2a<span class="math inline">12</span>D7TMyxozksU.A642T3seyOy5tKXnV4yxftZ9DPxAXQtzDoqU9R1mS</td>
 <td style="text-align: left;">FALSE</td>
 <td style="text-align: left;">man</td>
 </tr>

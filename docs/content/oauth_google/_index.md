@@ -2,8 +2,8 @@
 output: 
   md_document:
     preserve_yaml: true
-title: OAuth2 Google
+title: Google - OpenID Connect
 weight: 3
 ---
 
-OpenID Connect coming soon
+coming soon
