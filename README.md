@@ -13,7 +13,9 @@ using
 [filters](https://www.rplumber.io/docs/routing-and-input.html#filters).
 In doing so, we hope to make best practices in authentication easy to
 implement for the R community. The package is inspired by the amazing
-[passport.js](http://www.passportjs.org/) library for Node.js.
+[passport.js](http://www.passportjs.org/) library for Node.js. The
+*sealr* website can be found at
+[https://jandix.github.io/sealr/](https://jandix.github.io/sealr/docs/sealr/).
 
 ## Disclaimer
 
@@ -37,11 +39,11 @@ devtools::install_github("jandix/sealr")
 ## Documentation and Examples
 
 We provide more information and some simple sample implementations for
-different strategies and use cases on the project
-[website](https://jandix.github.io/sealr/docs/sealr/) (click on the
-headers in the navigation bar on the left to unfold the subsites /
-example sites). The site is a work in progress and we add content
-continuously.
+different strategies and use cases on the project website:
+[https://jandix.github.io/sealr/](https://jandix.github.io/sealr/docs/sealr/)
+(click on the headers in the navigation bar on the left to unfold the
+subsites / example sites). The site is a work in progress and we add
+content continuously.
 
 ## Contribute
 
