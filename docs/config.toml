@@ -12,7 +12,7 @@ home = [ "HTML", "RSS", "JSON"]
   # Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page.
   # Useful to give opportunity to people to create merge request for your doc.
   # See the config.toml file from this documentation site to have an example.
-  editURL = ""
+  editURL = "https://github.com/jandix/sealr"
   # Author of the site, will be used in meta information
   author = ""
   # Description of the site, will be used in meta information
@@ -25,7 +25,7 @@ home = [ "HTML", "RSS", "JSON"]
   # Set this to true to disable this behavior (some proxies don't handle well this optimization)
   disableAssetsBusting = false
   # Set this to true to disable copy-to-clipboard button for inline code.
-  disableInlineCopyToClipBoard = false
+  disableInlineCopyToClipBoard = true
   # A title for shortcuts in menu is set by default. Set this to true to disable it.
   disableShortcutsTitle = false
   # When using mulitlingual website, disable the switch language button.
@@ -40,13 +40,13 @@ home = [ "HTML", "RSS", "JSON"]
   themeVariant = "sealr"
 
 [[menu.shortcuts]]
-name = "<i class='fab fa-github'></i> See code on GitHub"
+name = "<i class='fab fa-github'></i> GitHub repo"
 identifier = "ds"
 url = "https://github.com/jandix/sealr"
 weight = 10
 
 [[menu.shortcuts]]
-name = "<i class='fab fa-wrench'></i> plumber website"
+name = "<i class='fas fa-wrench'></i> plumber"
 identifier = "pl"
 url = "https://www.rplumber.io/"
 weight = 11
