@@ -38,3 +38,15 @@ home = [ "HTML", "RSS", "JSON"]
   ordersectionsby = "weight"
   # Change default color scheme with a variant one. Can be "red", "blue", "green".
   themeVariant = "sealr"
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> See code on GitHub"
+identifier = "ds"
+url = "https://github.com/jandix/sealr"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-wrench'></i> plumber website"
+identifier = "pl"
+url = "https://www.rplumber.io/"
+weight = 11

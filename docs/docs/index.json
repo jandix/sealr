@@ -25,14 +25,14 @@
 	"title": "General Idea",
 	"tags": [],
 	"description": "",
-	"content": " Plumber filters for authentication / authorization The primary logic of sealr is based on plumber filters (although you can use sealr functionality without filters as well by using the is_authed functions directly, see below). “Plumber filters can be used to define a “pipeline” for handling incoming requests\u0026rdquo; (Plumber docs).\nSo if your plumber API receives a request, the request will first be routed through the different filters before it “arrives” at its destination endpoint.\ngraph LR; A\\[Hard edge\\] –\u0026gt;|Link text| B(Round edge) B –\u0026gt; C{Decision} C –\u0026gt;|One| D\\[Result one\\] C –\u0026gt;|Two| E\\[Result two\\] {{\u0026lt; /mermaid \u0026gt;}} The idea of *sealr* is to use a filter for authentication. If a request is not properly authenticated / authorized, *sealr* will immediately return a “401 - Authentication failed.” error from the filter to the user. In this way, an unauthenticated / unauthorized request will not “reach” its destination endpoint.  "
+	"content": " Plumber filters for authentication / authorization The primary logic of sealr is based on plumber filters (although you can use sealr functionality without filters as well by using the is_authed functions directly, see below). “Plumber filters can be used to define a “pipeline” for handling incoming requests\u0026rdquo; (Plumber docs).\nSo if your plumber API receives a request, the request will first be routed through the different filters before it “arrives” at its destination endpoint.\nThe idea of sealr is to use a filter for authentication. If a request is not properly authenticated / authorized, sealr will immediately return a “401 - Authentication failed.” error from the filter to the user. In this way, an unauthenticated / unauthorized request will not “reach” its destination endpoint.\n"
 },
 {
 	"uri": "https://jandix.github.io/sealr/docs/jwt/",
 	"title": "JSON Web Tokens",
 	"tags": [],
 	"description": "",
-	"content": "“JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.” (jwt.io)\nThe JWT stratgey allows to use JSON Web Tokens (JWT) to secure your plumber endpoints. A great introduction to JWT can be found here. JWT can be used to secure REST APIs without sessions. They are considered to be stateless.\n"
+	"content": "“JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.” (jwt.io)\nThe JWT stratgey allows to use JSON Web Tokens (JWT) to secure your plumber endpoints. A great introduction to JWT can be found here. JWT can be used to secure REST APIs without sessions. They are considered to be stateless although they can also be used as stateful session tokens.\n"
 },
 {
 	"uri": "https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/",
