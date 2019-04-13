@@ -57,7 +57,7 @@ is_authed_oauth2_google <- function (req,
   if (missing(res) == TRUE)
     stop("Please pass the response object.")
 
-  if (missing(token_location))
+  if (missing(token_location) == TRUE)
     stop("Please specify a token location.")
 
   # ensure that the user passed the client_id
@@ -87,7 +87,7 @@ is_authed_oauth2_google <- function (req,
   ## check signature -------------------------------------------------------------------------------------
 
   # ensure that the jwt header includes kid
-  if (!("kid" %in% names(jwt$header$kid))) {
+  if (!("kid" %in% names(jwt$header))) {
     return(is_authed_return_list_401())
   }
 
@@ -147,3 +147,4 @@ is_authed_oauth2_google <- function (req,
 
   return(is_authed_return_list(TRUE))
 }
+
