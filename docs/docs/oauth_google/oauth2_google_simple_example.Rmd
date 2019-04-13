@@ -2,7 +2,8 @@
 output: 
   md_document:
     preserve_yaml: true
-title: OAuth2 Google Simple Example
+title: Google OpenID Connect - Simple Example
+linkTitle: Simple Example
 weight: 1
 ---
 
@@ -11,65 +12,96 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Install the packages
-Install the following packages if you haven't already:
+## Run the example
+
+### Obtain Google OAuth credentials 
+
+In order to run this example, you need to obtain OAuth2.0 credentials for your plumber API 
+so that Google later knows that it is authenticating the user to a legitimate application. 
+For this, create a new **project** in the [Google API Console](https://console.developers.google.com/) - you 
+may need to authorize your Google account first if you are not yet a user of Google's developer platform.
+
+Once you have created your project, follow the instructions on "Obtain OAuth 2.0 credentials" [here](https://developers.google.com/identity/protocols/OpenIDConnect). When you have to select
+the application type, select "Other". 
+Store the client ID and the client secret as environment variables in your R session using 
+the following commands. 
+
+
+```{r eval = FALSE}
+Sys.setenv("GOOGLE_CLIENT_ID" = "yourid")
+Sys.setenv("GOOGLE_CLIENT_SECRET" = "yoursecret")
+```
+
+This will make the client and secret available for your *current* R session. If you want
+to make them available beyond your current session, use `usethis::edit_r_environ` and
+add them in the file that opens like this: 
+
+```
+GOOGLE_CLIENT_ID="yourid"
+GOOGLE_CLIENT_SECRET="yoursecret"
+```
+Save and close the file. 
+
+### Run the plumber API
+Copy the code from [below](#code) in a new R file and 
+save it under `oauth2_google_simple_example.R`. In the R console, run:
+
+```{r eval = FALSE}
+plumber::plumb("oauth2_google_simple_example.R")
+```
+
+This will make the API available at `localhost:9090`.
+
+In order to run this example, you need the following packages installed: 
 
 - sealr
+- plumber
 - httr
 - jose
 - jsonlite
 
-## define a new plumber router
-```{r}
 
-pr <- plumber::plumber$new()
+## Authenticate yourself to the plumber API
 
-pr$handle("GET", "/", function (req, res, code = NULL) {
+Open your browser and enter `http://localhost:9090/authentication/` in the address bar.
+You'll be redirected to Google. Authorize your application / plumber API. 
+You'll be again redirected to a JSON response that, depending on your browser, should look something like this (tokens are blacked out):
 
-})
-```
+![google return](/sealr/docs/images/google_oauth_return.png)
 
+It contains:
 
-## define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
-```{r eval=FALSE}
-pr$handle("GET", "/authentication", function (req, res) {
-  url <- "https://accounts.google.com/o/oauth2/v2/auth"
+- `access_token`: the token you would need if you wanted to access any of Google's APIs in your plumber API. If you only use Google to **authenticate** users, this will not be necessary.
+- `expires_in`: how long the access token is valid in seconds. This value is set by Google. In this case, the access token is valid for one hour. 
+- `refresh_token`: the token you can could to refresh your access token. We have not implemented the refresh logic in this example though. 
+- `scope`: the scope your plumber API requested to authorize from the user. In this example, we only requested the "userinfo.profile" scope. 
+- `token_type`: type of token. This will always be "Bearer". Prepend this to your HTTP Authorization Header (see below). 
+- `id_token`: The ID token. A JSON Web Token (see section on JWT) that contains information about the identify of the user. This token is signed by Google. **This is the token you send in the HTTP Authorization header** (see below).
 
-  query <- list(client_id = "62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com",
-                redirect_uri = "http://localhost:9090/authentication/redirect",
-                scope = "https://www.googleapis.com/auth/userinfo.profile",
-                response_type = "code")
-  auth_url <- httr::parse_url(url = url)
-  auth_url$query <- query
-  auth_url <- httr::build_url(auth_url)
-  res$status <- 301
-  res$setHeader("Location", auth_url)
-  return()
-})
+See also the explanation of the return values on [Google's OpenID Connect website](https://developers.google.com/identity/protocols/OpenIDConnect#authuser). 
+
+## Send an authenticated request
+
+Open a terminal and enter the following command, replacing the YOUR_ID_TOKEN with 
+the `id_token` from your response. 
 
 ```
-
-## define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
-```{r eval=FALSE}
-pr$handle("GET", "/authentication/redirect", function (req, res, code = NULL, error = NULL) {
-  token_url <- "https://www.googleapis.com/oauth2/v4/token"
-  body <- list(
-    code = code,
-    client_id = "62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com",
-    client_secret = "0iE21iyz1htfHPtOw21zWcw6",
-    redirect_uri = "http://localhost:9090/authentication/redirect",
-    grant_type = "authorization_code"
-  )
-  response <- httr::POST(token_url, body = body)
-  parsed_response <- jsonlite::fromJSON(httr::content(response, type = "text"))
-  return(parsed_response)
-})
-
+curl -H "Authorization: Bearer YOUR_ID_TOKEN" localhost:9090/secret
 ```
 
-## start API server
-```{r eval=FALSE}
+The ID token will be quite long, so maybe first edit this command in your text editor of choice 
+before copying it to the terminal. Hit enter. 
 
-pr$run(host="0.0.0.0", port=9090)
+You should get back: 
+
+````
+{"message":["Successfully accessed the secret endpoint."]}
+````
+
+
+
+## Code {#code}
+
+```{r, code = readLines("oauth2_google_simple_example.R"), eval = FALSE}
+
 ```
-

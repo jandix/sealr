@@ -9,23 +9,23 @@
 
     <link rel="icon" href="/sealr/docs/images/favicon.png" type="image/png">
 
-    <title>OAuth2 Google Simple Example :: sealr</title>
+    <title>OpenID Connect Google Simple Example :: sealr</title>
 
     
-    <link href="/sealr/docs/css/nucleus.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/fontawesome-all.min.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/hybrid.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/featherlight.min.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/perfect-scrollbar.min.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/auto-complete.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/atom-one-dark-reasonable.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/theme.css?1555056920" rel="stylesheet">
-    <link href="/sealr/docs/css/hugo-theme.css?1555056920" rel="stylesheet">
+    <link href="/sealr/docs/css/nucleus.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/fontawesome-all.min.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/hybrid.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/featherlight.min.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/perfect-scrollbar.min.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/auto-complete.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/atom-one-dark-reasonable.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/theme.css?1555138758" rel="stylesheet">
+    <link href="/sealr/docs/css/hugo-theme.css?1555138758" rel="stylesheet">
     
-      <link href="/sealr/docs/css/theme-blue.css?1555056920" rel="stylesheet">
+      <link href="/sealr/docs/css/theme-blue.css?1555138758" rel="stylesheet">
     
 
-    <script src="/sealr/docs/js/jquery-3.3.1.min.js?1555056920"></script>
+    <script src="/sealr/docs/js/jquery-3.3.1.min.js?1555138758"></script>
 
     <style type="text/css">
       :root #header + #content > #left > #rlblock_left{
@@ -55,14 +55,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/sealr/docs/js/lunr.min.js?1555056920"></script>
-<script type="text/javascript" src="/sealr/docs/js/auto-complete.js?1555056920"></script>
+<script type="text/javascript" src="/sealr/docs/js/lunr.min.js?1555138758"></script>
+<script type="text/javascript" src="/sealr/docs/js/auto-complete.js?1555138758"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/jandix.github.io\/sealr\/docs";
     
 </script>
-<script type="text/javascript" src="/sealr/docs/js/search.js?1555056920"></script>
+<script type="text/javascript" src="/sealr/docs/js/search.js?1555138758"></script>
 
     
   </div>
@@ -262,9 +262,9 @@
  
   
     
-      <li data-nav-id="/sealr/docs/oauth_google/oauth2_google_simple_example/" title="OAuth2 Google Simple Example" class="dd-item active">
+      <li data-nav-id="/sealr/docs/oauth_google/oauth2_google_simple_example/" title="OpenID Connect Google Simple Example" class="dd-item active">
         <a href="/sealr/docs/oauth_google/oauth2_google_simple_example/">
-        OAuth2 Google Simple Example
+        OpenID Connect Google Simple Example
         
         </a>
     </li>
@@ -367,7 +367,7 @@
             
           
           
-            <a href='/sealr/docs/'>sealr</a> > <a href='/sealr/docs/oauth_google/'>Google - OpenID Connect</a> > OAuth2 Google Simple Example
+            <a href='/sealr/docs/'>sealr</a> > <a href='/sealr/docs/oauth_google/'>Google - OpenID Connect</a> > OpenID Connect Google Simple Example
           
          
           
@@ -384,11 +384,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#install-the-packages">Install the packages</a></li>
-<li><a href="#define-a-new-plumber-router">define a new plumber router</a></li>
-<li><a href="#define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</a></li>
-<li><a href="#define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt-1">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</a></li>
-<li><a href="#start-api-server">start API server</a></li>
+<li><a href="#run-the-example">Run the example</a>
+<ul>
+<li><a href="#obtain-google-oauth-credentials">Obtain Google OAuth credentials</a></li>
+<li><a href="#run-the-plumber-api">Run the plumber API</a></li>
+</ul></li>
+<li><a href="#authenticate-yourself-to-the-plumber-api">Authenticate yourself to the plumber API</a></li>
+<li><a href="#send-an-authenticated-request">Send an authenticated request</a></li>
+<li><a href="#code">Code</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -407,7 +410,7 @@
           
             <h1>
               
-              OAuth2 Google Simple Example
+              OpenID Connect Google Simple Example
             </h1>
           
 
@@ -417,32 +420,138 @@
 
 
 
-<h2 id="install-the-packages">Install the packages</h2>
+<h2 id="run-the-example">Run the example</h2>
 
-<p>Install the following packages if you haven’t already:</p>
+<h3 id="obtain-google-oauth-credentials">Obtain Google OAuth credentials</h3>
+
+<p>In order to run this example, you need to obtain OAuth2.0 credentials
+for your plumber API so that Google later knows that it is
+authenticating the user to a legitimate application. For this, create a
+new <strong>project</strong> in the <a href="https://console.developers.google.com/">Google API
+Console</a> - you may need to
+authorize your Google account first if you are not yet a user of
+Google’s developer platform.</p>
+
+<p>Once you have created your project, follow the instructions on “Obtain
+OAuth 2.0 credentials”
+<a href="https://developers.google.com/identity/protocols/OpenIDConnect">here</a>.
+When you have to select the application type, select “Other”. Store the
+client ID and the client secret as environment variables in your R
+session using the following commands.</p>
+
+<pre><code>Sys.setenv(&quot;GOOGLE_CLIENT_ID&quot; = &quot;yourid&quot;)
+Sys.setenv(&quot;GOOGLE_CLIENT_SECRET&quot; = &quot;yoursecret&quot;)
+</code></pre>
+
+<p>This will make the client and secret available for your <em>current</em> R
+session. If you want to make them available beyond your current session,
+use <code>usethis::edit_r_environ</code> and add them in the file that opens like
+this:</p>
+
+<pre><code>GOOGLE_CLIENT_ID=&quot;yourid&quot;
+GOOGLE_CLIENT_SECRET=&quot;yoursecret&quot;
+</code></pre>
+
+<p>Save and close the file.</p>
+
+<h3 id="run-the-plumber-api">Run the plumber API</h3>
+
+<p>Copy the code from <a href="#code">below</a> in a new R file and save it under
+<code>oauth2_google_simple_example.R</code>. In the R console, run:</p>
+
+<pre><code>plumber::plumb(&quot;oauth2_google_simple_example.R&quot;)
+</code></pre>
+
+<p>This will make the API available at <code>localhost:9090</code>.</p>
+
+<p>In order to run this example, you need the following packages installed:</p>
 
 <ul>
 <li>sealr</li>
+<li>plumber</li>
 <li>httr</li>
 <li>jose</li>
 <li>jsonlite</li>
 </ul>
 
-<h2 id="define-a-new-plumber-router">define a new plumber router</h2>
+<h2 id="authenticate-yourself-to-the-plumber-api">Authenticate yourself to the plumber API</h2>
 
-<pre><code>pr &lt;- plumber::plumber$new()
+<p>Open your browser and enter <code>http://localhost:9090/authentication/</code> in
+the address bar. You’ll be redirected to Google. Authorize your
+application / plumber API. You’ll be again redirected to a JSON response
+that, depending on your browser, should look something like this (tokens
+are blacked out):</p>
 
-pr$handle(&quot;GET&quot;, &quot;/&quot;, function (req, res, code = NULL) {
+<p><img src="/sealr/docs/images/google_oauth_return.png" alt="google return" /></p>
 
-})
+<p>It contains:</p>
+
+<ul>
+<li><code>access_token</code>: the token you would need if you wanted to access any
+of Google’s APIs in your plumber API. If you only use Google to
+<strong>authenticate</strong> users, this will not be necessary.</li>
+<li><code>expires_in</code>: how long the access token is valid in seconds. This
+value is set by Google. In this case, the access token is valid for
+one hour.</li>
+<li><code>refresh_token</code>: the token you can could to refresh your access
+token. We have not implemented the refresh logic in this example
+though.</li>
+<li><code>scope</code>: the scope your plumber API requested to authorize from the
+user. In this example, we only requested the “userinfo.profile”
+scope.</li>
+<li><code>token_type</code>: type of token. This will always be “Bearer”. Prepend
+this to your HTTP Authorization Header (see below).</li>
+<li><code>id_token</code>: The ID token. A JSON Web Token (see section on JWT) that
+contains information about the identify of the user. This token is
+signed by Google. <strong>This is the token you send in the HTTP
+Authorization header</strong> (see below).</li>
+</ul>
+
+<p>See also the explanation of the return values on <a href="https://developers.google.com/identity/protocols/OpenIDConnect#authuser">Google’s OpenID
+Connect
+website</a>.</p>
+
+<h2 id="send-an-authenticated-request">Send an authenticated request</h2>
+
+<p>Open a terminal and enter the following command, replacing the
+YOUR_ID_TOKEN with the <code>id_token</code> from your response.</p>
+
+<pre><code>curl -H &quot;Authorization: Bearer YOUR_ID_TOKEN&quot; localhost:9090/secret
 </code></pre>
 
-<h2 id="define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</h2>
+<p>The ID token will be quite long, so maybe first edit this command in
+your text editor of choice before copying it to the terminal. Hit enter.</p>
 
-<pre><code>pr$handle(&quot;GET&quot;, &quot;/authentication&quot;, function (req, res) {
-  url &lt;- &quot;https://accounts.google.com/o/oauth2/v2/auth&quot;
+<p>You should get back:</p>
 
-  query &lt;- list(client_id = &quot;62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com&quot;,
+<pre><code>{&quot;message&quot;:[&quot;Successfully accessed the secret endpoint.&quot;]}
+</code></pre>
+
+<h2 id="code">Code</h2>
+
+<pre><code># define contant variables
+CLIENT_ID &lt;- Sys.getenv(&quot;GOOGLE_CLIENT_ID&quot;)
+CLIENT_SECRET &lt;- Sys.getenv(&quot;GOOGLE_CLIENT_SECRET&quot;)
+
+# get the discovery document with the required URLs
+response &lt;- httr::GET(&quot;https://accounts.google.com/.well-known/openid-configuration&quot;)
+discovery_document &lt;- jsonlite::fromJSON(httr::content(response, type = &quot;text&quot;, encoding = &quot;UTF-8&quot;))
+
+# define a new plumber router
+pr &lt;- plumber::plumber$new()
+
+# integrate the google strategy in a filter
+pr$filter(&quot;sealr-oauth2-google&quot;, function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, token_location = &quot;header&quot;,
+                      is_authed_fun = sealr::is_authed_oauth2_google, client_id = CLIENT_ID)
+})
+
+# define authentication route to issue web tokens (exclude &quot;sealr-google&quot; filter using preempt)
+pr$handle(&quot;GET&quot;, &quot;/authentication&quot;, function (req, res) {
+  url &lt;- discovery_document$authorization_endpoint
+
+  query &lt;- list(client_id = CLIENT_ID,
                 redirect_uri = &quot;http://localhost:9090/authentication/redirect&quot;,
                 scope = &quot;https://www.googleapis.com/auth/userinfo.profile&quot;,
                 response_type = &quot;code&quot;)
@@ -452,29 +561,30 @@ pr$handle(&quot;GET&quot;, &quot;/&quot;, function (req, res, code = NULL) {
   res$status &lt;- 301
   res$setHeader(&quot;Location&quot;, auth_url)
   return()
-})
-</code></pre>
+}, preempt = c(&quot;sealr-oauth2-google&quot;))
 
-<h2 id="define-authentication-route-to-issue-web-tokens-exclude-sealr-jwt-filter-using-preempt-1">define authentication route to issue web tokens (exclude “sealr-jwt” filter using preempt)</h2>
-
-<pre><code>pr$handle(&quot;GET&quot;, &quot;/authentication/redirect&quot;, function (req, res, code = NULL, error = NULL) {
-  token_url &lt;- &quot;https://www.googleapis.com/oauth2/v4/token&quot;
+# define authentication route to issue web tokens (exclude &quot;sealr-google&quot; filter using preempt)
+pr$handle(&quot;GET&quot;, &quot;/authentication/redirect&quot;, function (req, res, code = NULL, error = NULL) {
+  token_url &lt;- discovery_document$token_endpoint
   body &lt;- list(
     code = code,
-    client_id = &quot;62291147513-pubf19de15prks9p2eij7hloteug5h5d.apps.googleusercontent.com&quot;,
-    client_secret = &quot;0iE21iyz1htfHPtOw21zWcw6&quot;,
+    client_id = CLIENT_ID,
+    client_secret = CLIENT_SECRET,
     redirect_uri = &quot;http://localhost:9090/authentication/redirect&quot;,
     grant_type = &quot;authorization_code&quot;
   )
   response &lt;- httr::POST(token_url, body = body)
   parsed_response &lt;- jsonlite::fromJSON(httr::content(response, type = &quot;text&quot;))
   return(parsed_response)
+}, preempt = c(&quot;sealr-oauth2-google&quot;))
+
+# protected path
+pr$handle(&quot;GET&quot;, &quot;/secret&quot;, function (req, res) {
+  list(message = &quot;Successfully accessed the secret endpoint.&quot;)
 })
-</code></pre>
 
-<h2 id="start-api-server">start API server</h2>
-
-<pre><code>pr$run(host=&quot;0.0.0.0&quot;, port=9090)
+# start API server
+pr$run(host=&quot;0.0.0.0&quot;, port=9090)
 </code></pre>
 
 
@@ -673,20 +783,20 @@ pr$handle(&quot;GET&quot;, &quot;/&quot;, function (req, res, code = NULL) {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/sealr/docs/js/clipboard.min.js?1555056920"></script>
-    <script src="/sealr/docs/js/perfect-scrollbar.min.js?1555056920"></script>
-    <script src="/sealr/docs/js/perfect-scrollbar.jquery.min.js?1555056920"></script>
-    <script src="/sealr/docs/js/jquery.sticky.js?1555056920"></script>
-    <script src="/sealr/docs/js/featherlight.min.js?1555056920"></script>
-    <script src="/sealr/docs/js/html5shiv-printshiv.min.js?1555056920"></script>
-    <script src="/sealr/docs/js/highlight.pack.js?1555056920"></script>
+    <script src="/sealr/docs/js/clipboard.min.js?1555138758"></script>
+    <script src="/sealr/docs/js/perfect-scrollbar.min.js?1555138758"></script>
+    <script src="/sealr/docs/js/perfect-scrollbar.jquery.min.js?1555138758"></script>
+    <script src="/sealr/docs/js/jquery.sticky.js?1555138758"></script>
+    <script src="/sealr/docs/js/featherlight.min.js?1555138758"></script>
+    <script src="/sealr/docs/js/html5shiv-printshiv.min.js?1555138758"></script>
+    <script src="/sealr/docs/js/highlight.pack.js?1555138758"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/sealr/docs/js/modernizr.custom-3.6.0.js?1555056920"></script>
-    <script src="/sealr/docs/js/learn.js?1555056920"></script>
-    <script src="/sealr/docs/js/hugo-learn.js?1555056920"></script>
+    <script src="/sealr/docs/js/modernizr.custom-3.6.0.js?1555138758"></script>
+    <script src="/sealr/docs/js/learn.js?1555138758"></script>
+    <script src="/sealr/docs/js/hugo-learn.js?1555138758"></script>
 
-    <link href="/sealr/docs/mermaid/mermaid.css?1555056920" type="text/css" rel="stylesheet" />
-    <script src="/sealr/docs/mermaid/mermaid.js?1555056920"></script>
+    <link href="/sealr/docs/mermaid/mermaid.css?1555138758" type="text/css" rel="stylesheet" />
+    <script src="/sealr/docs/mermaid/mermaid.js?1555138758"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
