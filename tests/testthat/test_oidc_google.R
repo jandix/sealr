@@ -3,23 +3,23 @@ testthat::context("Test OAuth2 Google Strategy")
 # TEST MISSING INPUTS ------------------------------------------------------------------------------------
 
 testthat::test_that("test that the function requires request object", {
-  testthat::expect_error(sealr::is_authed_oauth2_google(res = list(), client_id = "xxx"),
+  testthat::expect_error(sealr::is_authed_oidc_google(res = list(), client_id = "xxx"),
                          regexp = "Please pass the request object.")
 })
 
 testthat::test_that("test that the function requires response object", {
-  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), client_id = "xxx"),
+  testthat::expect_error(sealr::is_authed_oidc_google(req = list(), client_id = "xxx"),
                          regexp = "Please pass the response object.")
 })
 
 testthat::test_that("test that the function requires token_location", {
-  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list(),
+  testthat::expect_error(sealr::is_authed_oidc_google(req = list(), res = list(),
                                                         client_id = "xxx"),
                          regexp = "Please specify a token location.")
 })
 
 testthat::test_that("test that the function requires client_id", {
-  testthat::expect_error(sealr::is_authed_oauth2_google(req = list(), res = list(), token_location = "header"),
+  testthat::expect_error(sealr::is_authed_oidc_google(req = list(), res = list(), token_location = "header"),
                          regexp = "Please pass the Google client id.")
 })
 
@@ -31,7 +31,7 @@ testthat::test_that("test that the function requires HTTP_AUTHORIZATION header i
   test_res <- list()
   client_id <- "xxx"
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id)
@@ -44,7 +44,7 @@ testthat::test_that("test that the function fails if token is invalid", {
   test_res <- list()
   client_id <- "xxx"
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id)
@@ -73,12 +73,12 @@ testthat::test_that("test that the function works with all arguments", {
   jwt <- jose::jwt_encode_sig(token, key, header = list(kid = test_kid))
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
-  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame())
-  mockery::stub(sealr::is_authed_oauth2_google, "match_kid_in_jwks", 1)
-  mockery::stub(sealr::is_authed_oauth2_google, "parse_pub_key_in_jwks", pub_key)
+  mockery::stub(sealr::is_authed_oidc_google, "download_jwks", data.frame())
+  mockery::stub(sealr::is_authed_oidc_google, "match_kid_in_jwks", 1)
+  mockery::stub(sealr::is_authed_oidc_google, "parse_pub_key_in_jwks", pub_key)
 
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id,
@@ -106,12 +106,12 @@ testthat::test_that("test that the function works without optional hd check", {
   jwt <- jose::jwt_encode_sig(token, key, header = list(kid = test_kid))
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
-  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame())
-  mockery::stub(sealr::is_authed_oauth2_google, "match_kid_in_jwks", 1)
-  mockery::stub(sealr::is_authed_oauth2_google, "parse_pub_key_in_jwks", pub_key)
+  mockery::stub(sealr::is_authed_oidc_google, "download_jwks", data.frame())
+  mockery::stub(sealr::is_authed_oidc_google, "match_kid_in_jwks", 1)
+  mockery::stub(sealr::is_authed_oidc_google, "parse_pub_key_in_jwks", pub_key)
 
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id)
@@ -139,9 +139,9 @@ testthat::test_that("test that the function fails when download of jwks fails", 
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
   # NULL is returned when download fails
-  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", NULL)
+  mockery::stub(sealr::is_authed_oidc_google, "download_jwks", NULL)
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id)
@@ -172,9 +172,9 @@ testthat::test_that("test that the function fails if kid is not part of jwks", {
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
   # NULL is returned when download fails
-  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame(kid = c("1", "2", "3")))
+  mockery::stub(sealr::is_authed_oidc_google, "download_jwks", data.frame(kid = c("1", "2", "3")))
 
-  res <- sealr::is_authed_oauth2_google(req = test_req,
+  res <- sealr::is_authed_oidc_google(req = test_req,
                                         res = test_res,
                                         token_location = "header",
                                         client_id = test_client_id)

@@ -1,11 +1,11 @@
 #' Google OAuth2.0 / OpenID Connect Strategy
 #'
-#' @description  \code{is_authed_oauth2_google} checks whether a Google access token
-#' obtained via Google's OpenID Connect (an implementation of OAuth 2.0 for
+#' @description  \code{is_authed_oidc_google} checks whether a Google access token
+#' obtained via Google's OpenID Connect (OIDC: an implementation of OAuth 2.0 for
 #' authentication) passed as part of the HTTP request is valid.
 #' The function can be passed to \code{\link{authenticate}}'s \code{is_authed_fun}
 #' argument or it can be used standalone in any plumber endpoint.
-#' \code{is_authed_oauth2_google} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
+#' \code{is_authed_oidc_google} extracts the token from the HTTP Authorization header with the scheme 'bearer'.
 #' @param req plumber request object
 #' @param res plumber response object
 #' @param token_location character. Location of token. Either "header" or "cookie".
@@ -30,9 +30,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' pr$filter("sealr-google-oauth", function (req, res) {
+#' pr$filter("sealr-openid-connect-google", function (req, res) {
 #'   sealr::authenticate(req = req, res = res,
-#'                       is_authed_fun = is_authed_oauth2_google,
+#'                       is_authed_fun = is_authed_oidc_google,
 #'                       client_id = Sys.getenv("GOOGLE_CLIENT_ID"))
 #' })
 #' }
@@ -40,7 +40,7 @@
 #' @export
 #' @seealso \url{https://developers.google.com/identity/protocols/OpenIDConnect}
 
-is_authed_oauth2_google <- function (req,
+is_authed_oidc_google <- function (req,
                            res,
                            token_location,
                            client_id,
