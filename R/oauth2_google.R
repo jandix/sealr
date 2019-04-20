@@ -78,39 +78,34 @@ is_authed_oauth2_google <- function (req,
   # remove "Bearer" part from token
   token <- clean_bearer_token(token)
 
-  # split the JWT token into its components
-  jwt <- tryCatch(jwt_split(token),
-                  error = function (e) NULL)
+  ## validating the Google ID token -------------------------------------------------------------------------------------
 
-  if(is.null(jwt)) return(is_authed_return_list_401())
+  # get the header of the JWT
+  # we need this to get the key id (kid) of the
+  # key that was used by google to generate this JWT
+  jwt_header <- tryCatch(jwt_split(token)$header,
+                         error = function (e) NULL)
 
-  ## check signature -------------------------------------------------------------------------------------
+  if(is.null(jwt_header)) return(is_authed_return_list_401())
 
   # ensure that the jwt header includes kid
-  if (!("kid" %in% names(jwt$header))) {
-    return(is_authed_return_list_401())
-  }
+  if (!("kid" %in% names(jwt_header))) return(is_authed_return_list_401())
 
-  # download public key file
-  response <- httr::GET(jwks_uri)
-  if (httr::http_error(response)) {
-    return(is_authed_return_list_401())
-  }
+  # download public key file and find public key used for the jwt by matching the kid
+  jwks <- download_jwks()
+  index <- match_pub_key_in_jwks(jwks, jwt_header)
 
-  # match kid
-  jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
-  index <- which(jwks$kid == jwt$header$kid)
-
-  if (length(index) == 0) {
+  if (length(index) != 1) {
     return(is_authed_return_list(FALSE, "Failed", 500,
                                  "Authentication Error. Hint: jwks_uri"))
   }
 
-  # check signature
+  pub_key <- parse_pub_key_in_jwks(jwks, index) # parse matched public key
+
+  # use the key to decode the JWT payload
   payload <- tryCatch(jose::jwt_decode_sig(token, pub_key),
                       error = function (e) NULL)
 
-  # if token not valid send error
   if (is.null(payload)) {
     return(is_authed_return_list_401())
   }
@@ -119,28 +114,20 @@ is_authed_oauth2_google <- function (req,
   req$jwt_payload <- payload
 
   ## check jwt payload------------------------------------------------------------------------------------
+  # google imposes several claims on their JWT that we need to check
+  claims <- list(aud = client_id)
 
-  # check if iss is correct
-  if (!stringr::str_detect(payload$iss, "https://accounts.google.com||accounts.google.com")) {
+  if(!is.null(hd)){
+    claims$hd = hd
+  }
+
+  if (is.null(payload$iss) ||
+      !payload$iss %in% c("https://accounts.google.com", "accounts.google.com") || # check issuer
+      !check_all_claims(payload, claims) ||  # check aud and (optionally) hd
+      is_jwt_expired(payload)) { # check if token expired
     return(is_authed_return_list_401())
   }
 
-  # check if client id matches
-  if (payload$aud != client_id) {
-    return(is_authed_return_list_401())
-  }
-
-  # check if token expired
-  if (is_jwt_expired(payload)) {
-    return(is_authed_return_list_401())
-  }
-
-  # check if hd is valid
-  if (!is.null(hd)) {
-    if (payload$hd != hd) {
-      return(is_authed_return_list_401())
-    }
-  }
 
   return(is_authed_return_list(TRUE))
 }
@@ -158,16 +145,12 @@ download_jwks <- function(){
   return(jwks)
 }
 
-match_by_kid <- function(){
-
+match_pub_key_in_jwks <- function(jwks, jwt_header){
+  index <- which(jwks$kid == jwt_header$kid)
+  return(index)
 }
-get_public_key <- function(jwt){
 
-  index <- which(jwks$kid == jwt$header$kid)
-
-  if (length(index) == 0) {
-    return(NULL)
-  }
+parse_pub_key_in_jwks <- function(jwks, index){
 
   # parse public key
   pub_key <- jose::jwk_read(jwks[index, ])
