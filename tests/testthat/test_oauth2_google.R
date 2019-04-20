@@ -76,27 +76,33 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION th
   # test data
   key <- openssl::rsa_keygen()
   pub_key <- as.list(key)$pubkey
+  str(key)
+  test_jwks <- data.frame(
+    kid = c("thisismykid"),
+    e = c(as.integer(key$data$e)),
+    alg = "RS2048",
+    kty = "RSA",
+    ssh
+    stringsAsFactors = FALSE
+  )
+  test_jwks
+
   token <- jose::jwt_claim(name = "Franz",
                            uid = 509)
-  jwt <- jose::jwt_encode_sig(token, key)
-
-
-  jwt_split_up <- jwt_split(jwt)
-  jwt_split_up$header$kid <- "thisismykid"
-
-  # decode and get kid
-  token <- jose::jwt_encode_sig(token, key)
+  jwt <- jose::jwt_encode_sig(token, key, header = list(kid = "thisismykid"))
 
   # download public key file
   jwks_uri <- "https://www.googleapis.com/oauth2/v3/certs"
   response <- httr::GET(jwks_uri)
 
   # TURN INTO TESTTHAT
-  if (httr::http_error(response)) {
-    return(FALSE)
-  }
+  # if (httr::http_error(response)) {
+  #   return(FALSE)
+  # }
+
+
   jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
-  jwks$kid <-
+  jwks
   mockery::stub(sealr::is_authed_oauth2_google, "jsonlite::fromJSON",
                 )
   # we need to mock the fromJSON method as this is where the dataframe is regturned

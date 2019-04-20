@@ -106,9 +106,6 @@ is_authed_oauth2_google <- function (req,
                                  "Authentication Error. Hint: jwks_uri"))
   }
 
-  # parse public key
-  pub_key <- jose::jwk_read(jwks[index, ])
-
   # check signature
   payload <- tryCatch(jose::jwt_decode_sig(token, pub_key),
                       error = function (e) NULL)
@@ -148,3 +145,32 @@ is_authed_oauth2_google <- function (req,
   return(is_authed_return_list(TRUE))
 }
 
+
+download_jwks <- function(){
+  # download public key file
+  response <- httr::GET(jwks_uri)
+  if (httr::http_error(response)) {
+    return(NULL)
+  }
+
+  # match kid
+  jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
+  return(jwks)
+}
+
+match_by_kid <- function(){
+
+}
+get_public_key <- function(jwt){
+
+  index <- which(jwks$kid == jwt$header$kid)
+
+  if (length(index) == 0) {
+    return(NULL)
+  }
+
+  # parse public key
+  pub_key <- jose::jwk_read(jwks[index, ])
+
+  return(pub_key)
+}
