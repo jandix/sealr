@@ -93,7 +93,7 @@ is_authed_oauth2_google <- function (req,
 
   # download public key file and find public key used for the jwt by matching the kid
   jwks <- download_jwks()
-  index <- match_pub_key_in_jwks(jwks, jwt_header)
+  index <- match_kid_in_jwks(jwks, jwt_header)
 
   if (length(index) != 1) {
     return(is_authed_return_list(FALSE, "Failed", 500,
@@ -140,12 +140,11 @@ download_jwks <- function(){
     return(NULL)
   }
 
-  # match kid
   jwks <- jsonlite::fromJSON(httr::content(response, type = "text", encoding = "UTF-8"))$keys
   return(jwks)
 }
 
-match_pub_key_in_jwks <- function(jwks, jwt_header){
+match_kid_in_jwks <- function(jwks, jwt_header){
   index <- which(jwks$kid == jwt_header$kid)
   return(index)
 }

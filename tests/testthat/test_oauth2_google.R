@@ -38,7 +38,7 @@ testthat::test_that("test that the function requires HTTP_AUTHORIZATION header i
   testthat::expect_false(res$is_authed)
 })
 
-testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION", {
+testthat::test_that("test that the function fails if token is invalid", {
   # test data
   test_req <- list(HTTP_AUTHORIZATION = "xxx.xxx.xxx")
   test_res <- list()
@@ -51,25 +51,7 @@ testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION", 
   testthat::expect_false(res$is_authed)
 })
 
-testthat::test_that("test that the function requires valid HTTP_AUTHORIZATION that matches google key", {
-  # test data
-  key <- openssl::rsa_keygen()
-  pub_key <- as.list(key)$pubkey
-  token <- jose::jwt_claim(name = "Franz",
-                     uid = 509)
-  jwt <- jose::jwt_encode_sig(token, key)
-  test_req <- list(HTTP_AUTHORIZATION = jwt)
-  test_res <- list()
-  client_id <- "xxx"
-
-  res <- sealr::is_authed_oauth2_google(req = test_req,
-                                        res = test_res,
-                                        token_location = "header",
-                                        client_id = test_client_id)
-  testthat::expect_false(res$is_authed)
-})
-
-
+# TEST FUNCTION WITH HELP OF MOCKING ---------------------------------------------
 testthat::test_that("test that the function works with all arguments", {
 
   test_res <- list()
@@ -92,7 +74,7 @@ testthat::test_that("test that the function works with all arguments", {
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
   mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame())
-  mockery::stub(sealr::is_authed_oauth2_google, "match_pub_key_in_jwks", 1)
+  mockery::stub(sealr::is_authed_oauth2_google, "match_kid_in_jwks", 1)
   mockery::stub(sealr::is_authed_oauth2_google, "parse_pub_key_in_jwks", pub_key)
 
 
@@ -104,17 +86,16 @@ testthat::test_that("test that the function works with all arguments", {
   testthat::expect_true(res$is_authed)
 })
 
-
-
 testthat::test_that("test that the function works without optional hd check", {
-
-  test_res <- list()
-  test_kid = "thisismykid"
-  test_client_id = "xxx"
 
   # public key to to be used as signature for JWT
   key <- openssl::rsa_keygen()
   pub_key <- as.list(key)$pubkey
+
+  # test data
+  test_res <- list()
+  test_kid = "thisismykid"
+  test_client_id = "xxx"
 
   # generate JWT
   token <- jose::jwt_claim(name = "Franz",
@@ -126,7 +107,7 @@ testthat::test_that("test that the function works without optional hd check", {
   test_req <- list(HTTP_AUTHORIZATION = jwt)
 
   mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame())
-  mockery::stub(sealr::is_authed_oauth2_google, "match_pub_key_in_jwks", 1)
+  mockery::stub(sealr::is_authed_oauth2_google, "match_kid_in_jwks", 1)
   mockery::stub(sealr::is_authed_oauth2_google, "parse_pub_key_in_jwks", pub_key)
 
 
@@ -136,3 +117,70 @@ testthat::test_that("test that the function works without optional hd check", {
                                         client_id = test_client_id)
   testthat::expect_true(res$is_authed)
 })
+
+testthat::test_that("test that the function fails when download of jwks fails", {
+
+  # public key to to be used as signature for JWT
+  key <- openssl::rsa_keygen()
+  pub_key <- as.list(key)$pubkey
+
+  # test data
+  test_res <- list()
+  test_kid = "thisismykid"
+  test_client_id = "xxx"
+
+  # generate JWT
+  token <- jose::jwt_claim(name = "Franz",
+                           uid = 509,
+                           aud = test_client_id,
+                           iss = "https://accounts.google.com")
+
+  jwt <- jose::jwt_encode_sig(token, key, header = list(kid = test_kid))
+  test_req <- list(HTTP_AUTHORIZATION = jwt)
+
+  # NULL is returned when download fails
+  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", NULL)
+
+  res <- sealr::is_authed_oauth2_google(req = test_req,
+                                        res = test_res,
+                                        token_location = "header",
+                                        client_id = test_client_id)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 500)
+  testthat::expect_equal(res$message, "Authentication Error. Hint: jwks_uri")
+
+})
+
+testthat::test_that("test that the function fails if kid is not part of jwks", {
+
+  # public key to to be used as signature for JWT
+  key <- openssl::rsa_keygen()
+  pub_key <- as.list(key)$pubkey
+
+  # test data
+  test_res <- list()
+  test_kid = "thisismykid"
+  test_client_id = "xxx"
+
+  # generate JWT
+  token <- jose::jwt_claim(name = "Franz",
+                           uid = 509,
+                           aud = test_client_id,
+                           iss = "https://accounts.google.com")
+
+  jwt <- jose::jwt_encode_sig(token, key, header = list(kid = test_kid))
+  test_req <- list(HTTP_AUTHORIZATION = jwt)
+
+  # NULL is returned when download fails
+  mockery::stub(sealr::is_authed_oauth2_google, "download_jwks", data.frame(kid = c("1", "2", "3")))
+
+  res <- sealr::is_authed_oauth2_google(req = test_req,
+                                        res = test_res,
+                                        token_location = "header",
+                                        client_id = test_client_id)
+  testthat::expect_false(res$is_authed)
+  testthat::expect_equal(res$code, 500)
+  testthat::expect_equal(res$message, "Authentication Error. Hint: jwks_uri")
+
+})
+
