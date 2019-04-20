@@ -2,7 +2,8 @@
 output: 
   md_document:
     preserve_yaml: true
-title: OpenID Connect Google Simple Example
+title: Google OpenID Connect - Simple Example
+linkTitle: Simple Example
 weight: 1
 ---
 
@@ -17,12 +18,12 @@ authenticating the user to a legitimate application. For this, create a
 new **project** in the [Google API
 Console](https://console.developers.google.com/) - you may need to
 authorize your Google account first if you are not yet a user of
-Google’s developer platform.
+Google's developer platform.
 
-Once you have created your project, follow the instructions on “Obtain
-OAuth 2.0 credentials”
+Once you have created your project, follow the instructions on "Obtain
+OAuth 2.0 credentials"
 [here](https://developers.google.com/identity/protocols/OpenIDConnect).
-When you have to select the application type, select “Other”. Store the
+When you have to select the application type, select "Other". Store the
 client ID and the client secret as environment variables in your R
 session using the following commands.
 
@@ -60,8 +61,8 @@ Authenticate yourself to the plumber API
 ----------------------------------------
 
 Open your browser and enter `http://localhost:9090/authentication/` in
-the address bar. You’ll be redirected to Google. Authorize your
-application / plumber API. You’ll be again redirected to a JSON response
+the address bar. You'll be redirected to Google. Authorize your
+application / plumber API. You'll be again redirected to a JSON response
 that, depending on your browser, should look something like this (tokens
 are blacked out):
 
@@ -70,7 +71,7 @@ are blacked out):
 It contains:
 
 -   `access_token`: the token you would need if you wanted to access any
-    of Google’s APIs in your plumber API. If you only use Google to
+    of Google's APIs in your plumber API. If you only use Google to
     **authenticate** users, this will not be necessary.
 -   `expires_in`: how long the access token is valid in seconds. This
     value is set by Google. In this case, the access token is valid for
@@ -79,16 +80,16 @@ It contains:
     token. We have not implemented the refresh logic in this example
     though.
 -   `scope`: the scope your plumber API requested to authorize from the
-    user. In this example, we only requested the “userinfo.profile”
+    user. In this example, we only requested the "userinfo.profile"
     scope.
--   `token_type`: type of token. This will always be “Bearer”. Prepend
+-   `token_type`: type of token. This will always be "Bearer". Prepend
     this to your HTTP Authorization Header (see below).
 -   `id_token`: The ID token. A JSON Web Token (see section on JWT) that
     contains information about the identify of the user. This token is
     signed by Google. **This is the token you send in the HTTP
     Authorization header** (see below).
 
-See also the explanation of the return values on [Google’s OpenID
+See also the explanation of the return values on [Google's OpenID
 Connect
 website](https://developers.google.com/identity/protocols/OpenIDConnect#authuser).
 

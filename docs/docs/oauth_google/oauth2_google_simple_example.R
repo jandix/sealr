@@ -9,13 +9,14 @@ discovery_document <- jsonlite::fromJSON(httr::content(response, type = "text", 
 # define a new plumber router
 pr <- plumber::plumber$new()
 
-# integrate the jwt strategy in a filter
+# integrate the google strategy in a filter
 pr$filter("sealr-oauth2-google", function (req, res) {
   # simply call the strategy and forward the request and response
-  sealr::oauth2_google(req = req, res = res, client_id = CLIENT_ID)
+  sealr::authenticate(req = req, res = res, token_location = "header",
+                      is_authed_fun = sealr::is_authed_oauth2_google, client_id = CLIENT_ID)
 })
 
-# define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
+# define authentication route to issue web tokens (exclude "sealr-google" filter using preempt)
 pr$handle("GET", "/authentication", function (req, res) {
   url <- discovery_document$authorization_endpoint
 
@@ -31,7 +32,7 @@ pr$handle("GET", "/authentication", function (req, res) {
   return()
 }, preempt = c("sealr-oauth2-google"))
 
-# define authentication route to issue web tokens (exclude "sealr-jwt" filter using preempt)
+# define authentication route to issue web tokens (exclude "sealr-google" filter using preempt)
 pr$handle("GET", "/authentication/redirect", function (req, res, code = NULL, error = NULL) {
   token_url <- discovery_document$token_endpoint
   body <- list(
@@ -47,8 +48,8 @@ pr$handle("GET", "/authentication/redirect", function (req, res, code = NULL, er
 }, preempt = c("sealr-oauth2-google"))
 
 # protected path
-pr$handle("GET", "/", function (req, res) {
-  list(message = "SUCCESS")
+pr$handle("GET", "/secret", function (req, res) {
+  list(message = "Successfully accessed the secret endpoint.")
 })
 
 # start API server
