@@ -1,0 +1,9 @@
+
+# Storage of Tokens
+
+## Cookie
+
+Instead of requiring the user to send the JWT back in the HTTP Authorization header, 
+you can also use a cookie in the browser of the API user to store the 
+JWT. This way, the user does not have to remember to send the JWT in the 
+Authorization header. 
