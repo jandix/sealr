@@ -1,0 +1,8 @@
+title: "sealr"
+book_filename: "sealr"
+language:
+  ui:
+    chapter_name: ""
+delete_merged_file: true
+output_dir: "."
+rmd_subdir: true
