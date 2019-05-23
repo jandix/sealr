@@ -6,3 +6,4 @@
 ^README\.Rmd$
 ^examples/*$
 ^docs/*$
+^examples/*$

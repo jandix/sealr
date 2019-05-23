@@ -1,0 +1,8 @@
+{
+  "signal": "SIGHUP",
+  "verbose": true,
+  "watch": "*.R",
+  "execMap": {
+    "R": "Rscript"
+  }
+}

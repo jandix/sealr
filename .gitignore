@@ -26,3 +26,4 @@ vignettes/*.html vignettes/*.pdf
 \.DS_Store
 
 \.Rhistory
+.idea/*
