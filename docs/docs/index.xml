@@ -23,12 +23,12 @@ The JWT filter looks like this:
     </item>
     
     <item>
-      <title>OpenID Connect Google Simple Example</title>
-      <link>https://jandix.github.io/sealr/docs/oauth_google/oauth2_google_simple_example/</link>
+      <title>Google OpenID Connect - Simple Example</title>
+      <link>https://jandix.github.io/sealr/docs/oidc_google/oidc_google_simple_example/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://jandix.github.io/sealr/docs/oauth_google/oauth2_google_simple_example/</guid>
-      <description>Run the example Obtain Google OAuth credentials In order to run this example, you need to obtain OAuth2.0 credentials for your plumber API so that Google later knows that it is authenticating the user to a legitimate application. For this, create a new project in the Google API Console - you may need to authorize your Google account first if you are not yet a user of Google’s developer platform.</description>
+      <guid>https://jandix.github.io/sealr/docs/oidc_google/oidc_google_simple_example/</guid>
+      <description>Run the example Obtain Google OAuth credentials In order to run this example, you need to obtain OAuth2.0 credentials for your plumber API so that Google later knows that it is authenticating the user to a legitimate application. For this, create a new project in the Google API Console - you may need to authorize your Google account first if you are not yet a user of Google&amp;rsquo;s developer platform.</description>
     </item>
     
     <item>

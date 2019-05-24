@@ -7,7 +7,7 @@
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/docs/oauth_google/oauth2_google_simple_example/</loc>
+    <loc>https://jandix.github.io/sealr/docs/oidc_google/oidc_google_simple_example/</loc>
   </url>
   
   <url>
@@ -27,10 +27,6 @@
   </url>
   
   <url>
-    <loc>https://jandix.github.io/sealr/docs/oauth_google/</loc>
-  </url>
-  
-  <url>
     <loc>https://jandix.github.io/sealr/docs/sealr/implementation_overview/</loc>
   </url>
   
@@ -44,6 +40,11 @@
   
   <url>
     <loc>https://jandix.github.io/sealr/docs/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jandix.github.io/sealr/docs/oidc_google/</loc>
     <priority>0</priority>
   </url>
   
