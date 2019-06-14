@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 sealr | sealr.utf8.md</title>
+  <title>2 Implementing Authentication and Authorization | sealr.utf8.md</title>
   <meta name="description" content="" />
   <meta name="generator" content="bookdown 0.10 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 sealr | sealr.utf8.md" />
+  <meta property="og:title" content="2 Implementing Authentication and Authorization | sealr.utf8.md" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 sealr | sealr.utf8.md" />
+  <meta name="twitter:title" content="2 Implementing Authentication and Authorization | sealr.utf8.md" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="02_auth_providers.html">
+<link rel="prev" href="01_intro.html">
+<link rel="next" href="03_storage.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -124,10 +124,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="01_intro.html"><a href="01_intro.html"><i class="fa fa-check"></i><b>1</b> sealr</a><ul>
-<li class="chapter" data-level="1.1" data-path="01_intro.html"><a href="01_intro.html#authentication-and-authorization"><i class="fa fa-check"></i><b>1.1</b> Authentication and Authorization</a></li>
-<li class="chapter" data-level="1.2" data-path="01_intro.html"><a href="01_intro.html#using-plumber-filters-for-auth"><i class="fa fa-check"></i><b>1.2</b> Using plumber filters for auth</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="01_intro.html"><a href="01_intro.html#authenticate"><i class="fa fa-check"></i><b>1.2.1</b> authenticate</a></li>
-<li class="chapter" data-level="1.2.2" data-path="01_intro.html"><a href="01_intro.html#is_authed-functions"><i class="fa fa-check"></i><b>1.2.2</b> is_authed functions</a></li>
+<li class="chapter" data-level="1.1" data-path="01_intro.html"><a href="01_intro.html#plumber"><i class="fa fa-check"></i><b>1.1</b> plumber</a></li>
+<li class="chapter" data-level="1.2" data-path="01_intro.html"><a href="01_intro.html#sealr-1"><i class="fa fa-check"></i><b>1.2</b> sealr</a></li>
+<li class="chapter" data-level="1.3" data-path="01_intro.html"><a href="01_intro.html#using-plumber-filters-for-auth"><i class="fa fa-check"></i><b>1.3</b> Using plumber filters for auth</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="01_intro.html"><a href="01_intro.html#authenticate"><i class="fa fa-check"></i><b>1.3.1</b> authenticate</a></li>
+<li class="chapter" data-level="1.3.2" data-path="01_intro.html"><a href="01_intro.html#is_authed-functions"><i class="fa fa-check"></i><b>1.3.2</b> is_authed functions</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="02_auth_providers.html"><a href="02_auth_providers.html"><i class="fa fa-check"></i><b>2</b> Implementing Authentication and Authorization</a><ul>
@@ -175,55 +176,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<!--bookdown:title:end-->
-<!--bookdown:title:start-->
-<div id="sealr" class="section level1">
-<h1><span class="header-section-number">1</span> sealr</h1>
-<div id="authentication-and-authorization" class="section level2">
-<h2><span class="header-section-number">1.1</span> Authentication and Authorization</h2>
-<p>TODO</p>
+<div id="implementing-authentication-and-authorization" class="section level1">
+<h1><span class="header-section-number">2</span> Implementing Authentication and Authorization</h1>
+<div id="authentication" class="section level2">
+<h2><span class="header-section-number">2.1</span> Authentication</h2>
+<div id="custom" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Custom</h3>
 </div>
-<div id="using-plumber-filters-for-auth" class="section level2">
-<h2><span class="header-section-number">1.2</span> Using plumber filters for auth</h2>
-<p>The primary logic of <em>sealr</em> is based on plumber filters (although you can use sealr functionality
-without filters as well by using the <code>is_authed</code> functions directly, see below).
-“Plumber filters can be used to define a “pipeline” for handling incoming requests" (<a href="https://www.rplumber.io/docs/routing-and-input.html#filters">Plumber docs</a>).</p>
-<p>So if your plumber API receives a request, the request will first be routed through the different filters before
-it “arrives” at its destination endpoint.</p>
-<p>The idea of <em>sealr</em> is to use a filter for authentication. If a request is not properly authenticated / authorized, <em>sealr</em> will immediately return a “401 - Authentication failed.” error from the filter to the user. In this way,
-an unauthenticated / unauthorized request will not “reach” its destination endpoint.</p>
-<div id="authenticate" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> authenticate</h3>
-<p><em>sealr</em>’s main function is the <code>authenticate</code> function. It is supposed to be used within a plumber filter. <code>authenticate</code> takes a
-<code>is_authed_*</code> function (see below) as input and depending on the output of this “checker” function,
-takes action:</p>
-<ul>
-<li>if the request is authenticated / authorized, it forwards to the next plumber handler using <code>plumber::forward</code>.</li>
-<li>if the request is not authenticated / authorized, it <code>return</code>s to the user, passing forward HTTP status code, description and message from the output of the <code>is_authed_</code> function. Most often, this will be a “401 - Authentication failed.” error.</li>
-</ul>
-<p>By accepting a function object as argument, <code>authenticate</code> is quite flexible: You can even pass your own <code>is_authed</code> function. See the examples section of <code>?sealr::authenticate</code> for a simple example.</p>
+<div id="third-party" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Third party</h3>
 </div>
-<div id="is_authed-functions" class="section level3">
-<h3><span class="header-section-number">1.2.2</span> is_authed functions</h3>
-<p>The functions starting with <code>is_authed</code> provide the actual implementations of the
-different authentication / authorization strategies that <em>sealr</em> aims to provide.
-Currently implemented are:</p>
-<ul>
-<li><code>is_authed_jwt</code>: implements JSON Web Token verification and checking.</li>
-<li><code>is_authed_oauth2_google</code>: implements Google’s OpenID Connect (which is based on OAuth2.0)</li>
-</ul>
-<p><code>is_authed_*</code> functions return a list with the following elements:</p>
-<ul>
-<li><code>is_authed</code>: TRUE or FALSE. Result of the check whether the request is authenticated / authorized.</li>
-<li><code>status</code>: character. Optional (typically only set if <code>is_authed</code> is FALSE). Short description of HTTP status code.</li>
-<li><code>code</code>: integer. Optional (typically only set if <code>is_authed</code> is FALSE). HTTP status code.</li>
-<li><code>message</code>: character. Optional (typically only set if <code>is_authed</code> is FALSE). Longer description.</li>
-</ul>
-<p>Usage of the <code>is_authed</code> functions is not restricted to plumber filters. For example,
-you can use an <code>is_authed</code> function at the top of an endpoint to restrict access to certain endpoints or use
-different authorization “levels” for different endpoints. This is particularly relevant if you have more than two “levels” of authorization (see the <a href="https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/">claims example</a>).</p>
+</div>
+<div id="authorization" class="section level2">
+<h2><span class="header-section-number">2.2</span> Authorization</h2>
+</div>
+<div id="json-web-tokens-jwt" class="section level2">
+<h2><span class="header-section-number">2.3</span> JSON Web Tokens (JWT)</h2>
+<p>“JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.” (jwt.io)</p>
+<p>The JWT stratgey allows to use JSON Web Tokens (JWT) to secure your plumber endpoints. A great introduction to JWT can be found <a href="https://jwt.io/introduction/">here</a>. JWT can be used to secure REST APIs without sessions. They are considered to be stateless although they can also be used as stateful session tokens.</p>
+<p>JSON Web Tokens (JWT) <em>can</em> contain claims. “Claims are statements about an entity (typically, the user) and additional data” (<a href="https://jwt.io/introduction/">https://jwt.io/introduction/</a>). They are expressed as key-value pairs.</p>
+<p>There are three different types of claims: registered, public and private claims. All types of claims are implemented in the same manner, they only differ in whether and where the claims are registered with the Internet Assigned Numbers Authority (IANA). For example, the <code>iss</code> claim is a registered claim defined in the JWT standard <a href="https://tools.ietf.org/html/rfc7519#page-8">RFC 7519</a> and registered at IANA. See the <a href="https://jwt.io/introduction/">JWT Introduction</a> of <a href="jwt.io">jwt.io</a> for more details.</p>
+<p><code>sealr</code> allows you to check for the validity of all types of claims in a given JWT using the <code>claims</code> argument of the <code>sealr::is_authed_jwt</code> function.</p>
 
-</div>
 </div>
 </div>
             </section>
@@ -231,8 +205,8 @@ different authorization “levels” for different endpoints. This is particular
           </div>
         </div>
       </div>
-
-<a href="02_auth_providers.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="01_intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="03_storage.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

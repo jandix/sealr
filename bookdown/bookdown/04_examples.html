@@ -124,10 +124,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="01_intro.html"><a href="01_intro.html"><i class="fa fa-check"></i><b>1</b> sealr</a><ul>
-<li class="chapter" data-level="1.1" data-path="01_intro.html"><a href="01_intro.html#authentication-and-authorization"><i class="fa fa-check"></i><b>1.1</b> Authentication and Authorization</a></li>
-<li class="chapter" data-level="1.2" data-path="01_intro.html"><a href="01_intro.html#using-plumber-filters-for-auth"><i class="fa fa-check"></i><b>1.2</b> Using plumber filters for auth</a><ul>
-<li class="chapter" data-level="1.2.1" data-path="01_intro.html"><a href="01_intro.html#authenticate"><i class="fa fa-check"></i><b>1.2.1</b> authenticate</a></li>
-<li class="chapter" data-level="1.2.2" data-path="01_intro.html"><a href="01_intro.html#is_authed-functions"><i class="fa fa-check"></i><b>1.2.2</b> is_authed functions</a></li>
+<li class="chapter" data-level="1.1" data-path="01_intro.html"><a href="01_intro.html#plumber"><i class="fa fa-check"></i><b>1.1</b> plumber</a></li>
+<li class="chapter" data-level="1.2" data-path="01_intro.html"><a href="01_intro.html#sealr-1"><i class="fa fa-check"></i><b>1.2</b> sealr</a></li>
+<li class="chapter" data-level="1.3" data-path="01_intro.html"><a href="01_intro.html#using-plumber-filters-for-auth"><i class="fa fa-check"></i><b>1.3</b> Using plumber filters for auth</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="01_intro.html"><a href="01_intro.html#authenticate"><i class="fa fa-check"></i><b>1.3.1</b> authenticate</a></li>
+<li class="chapter" data-level="1.3.2" data-path="01_intro.html"><a href="01_intro.html#is_authed-functions"><i class="fa fa-check"></i><b>1.3.2</b> is_authed functions</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="02_auth_providers.html"><a href="02_auth_providers.html"><i class="fa fa-check"></i><b>2</b> Implementing Authentication and Authorization</a><ul>
@@ -240,12 +241,12 @@ save it under <code>jwt_cookie_example.R</code>. In the R console, run:</p>
 <tr class="odd">
 <td align="right">1</td>
 <td align="left"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
-<td align="left">$2a<span class="math inline">\(12\)</span>WXQ1xlYXNJqNSWZF7XMlT.a7Qy6zSmcsC5ov.XywmEqbD7ywGSlfa</td>
+<td align="left">$2a<span class="math inline">\(12\)</span>qWUi3vIRt2CeuUA6byCdEeZk9chVKZi/1GUleW0H./rplhURvPM6S</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
 <td align="left"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
-<td align="left">$2a<span class="math inline">\(12\)</span>/0o5/PQiZwIZSL1RzVskWeUa9oCS/CGRQzBzuWbN/yhu4pz96vah6</td>
+<td align="left">$2a$12$8qsXrjZqNpdte1iP8bOfGOaXuao7.IZ1duvG.et.LYikxaHGxHhrS</td>
 </tr>
 </tbody>
 </table>
@@ -437,14 +438,14 @@ save it under <code>jwt_claims_example.R</code>. In the R console, run:</p>
 <tr class="odd">
 <td align="right">1</td>
 <td align="left"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
-<td align="left">$2a<span class="math inline">\(12\)</span>gya9SPsvOzq0luPJFhdzteuWqlS8NNAz.iW8dzZ7v9LiWaPAC3qcq</td>
+<td align="left">$2a$12$2x5cpSdKEkMIcu.wLDSeyO2cm2TW6P8C8FvcJKSzzq9dG5DNCnOa6</td>
 <td align="left">TRUE</td>
 <td align="left">woman</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
 <td align="left"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
-<td align="left">$2a<span class="math inline">\(12\)</span>oUzNoxR4Ye4CdYZ42BxBluExXaJc49UcgDLBtZwuNWrx6nh10MvHO</td>
+<td align="left">$2a<span class="math inline">\(12\)</span>.LHJhD0JmDa.HEyQO5pBrOd1.glBAuovTnKRFXXkGJH5ugnK5NxQG</td>
 <td align="left">FALSE</td>
 <td align="left">man</td>
 </tr>
