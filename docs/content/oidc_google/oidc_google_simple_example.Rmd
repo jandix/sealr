@@ -102,6 +102,6 @@ You should get back:
 
 ## Code {#code}
 
-```{r, code = readLines("oauth2_google_simple_example.R"), eval = FALSE}
+```{r, code = readLines("oidc_google_simple_example.R"), eval = FALSE}
 
 ```
