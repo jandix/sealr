@@ -1,7 +1,8 @@
 title: "sealr"
-book_filename: "sealr"
+book_title: "sealr"
 language:
   ui:
     chapter_name: ""
-delete_merged_file: true
+delete_merged_file: false
 output_dir: "."
+site: bookdown::bookdown_site
