@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Strategies | _main.utf8.md</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.11.1 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Strategies | _main.utf8.md" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Strategies | _main.utf8.md" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="03_storage.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-is-sealr"><i class="fa fa-check"></i><b>1.1</b> What is sealr?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-are-authentication-and-authorization"><i class="fa fa-check"></i><b>1.2</b> What are authentication and authorization?</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#authenticating-users"><i class="fa fa-check"></i><b>1.2.1</b> Authenticating users</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#authorizing-users"><i class="fa fa-check"></i><b>1.2.2</b> Authorizing users</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#implementation"><i class="fa fa-check"></i><b>1.3</b> Implementation</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#overview"><i class="fa fa-check"></i><b>1.3.1</b> Overview</a></li>
+<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#authenticate"><i class="fa fa-check"></i><b>1.3.2</b> authenticate</a></li>
+<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#is_authed-functions"><i class="fa fa-check"></i><b>1.3.3</b> is_authed functions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html"><i class="fa fa-check"></i><b>2</b> Strategies</a><ul>
+<li class="chapter" data-level="2.1" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#json-web-tokens-jwt"><i class="fa fa-check"></i><b>2.1</b> JSON Web Tokens (JWT)</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#introduction-1"><i class="fa fa-check"></i><b>2.1.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.1.2" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#simple-example"><i class="fa fa-check"></i><b>2.1.2</b> Simple Example</a></li>
+<li class="chapter" data-level="2.1.3" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#claims-example"><i class="fa fa-check"></i><b>2.1.3</b> Claims Example</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#open-id-connect---google"><i class="fa fa-check"></i><b>2.2</b> Open ID Connect - Google</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#introduction-2"><i class="fa fa-check"></i><b>2.2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2.2" data-path="02_auth_strategies.html"><a href="02_auth_strategies.html#example"><i class="fa fa-check"></i><b>2.2.2</b> Example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="03_storage.html"><a href="03_storage.html"><i class="fa fa-check"></i><b>3</b> Exchanging and storing tokens</a><ul>
+<li class="chapter" data-level="3.1" data-path="03_storage.html"><a href="03_storage.html#exchanging-tokens"><i class="fa fa-check"></i><b>3.1</b> Exchanging tokens</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="03_storage.html"><a href="03_storage.html#issueing-the-token"><i class="fa fa-check"></i><b>3.1.1</b> Issueing the token</a></li>
+<li class="chapter" data-level="3.1.2" data-path="03_storage.html"><a href="03_storage.html#cookie"><i class="fa fa-check"></i><b>3.1.2</b> Cookie</a></li>
+<li class="chapter" data-level="3.1.3" data-path="03_storage.html"><a href="03_storage.html#http-authorization-header"><i class="fa fa-check"></i><b>3.1.3</b> HTTP Authorization header</a></li>
+<li class="chapter" data-level="3.1.4" data-path="03_storage.html"><a href="03_storage.html#interactive-r-session"><i class="fa fa-check"></i><b>3.1.4</b> Interactive R session</a></li>
+<li class="chapter" data-level="3.1.5" data-path="03_storage.html"><a href="03_storage.html#another-application"><i class="fa fa-check"></i><b>3.1.5</b> Another application</a></li>
+<li class="chapter" data-level="3.1.6" data-path="03_storage.html"><a href="03_storage.html#web-application"><i class="fa fa-check"></i><b>3.1.6</b> Web application</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="03_storage.html"><a href="03_storage.html#local-storage"><i class="fa fa-check"></i><b>3.2</b> Local Storage</a></li>
+<li class="chapter" data-level="3.3" data-path="03_storage.html"><a href="03_storage.html#cookie-1"><i class="fa fa-check"></i><b>3.3</b> Cookie</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="03_storage.html"><a href="03_storage.html#cookie-example"><i class="fa fa-check"></i><b>3.3.1</b> Cookie example</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="04_security.html"><a href="04_security.html"><i class="fa fa-check"></i><b>4</b> Security</a><ul>
+<li class="chapter" data-level="4.1" data-path="04_security.html"><a href="04_security.html#https"><i class="fa fa-check"></i><b>4.1</b> HTTPS</a></li>
+<li class="chapter" data-level="4.2" data-path="04_security.html"><a href="04_security.html#cookies-and-csrf"><i class="fa fa-check"></i><b>4.2</b> Cookies and CSRF</a></li>
+<li class="chapter" data-level="4.3" data-path="04_security.html"><a href="04_security.html#local-storage-and-xss"><i class="fa fa-check"></i><b>4.3</b> Local storage and XSS</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="strategies" class="section level1">
+<h1><span class="header-section-number">2</span> Strategies</h1>
+<div id="json-web-tokens-jwt" class="section level2">
+<h2><span class="header-section-number">2.1</span> JSON Web Tokens (JWT)</h2>
+<div id="introduction-1" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Introduction</h3>
+<p>“JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.” (jwt.io)</p>
+<p>The JWT stratgey allows to use JSON Web Tokens (JWT) to secure your plumber endpoints. A great introduction to JWT can be found <a href="https://jwt.io/introduction/">here</a>. JWT can be used to secure REST APIs without sessions. They are considered to be stateless although they can also be used as stateful session tokens.</p>
+<p>JSON Web Tokens (JWT) <em>can</em> contain claims. “Claims are statements about an entity (typically, the user) and additional data” (<a href="https://jwt.io/introduction/">https://jwt.io/introduction/</a>). They are expressed as key-value pairs.</p>
+<p>There are three different types of claims: registered, public and private claims. All types of claims are implemented in the same manner, they only differ in whether and where the claims are registered with the Internet Assigned Numbers Authority (IANA). For example, the <code>iss</code> claim is a registered claim defined in the JWT standard <a href="https://tools.ietf.org/html/rfc7519#page-8">RFC 7519</a> and registered at IANA. See the <a href="https://jwt.io/introduction/">JWT Introduction</a> of <a href="jwt.io">jwt.io</a> for more details.</p>
+<p><code>sealr</code> allows you to check for the validity of all types of claims in a given JWT using the <code>claims</code> argument of the <code>sealr::is_authed_jwt</code> function.</p>
+</div>
+<div id="simple-example" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Simple Example</h3>
+<p>In the code <a href="#code">below</a>, you find a small example of how to implement a JWT strategy in an application.</p>
+<p>The application consists of three routes. The first route allows your users to login and issues a JWT. The second route is an open route that does not require authentication. The third route requires authentication using the JWT.</p>
+<p>The JWT filter looks like this:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># integrate the jwt strategy in a filter</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> sealr<span class="op">::</span>is_authed_jwt,
+                      <span class="dt">token_location =</span> <span class="st">&quot;header&quot;</span>, <span class="dt">secret =</span> secret)
+})</code></pre>
+<p>:warning: Please change the secret to a super secure secret of your choice. Please notice that you have to <code>preempt = c("sealr-jwt")</code> to routes that should <strong>not</strong> be protected.</p>
+<div id="run-the-example" class="section level4">
+<h4><span class="header-section-number">2.1.2.1</span> Run the example</h4>
+<p>Copy the code from <a href="02_auth_strategies.html#code_simple">below</a> in a new R file and
+save it under <code>jwt_simple_example.R</code>. In the R console, run:</p>
+<pre class="sourceCode r"><code class="sourceCode r">plumber<span class="op">::</span><span class="kw">plumb</span>(<span class="st">&quot;jwt_simple_example.R&quot;</span>)</code></pre>
+<p>This will make the API available at <code>localhost:9090</code>.</p>
+<p>In order to run this example, you need the following packages installed:</p>
+<ul>
+<li>sealr</li>
+<li>plumber</li>
+<li>httr</li>
+<li>jose</li>
+<li>jsonlite</li>
+</ul>
+</div>
+<div id="get-authentication" class="section level4">
+<h4><span class="header-section-number">2.1.2.2</span> Get authentication</h4>
+<p>Using curl, Postman or a similar tool for sending HTTP requests, send a POST request with the details of one of the two users that are in the API’s “database” (in this simplified example, a data frame).</p>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="20%" />
+<col width="75%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">user</th>
+<th align="left">password</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
+<td align="left">$2a<span class="math inline">\(12\)</span>zCLOP45IiXEQ69YUE9fiw.ajr.xb1VKiYoWkQcINzbod80f7CGFVi</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
+<td align="left">$2a<span class="math inline">\(12\)</span>Oel5qHEjWaNdDE.3RJzgBeBiEzes3U01Yfa1QaY5ThxjpaqdKT/f2</td>
+</tr>
+</tbody>
+</table>
+<p>For example, in curl:</p>
+<pre><code>curl --data &#39;{&quot;user&quot;: &quot;jane@example.com&quot;, &quot;password&quot;: &quot;12345&quot;}&#39; localhost:9090/authentication</code></pre>
+<p>gives back the JWT:</p>
+<pre><code>[&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTE0NDk5NTcsInVzZXJJRCI6MX0.0563N-dcz9zY-NF9DQpUnHIONZRWmZU1rb894xxHcNU&quot;]</code></pre>
+<p><strong>Note</strong>: You might get different JWTs as <code>jose::jwt_encode_hmac</code> automatically adds the time when the JWT was issued as a claim (<code>iat</code> claim). However, those examples should still work because we do not add an expiration time to the token - something you should definetely consider for production use cases.</p>
+<p>Trying to authenticate with a user that is not in the database fails:</p>
+<pre><code>curl --data &#39;{&quot;user&quot;: &quot;drake@example.com&quot;, &quot;password&quot;: &quot;10111213&quot;}&#39; localhost:9090/authentication</code></pre>
+<pre><code>{&quot;status&quot;:[&quot;Failed.&quot;],&quot;code&quot;:[401],&quot;message&quot;:[&quot;User or password wrong.&quot;]}</code></pre>
+</div>
+<div id="route-without-required-authentication" class="section level4">
+<h4><span class="header-section-number">2.1.2.3</span> Route without required authentication</h4>
+<p>Everyone can access the <code>/</code> route because it does not require authentication - the <code>sealr-jwt</code> filter is <code>preempt</code>ed for this route:</p>
+<pre><code>curl localhost:9090
+[&quot;Access to route without authentication was successful.&quot;]</code></pre>
+</div>
+<div id="route-with-authentication" class="section level4">
+<h4><span class="header-section-number">2.1.2.4</span> Route with authentication</h4>
+<p>Trying to access the <code>/secret</code> route without a JWT fails because it goes through the <code>sealr-jwt</code> filter where the <code>sealr::jwt</code> function will check for the correct authentication details - in this case a valid JWT in the Authorization header.</p>
+<pre><code>curl localhost:9090/secret</code></pre>
+<pre><code>{&quot;status&quot;:[&quot;Failed.&quot;],&quot;code&quot;:[401],&quot;message&quot;:[&quot;Authentication required.&quot;]}</code></pre>
+<p>Use the JWT obtained with the first curl command to make an authenticated request to this route.</p>
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NTE0NDk5NTcsInVzZXJJRCI6MX0.0563N-dcz9zY-NF9DQpUnHIONZRWmZU1rb894xxHcNU&quot; localhost:9090/secret
+[&quot;Access to route requiring authentication was successful.&quot;]</code></pre>
+</div>
+<div id="code_simple" class="section level4">
+<h4><span class="header-section-number">2.1.2.5</span> Code</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define a user database</span>
+<span class="co"># you should probably use a SQL database instead of data frames</span>
+users &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="kw">integer</span>(),
+                    <span class="dt">name     =</span> <span class="kw">character</span>(),
+                    <span class="dt">password =</span> <span class="kw">character</span>(),
+                    <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># create test user</span>
+users &lt;-<span class="st"> </span><span class="kw">rbind</span>(users, <span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="dv">1</span>,
+                                 <span class="dt">user     =</span> <span class="st">&quot;jane@example.com&quot;</span>,
+                                 <span class="dt">password =</span> bcrypt<span class="op">::</span><span class="kw">hashpw</span>(<span class="st">&quot;12345&quot;</span>),
+                                 <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+users &lt;-<span class="st"> </span><span class="kw">rbind</span>(users, <span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="dv">2</span>,
+                                 <span class="dt">user     =</span> <span class="st">&quot;bob@example.com&quot;</span>,
+                                 <span class="dt">password =</span> bcrypt<span class="op">::</span><span class="kw">hashpw</span>(<span class="st">&quot;45678&quot;</span>),
+                                 <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+
+<span class="co"># define a new plumber router</span>
+pr &lt;-<span class="st"> </span>plumber<span class="op">::</span>plumber<span class="op">$</span><span class="kw">new</span>()
+
+<span class="co"># define your super secret</span>
+secret &lt;-<span class="st"> &quot;3ec9aaf4a744f833e98c954365892583&quot;</span>
+
+<span class="co"># integrate the jwt strategy in a filter</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> sealr<span class="op">::</span>is_authed_jwt,
+                      <span class="dt">token_location =</span> <span class="st">&quot;header&quot;</span>, <span class="dt">secret =</span> secret)
+})
+
+<span class="co"># define authentication route to issue web tokens (exclude &quot;sealr-jwt&quot; filter using preempt)</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;POST&quot;</span>, <span class="st">&quot;/authentication&quot;</span>, <span class="cf">function</span> (req, res, <span class="dt">user =</span> <span class="ot">NULL</span>, <span class="dt">password =</span> <span class="ot">NULL</span>) {
+
+  <span class="co"># check if user provided credentials</span>
+  <span class="cf">if</span> (<span class="kw">is.null</span>(user) <span class="op">||</span><span class="st"> </span><span class="kw">is.null</span>(password)) {
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">404</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">404</span>,
+                <span class="dt">message=</span><span class="st">&quot;Please return password or username.&quot;</span>))
+  }
+
+  <span class="co"># find user in database</span>
+  index &lt;-<span class="st"> </span><span class="kw">match</span>(user, users<span class="op">$</span>user)
+
+  <span class="co"># check if user exist</span>
+  <span class="cf">if</span> (<span class="kw">is.na</span>(index)) {
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">401</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">401</span>,
+                <span class="dt">message=</span><span class="st">&quot;User or password wrong.&quot;</span>))
+  }
+
+  <span class="co"># check if password is correct</span>
+  <span class="cf">if</span> (<span class="op">!</span>bcrypt<span class="op">::</span><span class="kw">checkpw</span>(password, users<span class="op">$</span>password[index])){
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">401</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">401</span>,
+                <span class="dt">message=</span><span class="st">&quot;User or password wrong.&quot;</span>))
+  }
+
+  <span class="co"># define jwt payload</span>
+  <span class="co"># information about the additional fields can be found at</span>
+  <span class="co"># https://tools.ietf.org/html/rfc7519#section-4.1</span>
+  payload &lt;-<span class="st"> </span>jose<span class="op">::</span><span class="kw">jwt_claim</span>(<span class="dt">userID =</span> users<span class="op">$</span>id[index])
+
+  <span class="co"># convert secret to bytes</span>
+  secret_raw &lt;-<span class="st"> </span><span class="kw">charToRaw</span>(secret)
+
+  <span class="co"># encode token using the secret</span>
+  jwt &lt;-<span class="st"> </span>jose<span class="op">::</span><span class="kw">jwt_encode_hmac</span>(payload, <span class="dt">secret =</span> secret_raw)
+
+  <span class="co"># return jwt as response</span>
+  <span class="kw">return</span>(<span class="dt">jwt =</span> jwt)
+}, <span class="dt">preempt =</span> <span class="kw">c</span>(<span class="st">&quot;sealr-jwt&quot;</span>))
+
+<span class="co"># define test route without authentication  (exclude &quot;sealr-jwt&quot; filter using preempt)</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="kw">return</span>(<span class="st">&quot;Access to route without authentication was successful.&quot;</span>)
+}, <span class="dt">preempt =</span> <span class="kw">c</span>(<span class="st">&quot;sealr-jwt&quot;</span>))
+
+
+
+<span class="co"># define test route with authentication</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/secret&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="kw">return</span>(<span class="st">&quot;Access to route requiring authentication was successful.&quot;</span>)
+})
+
+<span class="co"># start API server</span>
+pr<span class="op">$</span><span class="kw">run</span>(<span class="dt">host =</span> <span class="st">&quot;0.0.0.0&quot;</span>, <span class="dt">port =</span> <span class="dv">9090</span>)</code></pre>
+</div>
+</div>
+<div id="claims-example" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Claims Example</h3>
+<p>In this example implementation (see full code <a href="02_auth_strategies.html#code_claims">below</a>), we have two filters:</p>
+<p>The filter <code>sealr-jwt</code> simply checks whether the user is authenticated and that the issuer claim <code>iss</code> is set to <code>mygreatplumberapi</code>, the value we set in the <code>authentication</code> route.
+The second filter <code>sealr-jwt-admin-only</code> additionally checks whether the user is an admin by validating that the claim <code>admin</code> is <code>TRUE</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># integrate the jwt strategy in a filter</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> is_authed_jwt, <span class="dt">secret =</span> secret,
+             <span class="dt">claims =</span> <span class="kw">list</span>(<span class="dt">iss =</span> <span class="st">&quot;mygreatplumberapi&quot;</span>))
+})
+
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt-admin-only&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> is_authed_jwt, <span class="dt">secret =</span> secret,
+             <span class="dt">claims =</span> <span class="kw">list</span>(<span class="dt">iss =</span> <span class="st">&quot;mygreatplumberapi&quot;</span>, <span class="dt">admin =</span> <span class="ot">TRUE</span>))
+})</code></pre>
+<p>We now have two levels of access using filters: routes that are open to all authenticated users with a JWT issued by <code>mygreatplumberapi</code> and routes that are accessible to admins only. The former requires <code>preempt</code>ing the more restrictive <code>sealr-jwt-admin-only</code> filter.</p>
+<p>Unfortunately, it is currently not possible to extend this filter-based authorization mechanism to more than two authorization “levels” because <code>plumber</code> does not allow for preempting more than one filter per route.
+This problem is on the radar of the <code>plumber</code> team and they’ll provide the opportunity to impose filters on specific
+endpoints in the future (kind of “reverting” the <code>preempt</code> logic). See <a href="https://github.com/trestletech/plumber/issues/108">this plumber issue</a>.</p>
+<p>As a workaround, you could put your authentication / authorization checks in the individual endpoints.
+In this case, use <code>is_authed_*</code> functions instead of the <code>authenticate</code> wrapper.</p>
+<div id="run-the-example-1" class="section level4">
+<h4><span class="header-section-number">2.1.3.1</span> Run the example</h4>
+<p>Copy the code from <a href="02_auth_strategies.html#code_claims">below</a> in a new R file and
+save it under <code>jwt_claims_example.R</code>. In the R console, run:</p>
+<pre class="sourceCode r"><code class="sourceCode r">plumber<span class="op">::</span><span class="kw">plumb</span>(<span class="st">&quot;jwt_claims_example.R&quot;</span>)</code></pre>
+<p>This will make the API available at <code>localhost:9090</code>.</p>
+<p>In order to run this example, you need the following packages installed:</p>
+<ul>
+<li>sealr</li>
+<li>plumber</li>
+<li>httr</li>
+<li>jose</li>
+<li>jsonlite</li>
+</ul>
+</div>
+<div id="get-authentication-1" class="section level4">
+<h4><span class="header-section-number">2.1.3.2</span> Get authentication</h4>
+<p>Using curl, Postman or a similar tool for sending HTTP requests, send a POST request with the details of one of the two users that are in the API’s “database” (in this simplified example, a data frame).</p>
+<table>
+<colgroup>
+<col width="3%" />
+<col width="18%" />
+<col width="64%" />
+<col width="6%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="left">user</th>
+<th align="left">password</th>
+<th align="left">admin</th>
+<th align="left">gender</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left"><a href="mailto:jane@example.com" class="email">jane@example.com</a></td>
+<td align="left">$2a<span class="math inline">\(12\)</span>kPNg3YYBn5U90v03JzyEMe4d4YY44npxJbpz52C2hp9j.YddgQMKS</td>
+<td align="left">TRUE</td>
+<td align="left">woman</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left"><a href="mailto:bob@example.com" class="email">bob@example.com</a></td>
+<td align="left">$2a<span class="math inline">\(12\)</span>s4d8dBEETHEXKj0HpRkoWex6MiwBoWv0NGMRzF1BTuTogC2IcNvXy</td>
+<td align="left">FALSE</td>
+<td align="left">man</td>
+</tr>
+</tbody>
+</table>
+<p>Get the JWT for both users:</p>
+<ul>
+<li>Jane</li>
+</ul>
+<pre><code>curl --data &#39;{&quot;user&quot;: &quot;jane@example.com&quot;, &quot;password&quot;: &quot;12345&quot;}&#39; localhost:9090/authentication
+[&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NjE0NiwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.AZqJFuXZkjwKbnULHfJVmBapFhZpBgLIUuX7HOJAUhU&quot;]</code></pre>
+<ul>
+<li>Bob</li>
+</ul>
+<pre><code>curl --data &#39;{&quot;user&quot;: &quot;bob@example.com&quot;, &quot;password&quot;: &quot;45678&quot;}&#39; localhost:9090/authentication
+[&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot;]</code></pre>
+<p><strong>Note</strong>: You might get different JWTs as we also add the time when the token was issued as a claim (<code>iat</code>). However, those examples should still work because we do not add an expiration time to the token - something you should definetely consider for production use cases.</p>
+</div>
+<div id="route-with-simple-authentication" class="section level4">
+<h4><span class="header-section-number">2.1.3.3</span> Route with simple authentication</h4>
+<p>Both users can access the <code>/secret</code> route because they both have valid JWT issued by <code>mygreatplumberapi</code>. The route <code>preempt</code>s the more restrictive <code>sealr-jwt-admin-only</code> filter so even non-admin Bob has access.</p>
+<ul>
+<li>Jane</li>
+</ul>
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE&quot; localhost:9090/secret
+
+[&quot;Access to route that requires authentication was successful.&quot;]</code></pre>
+<ul>
+<li>Bob</li>
+</ul>
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot; localhost:9090/secret
+
+[&quot;Access to route that requires authentication was successful.&quot;]</code></pre>
+</div>
+<div id="route-with-admin-only-authorization" class="section level4">
+<h4><span class="header-section-number">2.1.3.4</span> Route with admin-only authorization</h4>
+<p>In contrast, only Jane can access the <code>/secret-admin-only</code> route.</p>
+<ul>
+<li>Jane</li>
+</ul>
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTc3NSwiYWRtaW4iOnRydWUsImdlbmRlciI6IndvbWFuIiwidXNlcklEIjoxfQ.FXLTGUcsn8yuiS7VqoGEjw94zQsmO6sYdWJeLeS-PhE&quot; localhost:9090/secret-admin-only
+
+[&quot;Access to route that requires admin authorization was successful.&quot;]</code></pre>
+<ul>
+<li>Bob</li>
+</ul>
+<pre><code>curl -H &quot;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJteWdyZWF0cGx1bWJlcmFwaSIsImlhdCI6MTU1MzY3NTgzNCwiYWRtaW4iOmZhbHNlLCJnZW5kZXIiOiJtYW4iLCJ1c2VySUQiOjJ9.WjRD5aIaqgApWJ-bf0VosbMZ3ovDyvRVvYug-5egL8s&quot; localhost:9090/secret-admin-only
+
+{&quot;status&quot;:[&quot;Failed.&quot;],&quot;code&quot;:[401],&quot;message&quot;:[&quot;Authentication required.&quot;]}</code></pre>
+</div>
+<div id="code_claims" class="section level4">
+<h4><span class="header-section-number">2.1.3.5</span> Code</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define a user database</span>
+<span class="co"># you should probably use a SQL database instead of data frames</span>
+users &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="kw">integer</span>(),
+                    <span class="dt">name     =</span> <span class="kw">character</span>(),
+                    <span class="dt">password =</span> <span class="kw">character</span>(),
+                    <span class="dt">admin =</span> <span class="kw">logical</span>(),
+                    <span class="dt">gender =</span> <span class="kw">character</span>(),
+                    <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># create test user</span>
+users &lt;-<span class="st"> </span><span class="kw">rbind</span>(users, <span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="dv">1</span>,
+                                 <span class="dt">user     =</span> <span class="st">&quot;jane@example.com&quot;</span>,
+                                 <span class="dt">password =</span> bcrypt<span class="op">::</span><span class="kw">hashpw</span>(<span class="st">&quot;12345&quot;</span>),
+                                 <span class="dt">admin =</span> <span class="ot">TRUE</span>,
+                                 <span class="dt">gender =</span> <span class="st">&quot;woman&quot;</span>,
+                                 <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+users &lt;-<span class="st"> </span><span class="kw">rbind</span>(users, <span class="kw">data.frame</span>(<span class="dt">id       =</span> <span class="dv">2</span>,
+                                 <span class="dt">user     =</span> <span class="st">&quot;bob@example.com&quot;</span>,
+                                 <span class="dt">password =</span> bcrypt<span class="op">::</span><span class="kw">hashpw</span>(<span class="st">&quot;45678&quot;</span>),
+                                 <span class="dt">admin =</span> <span class="ot">FALSE</span>,
+                                 <span class="dt">gender =</span> <span class="st">&quot;man&quot;</span>,
+                                 <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>))
+
+<span class="co"># define a new plumber router</span>
+pr &lt;-<span class="st"> </span>plumber<span class="op">::</span>plumber<span class="op">$</span><span class="kw">new</span>()
+
+<span class="co"># define your super secret</span>
+secret &lt;-<span class="st"> &quot;3ec9aaf4a744f833e98c954365892583&quot;</span>
+
+<span class="co"># integrate the jwt strategy in a filter</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> is_authed_jwt,
+                      <span class="dt">secret =</span> secret, <span class="dt">claims =</span> <span class="kw">list</span>(<span class="dt">iss =</span> <span class="st">&quot;mygreatplumberapi&quot;</span>))
+})
+
+<span class="co"># filter that checks whether the user is an admin</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt-admin-only&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> is_authed_jwt,
+                      <span class="dt">secret =</span> secret, <span class="dt">claims =</span> <span class="kw">list</span>(<span class="dt">iss =</span> <span class="st">&quot;mygreatplumberapi&quot;</span>, <span class="dt">admin =</span> <span class="ot">TRUE</span>))
+})
+
+<span class="co"># define authentication route to issue web tokens (exclude &quot;sealr-jwt&quot; filter using preempt)</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;POST&quot;</span>, <span class="st">&quot;/authentication&quot;</span>, <span class="cf">function</span> (req, res, <span class="dt">user =</span> <span class="ot">NULL</span>, <span class="dt">password =</span> <span class="ot">NULL</span>) {
+
+  <span class="co"># check if user provided credentials</span>
+  <span class="cf">if</span> (<span class="kw">is.null</span>(user) <span class="op">||</span><span class="st"> </span><span class="kw">is.null</span>(password)) {
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">404</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">404</span>,
+                <span class="dt">message=</span><span class="st">&quot;Please specify password or username.&quot;</span>))
+  }
+
+  <span class="co"># find user in database</span>
+  index &lt;-<span class="st"> </span><span class="kw">match</span>(user, users<span class="op">$</span>user)
+
+  <span class="co"># check if user exist</span>
+  <span class="cf">if</span> (<span class="kw">is.na</span>(index)) {
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">401</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">401</span>,
+                <span class="dt">message=</span><span class="st">&quot;User or password wrong.&quot;</span>))
+  }
+
+  <span class="co"># check if password is correct</span>
+  <span class="cf">if</span> (<span class="op">!</span>bcrypt<span class="op">::</span><span class="kw">checkpw</span>(password, users<span class="op">$</span>password[index])){
+    res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">401</span>
+    <span class="kw">return</span>(<span class="kw">list</span>(<span class="dt">status=</span><span class="st">&quot;Failed.&quot;</span>,
+                <span class="dt">code=</span><span class="dv">401</span>,
+                <span class="dt">message=</span><span class="st">&quot;User or password wrong.&quot;</span>))
+  }
+
+  <span class="co"># define jwt payload</span>
+  <span class="co"># information about the additional fields can be found at</span>
+  <span class="co"># https://tools.ietf.org/html/rfc7519#section-4.1</span>
+  payload &lt;-<span class="st"> </span>jose<span class="op">::</span><span class="kw">jwt_claim</span>(<span class="dt">iss =</span> <span class="st">&quot;mygreatplumberapi&quot;</span>, <span class="co"># registered claim</span>
+                             <span class="dt">iat =</span> <span class="kw">as.numeric</span>(<span class="kw">Sys.time</span>()), <span class="co"># registered claim</span>
+                             <span class="dt">admin =</span> users<span class="op">$</span>admin[index],
+                             <span class="dt">gender =</span> users<span class="op">$</span>gender[index], <span class="co"># a public claim</span>
+                             <span class="dt">userID =</span> users<span class="op">$</span>id[index]) <span class="co"># private claim</span>
+
+  <span class="co"># convert secret to bytes</span>
+  secret &lt;-<span class="st"> </span><span class="kw">charToRaw</span>(secret)
+
+  <span class="co"># encode token using the secret</span>
+  jwt &lt;-<span class="st"> </span>jose<span class="op">::</span><span class="kw">jwt_encode_hmac</span>(payload, <span class="dt">secret =</span> secret)
+
+  <span class="co"># return jwt as response</span>
+  <span class="kw">return</span>(<span class="dt">jwt =</span> jwt)
+}, <span class="dt">preempt =</span> <span class="kw">c</span>(<span class="st">&quot;sealr-jwt&quot;</span>))
+
+
+
+<span class="co"># define test route with authentication</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/secret&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="kw">return</span>(<span class="st">&quot;Access to route that requires authentication was successful.&quot;</span>)
+}, <span class="dt">preempt =</span> <span class="st">&quot;sealr-jwt-admin-only&quot;</span>)
+
+<span class="co"># define test route with authentication</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/secret-admin-only&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="kw">return</span>(<span class="st">&quot;Access to route that requires admin authorization was successful.&quot;</span>)
+})
+
+<span class="co"># start API server</span>
+pr<span class="op">$</span><span class="kw">run</span>(<span class="dt">host =</span> <span class="st">&quot;0.0.0.0&quot;</span>, <span class="dt">port =</span> <span class="dv">9090</span>)</code></pre>
+</div>
+</div>
+</div>
+<div id="open-id-connect---google" class="section level2">
+<h2><span class="header-section-number">2.2</span> Open ID Connect - Google</h2>
+<div id="introduction-2" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Introduction</h3>
+<p>The Google OAuth2 strategy allows you to use Google’s OpenID Connect
+interface to authenticate and authorize your users. A detailed
+introduction and best practices can be found
+<a href="https://developers.google.com/identity/protocols/OpenIDConnect">here</a>.
+The interface uses JWTs. Hence, the process can be considered stateless.
+Addtionally, the user tokens can be used to access Google APIs.</p>
+</div>
+<div id="example" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Example</h3>
+<div id="obtain-google-oauth-credentials" class="section level4">
+<h4><span class="header-section-number">2.2.2.1</span> Obtain Google OAuth credentials</h4>
+<p>In order to run this example, you need to obtain OAuth2.0 credentials for your plumber API
+so that Google later knows that it is authenticating the user to a legitimate application.
+For this, create a new <strong>project</strong> in the <a href="https://console.developers.google.com/">Google API Console</a> - you
+may need to authorize your Google account first if you are not yet a user of Google’s developer platform.</p>
+<p>Once you have created your project, follow the instructions on “Obtain OAuth 2.0 credentials” <a href="https://developers.google.com/identity/protocols/OpenIDConnect">here</a>. When you have to select
+the application type, select “Other”.
+Store the client ID and the client secret as environment variables in your R session using
+the following commands.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Sys.setenv</span>(<span class="st">&quot;GOOGLE_CLIENT_ID&quot;</span> =<span class="st"> &quot;yourid&quot;</span>)
+<span class="kw">Sys.setenv</span>(<span class="st">&quot;GOOGLE_CLIENT_SECRET&quot;</span> =<span class="st"> &quot;yoursecret&quot;</span>)</code></pre>
+<p>This will make the client and secret available for your <em>current</em> R session. If you want
+to make them available beyond your current session, use <code>usethis::edit_r_environ</code> and
+add them in the file that opens like this:</p>
+<pre><code>GOOGLE_CLIENT_ID=&quot;yourid&quot;
+GOOGLE_CLIENT_SECRET=&quot;yoursecret&quot;</code></pre>
+<p>Save and close the file.</p>
+</div>
+<div id="run-the-plumber-api" class="section level4">
+<h4><span class="header-section-number">2.2.2.2</span> Run the plumber API</h4>
+<p>Copy the code from <a href="02_auth_strategies.html#code_google">below</a> in a new R file and
+save it under <code>oauth2_google_simple_example.R</code>. In the R console, run:</p>
+<pre class="sourceCode r"><code class="sourceCode r">plumber<span class="op">::</span><span class="kw">plumb</span>(<span class="st">&quot;oauth2_google_simple_example.R&quot;</span>)</code></pre>
+<p>This will make the API available at <code>localhost:9090</code>.</p>
+<p>In order to run this example, you need the following packages installed:</p>
+<ul>
+<li>sealr</li>
+<li>plumber</li>
+<li>httr</li>
+<li>jose</li>
+<li>jsonlite</li>
+</ul>
+</div>
+<div id="authenticate-yourself-to-the-plumber-api" class="section level4">
+<h4><span class="header-section-number">2.2.2.3</span> Authenticate yourself to the plumber API</h4>
+<p>Open your browser and enter <code>http://localhost:9090/authentication/</code> in the address bar.
+You’ll be redirected to Google. Authorize your application / plumber API.
+You’ll be again redirected to a JSON response that, depending on your browser, should look something like this (tokens are blacked out):</p>
+<div class="figure">
+<img src="/sealr/docs/images/google_oauth_return.png" alt="google return" />
+<p class="caption">google return</p>
+</div>
+<p>It contains:</p>
+<ul>
+<li><code>access_token</code>: the token you would need if you wanted to access any of Google’s APIs in your plumber API. If you only use Google to <strong>authenticate</strong> users, this will not be necessary.</li>
+<li><code>expires_in</code>: how long the access token is valid in seconds. This value is set by Google. In this case, the access token is valid for one hour.</li>
+<li><code>refresh_token</code>: the token you can could to refresh your access token. We have not implemented the refresh logic in this example though.</li>
+<li><code>scope</code>: the scope your plumber API requested to authorize from the user. In this example, we only requested the “userinfo.profile” scope.</li>
+<li><code>token_type</code>: type of token. This will always be “Bearer”. Prepend this to your HTTP Authorization Header (see below).</li>
+<li><code>id_token</code>: The ID token. A JSON Web Token (see section on JWT) that contains information about the identify of the user. This token is signed by Google. <strong>This is the token you send in the HTTP Authorization header</strong> (see below).</li>
+</ul>
+<p>See also the explanation of the return values on <a href="https://developers.google.com/identity/protocols/OpenIDConnect#authuser">Google’s OpenID Connect website</a>.</p>
+</div>
+<div id="send-an-authenticated-request" class="section level4">
+<h4><span class="header-section-number">2.2.2.4</span> Send an authenticated request</h4>
+<p>Open a terminal and enter the following command, replacing the YOUR_ID_TOKEN with
+the <code>id_token</code> from your response.</p>
+<pre><code>curl -H &quot;Authorization: Bearer YOUR_ID_TOKEN&quot; localhost:9090/secret</code></pre>
+<p>The ID token will be quite long, so maybe first edit this command in your text editor of choice
+before copying it to the terminal. Hit enter.</p>
+<p>You should get back:</p>
+<pre><code>{&quot;message&quot;:[&quot;Successfully accessed the secret endpoint.&quot;]}</code></pre>
+</div>
+<div id="code_google" class="section level4">
+<h4><span class="header-section-number">2.2.2.5</span> Code</h4>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># define contant variables</span>
+CLIENT_ID &lt;-<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&quot;GOOGLE_CLIENT_ID&quot;</span>)
+CLIENT_SECRET &lt;-<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&quot;GOOGLE_CLIENT_SECRET&quot;</span>)
+
+<span class="co"># get the discovery document with the required URLs</span>
+response &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">GET</span>(<span class="st">&quot;https://accounts.google.com/.well-known/openid-configuration&quot;</span>)
+discovery_document &lt;-<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">fromJSON</span>(httr<span class="op">::</span><span class="kw">content</span>(response, <span class="dt">type =</span> <span class="st">&quot;text&quot;</span>, <span class="dt">encoding =</span> <span class="st">&quot;UTF-8&quot;</span>))
+
+<span class="co"># define a new plumber router</span>
+pr &lt;-<span class="st"> </span>plumber<span class="op">::</span>plumber<span class="op">$</span><span class="kw">new</span>()
+
+<span class="co"># integrate the google strategy in a filter</span>
+pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-oauth2-google&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="co"># simply call the strategy and forward the request and response</span>
+  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">token_location =</span> <span class="st">&quot;header&quot;</span>,
+                      <span class="dt">is_authed_fun =</span> sealr<span class="op">::</span>is_authed_oauth2_google, <span class="dt">client_id =</span> CLIENT_ID)
+})
+
+<span class="co"># define authentication route to issue web tokens (exclude &quot;sealr-google&quot; filter using preempt)</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/authentication&quot;</span>, <span class="cf">function</span> (req, res) {
+  url &lt;-<span class="st"> </span>discovery_document<span class="op">$</span>authorization_endpoint
+
+  query &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">client_id =</span> CLIENT_ID,
+                <span class="dt">redirect_uri =</span> <span class="st">&quot;http://localhost:9090/authentication/redirect&quot;</span>,
+                <span class="dt">scope =</span> <span class="st">&quot;https://www.googleapis.com/auth/userinfo.profile&quot;</span>,
+                <span class="dt">response_type =</span> <span class="st">&quot;code&quot;</span>)
+  auth_url &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">parse_url</span>(<span class="dt">url =</span> url)
+  auth_url<span class="op">$</span>query &lt;-<span class="st"> </span>query
+  auth_url &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">build_url</span>(auth_url)
+  res<span class="op">$</span>status &lt;-<span class="st"> </span><span class="dv">301</span>
+  res<span class="op">$</span><span class="kw">setHeader</span>(<span class="st">&quot;Location&quot;</span>, auth_url)
+  <span class="kw">return</span>()
+}, <span class="dt">preempt =</span> <span class="kw">c</span>(<span class="st">&quot;sealr-oauth2-google&quot;</span>))
+
+<span class="co"># define authentication route to issue web tokens (exclude &quot;sealr-google&quot; filter using preempt)</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/authentication/redirect&quot;</span>, <span class="cf">function</span> (req, res, <span class="dt">code =</span> <span class="ot">NULL</span>, <span class="dt">error =</span> <span class="ot">NULL</span>) {
+  token_url &lt;-<span class="st"> </span>discovery_document<span class="op">$</span>token_endpoint
+  body &lt;-<span class="st"> </span><span class="kw">list</span>(
+    <span class="dt">code =</span> code,
+    <span class="dt">client_id =</span> CLIENT_ID,
+    <span class="dt">client_secret =</span> CLIENT_SECRET,
+    <span class="dt">redirect_uri =</span> <span class="st">&quot;http://localhost:9090/authentication/redirect&quot;</span>,
+    <span class="dt">grant_type =</span> <span class="st">&quot;authorization_code&quot;</span>
+  )
+  response &lt;-<span class="st"> </span>httr<span class="op">::</span><span class="kw">POST</span>(token_url, <span class="dt">body =</span> body)
+  parsed_response &lt;-<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">fromJSON</span>(httr<span class="op">::</span><span class="kw">content</span>(response, <span class="dt">type =</span> <span class="st">&quot;text&quot;</span>))
+  <span class="kw">return</span>(parsed_response)
+}, <span class="dt">preempt =</span> <span class="kw">c</span>(<span class="st">&quot;sealr-oauth2-google&quot;</span>))
+
+<span class="co"># protected path</span>
+pr<span class="op">$</span><span class="kw">handle</span>(<span class="st">&quot;GET&quot;</span>, <span class="st">&quot;/secret&quot;</span>, <span class="cf">function</span> (req, res) {
+  <span class="kw">list</span>(<span class="dt">message =</span> <span class="st">&quot;Successfully accessed the secret endpoint.&quot;</span>)
+})
+
+<span class="co"># start API server</span>
+pr<span class="op">$</span><span class="kw">run</span>(<span class="dt">host=</span><span class="st">&quot;0.0.0.0&quot;</span>, <span class="dt">port=</span><span class="dv">9090</span>)</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="03_storage.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "fixed"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+bookdown::gitbook:
+  lib_dir: libs
+  split_by: rmd
+  config:
+    toolbar:
+      position: fixed
+    download: no

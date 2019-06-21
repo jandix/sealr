@@ -1,0 +1,96 @@
+
+
+# Introduction 
+
+## What is sealr? 
+
+sealr aims to facilitate implementing authentication and authorization for plumber APIs. Plumber is an R package that allows you to quickly generate an API (Application Programming Interface) from 
+your R code. You can read more about plumber on its [website](https://www.rplumber.io/) and in its [docs](https://www.rplumber.io/docs). 
+
+## What are authentication and authorization?
+Authentication and authorization are two concepts from cybersecurity. 
+
+> "Authentication is the process of determining whether someone or something is, in fact, who or what it declares itself to be. Authentication technology provides access control for systems by checking to see if a user's credentials match the credentials in a database of authorized users or in a data authentication server."
+[Source](https://searchsoftwarequality.techtarget.com/definition/authentication)
+
+> "Authorization is the process of giving someone permission to do or have something."
+[Source](https://searchsoftwarequality.techtarget.com/definition/authorization)
+
+Another, less formal way to define the terms: authentication is about who you are, authorization is about what you're allowed to do. 
+
+In either way, you have certainly encountered both authentication and authorization in your online life. Whenever you log in to a service using your username and password, you are *authenticating* yourself to use the service. When you give a third party app access to your google account, for example to read your calendar, you are *authorizing* the app to do so. 
+
+So why would you need authentication or authorization for your API? 
+
+Here are two use cases that come to mind:
+
+- you want to deploy your API at your company but do not want to give everyone access to every endpoint.
+- you want to make your API publicly available on the Internet but you still want users to authenticate before they can use your API (e.g. to prohibit abuse of your API). 
+
+But there might be even more scenarios, depending on your specific use case, company guidelines, security considerations etc. 
+
+### Authenticating users
+
+Authentication flow - coming soon
+
+flowchart 
+
+### Authorizing users 
+
+
+## Implementation 
+
+### Overview
+*sealr* aims to add authentication / authorization strategies to plumber. So far, sealr' functionality only covers
+*checking* incoming requests for correct authentication details. It does not include functions for providing users with credentials in the first place as this is very specific to the use case. However, we provide several examples that are discussed in the relevant subsections of this book. The R scripts can be found on GitHub (MISSING LINK TO EXAMPLES FOLDER!).
+
+The primary logic of *sealr* is based on plumber filters.^[Though, you can use sealr functionality without filters as well by using the `is_authed` functions directly.]
+"Plumber filters can be used to define a “pipeline” for handling incoming requests" ([Plumber docs](https://www.rplumber.io/docs/routing-and-input.html#filters)). So if your plumber API receives a request, the request will first be routed through the different filters before 
+it "arrives" at its destination endpoint. 
+
+The idea of *sealr* is to use a filter for authentication/authorization. If a request is not properly authenticated / authorized, *sealr* will immediately return a "401 - Authentication failed." error from the filter to the user. In this way, an unauthenticated / unauthorized request will not "reach" its destination endpoint and unauthorized/unauthenticated users will not be able to access your API. 
+
+### authenticate
+*sealr*'s main function is the `authenticate` function. It is supposed to be used within a plumber filter.  `authenticate` takes a
+`is_authed_*` function (see below) as input and depending on the output of this "checker" function, 
+takes action:
+
+- if the request is authenticated / authorized, it forwards to the next plumber handler using `plumber::forward`. 
+- if the request is not authenticated / authorized, it `return`s to the user, passing forward HTTP status code, description and message from the output of the `is_authed_` function. Most often, this will be a "401 - Authentication failed." error.
+
+For example: 
+
+```{r eval=FALSE}
+pr$filter("sealr-jwt", function (req, res) {
+  # simply call the strategy and forward the request and response
+  sealr::authenticate(req = req, res = res, is_authed_fun = sealr::is_authed_jwt,
+                      token_location = "header", secret = secret)
+})
+```
+
+The *actions* described above that sealr takes are not visible in the high-level code. You can check the [source code](https://github.com/jandix/sealr/blob/master/R/authenticate.R) for `authenticate` to see the implementation 
+
+By accepting a function object as argument, `authenticate` is quite flexible: You can even pass your own `is_authed` function. See the examples section of `?sealr::authenticate` for a simple example. 
+
+### is_authed functions
+The functions starting with `is_authed` provide the actual implementations of the 
+different authentication / authorization strategies that *sealr* aims to provide.
+Currently implemented are:
+
+- `is_authed_jwt`: implements JSON Web Token verification and checking. 
+- `is_authed_oauth2_google`: implements Google's OpenID Connect (which is based on OAuth2.0)
+
+`is_authed_*` functions return a list with the following elements:
+
+- `is_authed`: TRUE or FALSE. Result of the check whether the request is authenticated / authorized. 
+- `status`: character. Optional (typically only set if `is_authed` is FALSE). Short description of HTTP status code.
+- `code`: integer. Optional (typically only set if `is_authed` is FALSE). HTTP status code.
+- `message`: character. Optional (typically only set if `is_authed` is FALSE). Longer description.
+
+Usage of the `is_authed` functions is not restricted to plumber filters. For example, 
+you can use an `is_authed` function at the top of an endpoint to restrict access to certain endpoints or use
+different authorization "levels" for different endpoints. This is particularly relevant if you have more than two "levels" of authorization (see the [claims example](https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/)). 
+
+
+
+

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Introduction | _main.utf8.md</title>
+  <title>4 Security | _main.utf8.md</title>
   <meta name="description" content="" />
   <meta name="generator" content="bookdown 0.11.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Introduction | _main.utf8.md" />
+  <meta property="og:title" content="4 Security | _main.utf8.md" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Introduction | _main.utf8.md" />
+  <meta name="twitter:title" content="4 Security | _main.utf8.md" />
   
   
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="03_storage.html">
 
-<link rel="next" href="02_auth_strategies.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -182,109 +182,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<!--bookdown:title:end-->
-<!--bookdown:title:start-->
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<div id="what-is-sealr" class="section level2">
-<h2><span class="header-section-number">1.1</span> What is sealr?</h2>
-<p>sealr aims to facilitate implementing authentication and authorization for plumber APIs. Plumber is an R package that allows you to quickly generate an API (Application Programming Interface) from
-your R code. You can read more about plumber on its <a href="https://www.rplumber.io/">website</a> and in its <a href="https://www.rplumber.io/docs">docs</a>.</p>
+<div id="security" class="section level1">
+<h1><span class="header-section-number">4</span> Security</h1>
+<p>When developing a plumber API, some considerations regarding security must be made.</p>
+<p>Many things are already covered in the excellent <a href="https://www.rplumber.io/docs/security.html">Security</a> section of the plumber docs, so we mostly link to the respective subsections and add specifics related to authentication/authorization.</p>
+<div id="https" class="section level2">
+<h2><span class="header-section-number">4.1</span> HTTPS</h2>
+<p>Using HTTPS instead of the insecure HTTP is crucial when working with authentication. The data exchanged between your plumber API and the (frontend) application is <em>highly</em> sensitive. If you don’t use https, those data will be sent across the network unencrypted and attackers could easily steal access tokens not only for your plumber API but also tokens exchanged as part of the OAuth dance used for authenticating using Google.</p>
+<p>Read more about why using HTTPS is critical in the <a href="https://www.rplumber.io/docs/security.html#https">plumber docs</a>. There you also learn more about how you can enable HTTPS for your plumber API.</p>
+<p><strong>All our examples assume that you use HTTPS.</strong></p>
 </div>
-<div id="what-are-authentication-and-authorization" class="section level2">
-<h2><span class="header-section-number">1.2</span> What are authentication and authorization?</h2>
-<p>Authentication and authorization are two concepts from cybersecurity.</p>
-<blockquote>
-<p>“Authentication is the process of determining whether someone or something is, in fact, who or what it declares itself to be. Authentication technology provides access control for systems by checking to see if a user’s credentials match the credentials in a database of authorized users or in a data authentication server.”
-<a href="https://searchsoftwarequality.techtarget.com/definition/authentication">Source</a></p>
-</blockquote>
-<blockquote>
-<p>“Authorization is the process of giving someone permission to do or have something.”
-<a href="https://searchsoftwarequality.techtarget.com/definition/authorization">Source</a></p>
-</blockquote>
-<p>Another, less formal way to define the terms: authentication is about who you are, authorization is about what you’re allowed to do.</p>
-<p>In either way, you have certainly encountered both authentication and authorization in your online life. Whenever you log in to a service using your username and password, you are <em>authenticating</em> yourself to use the service. When you give a third party app access to your google account, for example to read your calendar, you are <em>authorizing</em> the app to do so.</p>
-<p>So why would you need authentication or authorization for your API?</p>
-<p>Here are two use cases that come to mind:</p>
-<ul>
-<li>you want to deploy your API at your company but do not want to give everyone access to every endpoint.</li>
-<li>you want to make your API publicly available on the Internet but you still want users to authenticate before they can use your API (e.g. to prohibit abuse of your API).</li>
-</ul>
-<p>But there might be even more scenarios, depending on your specific use case, company guidelines, security considerations etc.</p>
-<div id="authenticating-users" class="section level3">
-<h3><span class="header-section-number">1.2.1</span> Authenticating users</h3>
-<p>Authentication flow - coming soon</p>
-<p>flowchart</p>
+<div id="cookies-and-csrf" class="section level2">
+<h2><span class="header-section-number">4.2</span> Cookies and CSRF</h2>
 </div>
-<div id="authorizing-users" class="section level3">
-<h3><span class="header-section-number">1.2.2</span> Authorizing users</h3>
-</div>
-</div>
-<div id="implementation" class="section level2">
-<h2><span class="header-section-number">1.3</span> Implementation</h2>
-<div id="overview" class="section level3">
-<h3><span class="header-section-number">1.3.1</span> Overview</h3>
-<p><em>sealr</em> aims to add authentication / authorization strategies to plumber. So far, sealr’ functionality only covers
-<em>checking</em> incoming requests for correct authentication details. It does not include functions for providing users with credentials in the first place as this is very specific to the use case. However, we provide several examples that are discussed in the relevant subsections of this book. The R scripts can be found on GitHub (MISSING LINK TO EXAMPLES FOLDER!).</p>
-<p>The primary logic of <em>sealr</em> is based on plumber filters.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
-“Plumber filters can be used to define a “pipeline” for handling incoming requests" (<a href="https://www.rplumber.io/docs/routing-and-input.html#filters">Plumber docs</a>). So if your plumber API receives a request, the request will first be routed through the different filters before
-it “arrives” at its destination endpoint.</p>
-<p>The idea of <em>sealr</em> is to use a filter for authentication/authorization. If a request is not properly authenticated / authorized, <em>sealr</em> will immediately return a “401 - Authentication failed.” error from the filter to the user. In this way, an unauthenticated / unauthorized request will not “reach” its destination endpoint and unauthorized/unauthenticated users will not be able to access your API.</p>
-</div>
-<div id="authenticate" class="section level3">
-<h3><span class="header-section-number">1.3.2</span> authenticate</h3>
-<p><em>sealr</em>’s main function is the <code>authenticate</code> function. It is supposed to be used within a plumber filter. <code>authenticate</code> takes a
-<code>is_authed_*</code> function (see below) as input and depending on the output of this “checker” function,
-takes action:</p>
-<ul>
-<li>if the request is authenticated / authorized, it forwards to the next plumber handler using <code>plumber::forward</code>.</li>
-<li>if the request is not authenticated / authorized, it <code>return</code>s to the user, passing forward HTTP status code, description and message from the output of the <code>is_authed_</code> function. Most often, this will be a “401 - Authentication failed.” error.</li>
-</ul>
-<p>For example:</p>
-<pre class="sourceCode r"><code class="sourceCode r">pr<span class="op">$</span><span class="kw">filter</span>(<span class="st">&quot;sealr-jwt&quot;</span>, <span class="cf">function</span> (req, res) {
-  <span class="co"># simply call the strategy and forward the request and response</span>
-  sealr<span class="op">::</span><span class="kw">authenticate</span>(<span class="dt">req =</span> req, <span class="dt">res =</span> res, <span class="dt">is_authed_fun =</span> sealr<span class="op">::</span>is_authed_jwt,
-                      <span class="dt">token_location =</span> <span class="st">&quot;header&quot;</span>, <span class="dt">secret =</span> secret)
-})</code></pre>
-<p>The <em>actions</em> described above that sealr takes are not visible in the high-level code. You can check the <a href="https://github.com/jandix/sealr/blob/master/R/authenticate.R">source code</a> for <code>authenticate</code> to see the implementation</p>
-<p>By accepting a function object as argument, <code>authenticate</code> is quite flexible: You can even pass your own <code>is_authed</code> function. See the examples section of <code>?sealr::authenticate</code> for a simple example.</p>
-</div>
-<div id="is_authed-functions" class="section level3">
-<h3><span class="header-section-number">1.3.3</span> is_authed functions</h3>
-<p>The functions starting with <code>is_authed</code> provide the actual implementations of the
-different authentication / authorization strategies that <em>sealr</em> aims to provide.
-Currently implemented are:</p>
-<ul>
-<li><code>is_authed_jwt</code>: implements JSON Web Token verification and checking.</li>
-<li><code>is_authed_oauth2_google</code>: implements Google’s OpenID Connect (which is based on OAuth2.0)</li>
-</ul>
-<p><code>is_authed_*</code> functions return a list with the following elements:</p>
-<ul>
-<li><code>is_authed</code>: TRUE or FALSE. Result of the check whether the request is authenticated / authorized.</li>
-<li><code>status</code>: character. Optional (typically only set if <code>is_authed</code> is FALSE). Short description of HTTP status code.</li>
-<li><code>code</code>: integer. Optional (typically only set if <code>is_authed</code> is FALSE). HTTP status code.</li>
-<li><code>message</code>: character. Optional (typically only set if <code>is_authed</code> is FALSE). Longer description.</li>
-</ul>
-<p>Usage of the <code>is_authed</code> functions is not restricted to plumber filters. For example,
-you can use an <code>is_authed</code> function at the top of an endpoint to restrict access to certain endpoints or use
-different authorization “levels” for different endpoints. This is particularly relevant if you have more than two “levels” of authorization (see the <a href="https://jandix.github.io/sealr/docs/jwt/jwt_claims_example/">claims example</a>).</p>
+<div id="local-storage-and-xss" class="section level2">
+<h2><span class="header-section-number">4.3</span> Local storage and XSS</h2>
 
 </div>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>Though, you can use sealr functionality without filters as well by using the <code>is_authed</code> functions directly.<a href="index.html#fnref1" class="footnote-back">↩</a></p></li>
-</ol>
-</div>
+
+
+
+
+
+
             </section>
 
           </div>
         </div>
       </div>
+<a href="03_storage.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="02_auth_strategies.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
