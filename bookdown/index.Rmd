@@ -31,6 +31,10 @@ But there might be even more scenarios, depending on your specific use case, com
 
 ### Authenticating users
 
+Authentication flow - coming soon
+
+flowchart 
+
 ### Authorizing users 
 
 
