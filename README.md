@@ -14,8 +14,7 @@ using
 In doing so, we hope to make best practices in authentication easy to
 implement for the R community. The package is inspired by the amazing
 [passport.js](http://www.passportjs.org/) library for Node.js. The
-*sealr* website can be found at
-[https://jandix.github.io/sealr/](https://jandix.github.io/sealr/docs/sealr/).
+*sealr* website can be found at <https://jandix.github.io/sealr/>.
 
 ## Disclaimer
 
