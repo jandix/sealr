@@ -23,6 +23,7 @@ HTTP status, HTTP status code, and a message (see details).
 \description{
 \code{authenticate} takes one of the \code{is_authed_*} functions of sealr (or a custom function) as input.
 If the request is authenticated / authorized, \code{authenticate} will forward the request to the next handler.
+If the request is not authenticated / authorized, a 401 response will be returned to the caller.
 Hence, \code{authenticate} should only be used in plumber filters as it calls \code{plumber::forward}.
 }
 \details{
