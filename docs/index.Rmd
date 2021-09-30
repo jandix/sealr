@@ -42,7 +42,7 @@ flowchart
 
 ### Overview
 *sealr* aims to add authentication / authorization strategies to plumber. So far, sealr' functionality only covers
-*checking* incoming requests for correct authentication details. It does not include functions for providing users with credentials in the first place as this is very specific to the use case. However, we provide several examples that are discussed in the relevant subsections of this book. The R scripts can be found on GitHub (MISSING LINK TO EXAMPLES FOLDER!).
+*checking* incoming requests for correct authentication details. It does not include functions for providing users with credentials in the first place as this is very specific to the use case. However, we provide several examples that are discussed in the relevant subsections of this book. The R scripts can be found on [GitHub](https://github.com/jandix/sealr/tree/master/examples).
 
 The primary logic of *sealr* is based on plumber filters.^[Though, you can use sealr functionality without filters as well by using the `is_authed` functions directly.]
 "Plumber filters can be used to define a “pipeline” for handling incoming requests" ([Plumber docs](https://www.rplumber.io/docs/routing-and-input.html#filters)). So if your plumber API receives a request, the request will first be routed through the different filters before 
